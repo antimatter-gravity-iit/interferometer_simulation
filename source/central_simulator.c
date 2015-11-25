@@ -142,12 +142,12 @@ int main(){
     int izxsize;
     double zres;
     int zlocstart;
+    int accountGrav;
 
     double energy = ((1.5 * pow(10,-18))/(pow(0.00000000001,2))) * (1);//((1.5 * pow(10,-18))/(pow(lambda,2))) * (1); //15000// energy
 
     // User input:
     // Want gravity accounted for?
-    int accountGrav;
     printf("Do you want gravity accounted for? [1 for yes]: ");
     scanf("%d", &accountGrav);
 
@@ -241,6 +241,8 @@ int main(){
 
         if (zloc > G2_z) // if the location is above G2_z [which is 1 currently]
         {
+            // Mcomment: This line is exactly and 100% why we MUST use better 
+            // variable names.  This is an absolute mess.
             gp2(G2_z-G1_z, zloc-G2_z, theta, el1, w1, r1, el1, w1, r1, G2_x, Grat3x, Grat3I, energy, rows, col, elecOrAtom, vel, xpnts, height, zloc, accountGrav); // gp2 returns two values, has to, since q is an array of 2 doubles
                                                                       
             max = maximumvalue(Grat3I, rows); // the largest value of ix.
