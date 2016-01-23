@@ -34,10 +34,10 @@
 #include "TROOT.h"
 #include "TStyle.h"
 
-#include "SimplePlot.hh"        // Mcomment: Say
-#include "Misc.hh"              // Mcomment: What each of these does
-#include "BeamParams.hh"        // Mcomment: Here
-#include "Gratings.hh"
+#include "SimplePlot.h"        // Mcomment: Say
+#include "Misc.h"              // Mcomment: What each of these does
+#include "BeamParams.h"        // Mcomment: Here
+#include "Gratings.h"
 #include "PhaseShifts.hh"
 
 
