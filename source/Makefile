@@ -19,12 +19,11 @@ RPATH = -Wl,-rpath,$(ROOT)/lib
 
 all:	program sptest
 
-program: $(SRC) SimplePlot.cc SimplePlot.hh Gratings.cc Gratings.hh BeamParams.cc BeamParams.hh PhaseShifts.cc PhaseShifts.hh Misc.cc Misc.hh
-	g++ $(CFLAGS) -o program  $(SRC) SimplePlot.cc Misc.cc BeamParams.cc Gratings.cc PhaseShifts.cc $(RPATH) $(LIBS)
+program: $(SRC) SimplePlot.cpp SimplePlot.h Gratings.c Gratings.h BeamParams.c BeamParams.h PhaseShifts.c PhaseShifts.h Misc.c Misc.h
+	g++ $(CFLAGS) -o program  $(SRC) SimplePlot.cpp Misc.c BeamParams.c Gratings.c PhaseShifts.c $(RPATH) $(LIBS)
 #//-Wall
-sptest:	SimplePlot.hh SimplePlot.cc
-	g++ $(CFLAGS) -DTEST -o sptest SimplePlot.cc $(RPATH) $(LIBS)
-
+sptest:	SimplePlot.h SimplePlot.cpp
+	g++ $(CFLAGS) -DTEST -o sptest SimplePlot.cpp $(RPATH) $(LIBS)
 
 clean:
 	rm -f *.o program sptest
