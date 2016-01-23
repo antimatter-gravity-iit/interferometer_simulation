@@ -49,12 +49,10 @@ double *ixgenerator(double a[], double zloc, int logchoice, int rows)
     // half life average decay time of a muon, in seconds
     int rowsT =41;
     // rows of ReT and ImT arrays
-
     double max = maximumvalue(a, rows); 
     // maximum intensity value for a slice in z
     double min = cutoff;
     // the minimum value the intensity can be at before being set to 0; cutoff is a global variable
-
     // right now gratings are treated as being 0.5m apart. Divide zloc by 36.075 to get the proper distances, 1.4cm, between gratings.
     double realzloc = zloc / 36.075;
 
