@@ -42,35 +42,32 @@
 
 
 
-double mu_debroglie = 0.0000000005584; // the result of the above equation
-double muonium_freq = 536890000000000000; // muonium frequency
-double mu_lifetime = 0.0000022; // half life average decay time of a muon, in seconds
-float C3 = 0.020453; // the VdW coefficient for hydrogen (assumed to be the same for muonium)
+double mu_debroglie = 0.0000000005584;      // the result of the above equation
+double muonium_freq = 536890000000000000;   // muonium frequency
+double mu_lifetime = 0.0000022;             // half life average decay time of a muon, in seconds
+float C3 = 0.020453;                        // the VdW coefficient for hydrogen (assumed to be the same for muonium)
 
-double Coulomb = 0.00000000898755179; // force; m^2/(Coulomb^-2)
-double pi = 3.14159265358979; // the constant irrational number pi.
-double const_e = 2.71828182845905; // the irrational constant e.
+double Coulomb = 0.00000000898755179;       // force; m^2/(Coulomb^-2)
+double pi = 3.14159265358979;               // the constant irrational number pi.
+double const_e = 2.71828182845905;          // the irrational constant e.
 
-double cutoff = 0.000001; // at what point does the intensity cut off and be treated as 0. Can also be 5e-5 like in McMorran thesis. Or 0.001.
-
-// Mcomment - I'm going to show you how to do block comments eventually.  There are many ways, and believe me, they make life better.
-// Mcomment - also, we will use the standard terminal width for text.  More things I'll fix but show you. =)
+double cutoff = 0.000001;                   // at what point does the intensity cut off and be treated as 0. Can also be 5e-5 like in McMorran thesis. Or 0.001.
 
 // from McMorran's thesis, a value epsilon = ratio of permittivity of grating material to permittivity of free space
 // and the image charge is  + e  *  (epsilon - 1) / (epsilon  +  1)
 // for an ideal conductor image charge =  + e (electric charge), the energy due to this strength of image charge 1 nm from surface is U = -0.75eV
 
-int useimagecharge = 0; // whether or not to consider image charge effects. 0 for False.
+int useimagecharge = 0;                     // whether or not to consider image charge effects. 0 for False.
 
-double eta1 = .4; //G1 open fraction; how open the first grating is. With .4 open, a little over than half the muonium should pass through it.
-double eta2 = .4; //G2 open fraction; how open the second grating is.
-double period = 0.0000001;// period of grating - 100 nanometers.
+double eta1 = .4;                           //G1 open fraction; how open the first grating is. With .4 open, a little over than half the muonium should pass through it.
+double eta2 = .4;                           //G2 open fraction; how open the second grating is.
+double period = 0.0000001;                  // period of grating - 100 nanometers.
 
-double r0 = -4.04;//initial radius of wavefront curvature; comes from initial beam
-double el0 = 0.000001;// initial coherence width; 50e-9 can also be used. Depends on initial beam
-double w0 = 0.00003;// initial beam width -- this is probably assumed, the muonium beam width. Can also be: 2e-6, 1e-6, depends on initial beam
+double r0 = -4.04;                          //initial radius of wavefront curvature; comes from initial beam
+double el0 = 0.000001;                      // initial coherence width; 50e-9 can also be used. Depends on initial beam
+double w0 = 0.00003;                        // initial beam width -- this is probably assumed, the muonium beam width. Can also be: 2e-6, 1e-6, depends on initial beam
 
-double G1_z = 0.000001; // It being 1 micron high is arbitrary, pretty sure. Also same as thickness of gratings. Top down view of gratings:
+double G1_z = 0.000001;                     // It being 1 micron high is arbitrary, pretty sure. Also same as thickness of gratings. Top down view of gratings:
 
 // Mcomment - what is this?  I'm very confused - this is messy and unclear, and the diagram is not described.
 
@@ -79,31 +76,31 @@ double G1_z = 0.000001; // It being 1 micron high is arbitrary, pretty sure. Als
 //                                                ---------------------   -> at G1_z = 0.000001
 //                                                  (source going up)
 
-double G2_z = 1; // assumed to be 1 meter away on z-axis.
-double G2_x = 0.00000005; //50 nm. Initial lateral offset of G2.
+double G2_z = 1;                            // assumed to be 1 meter away on z-axis.
+double G2_x = 0.00000005;                   //50 nm. Initial lateral offset of G2.
 
-double theta = 0; // could be 0.05 or more. This is the twist between gratings, in degrees
+double theta = 0;                           // could be 0.05 or more. This is the twist between gratings, in degrees
 
-double thick = 0.000000014; // 14 nanometers. Not (real) thickness of gratings, most likely. Gratings are 1 micrometer thick.
-double Gthick = 1000; // thickness of gratings; 1 micrometer = 1000 nm, this is in nm on purpose (see function ReTgenerator)
+double thick = 0.000000014;                 // 14 nanometers. Not (real) thickness of gratings, most likely. Gratings are 1 micrometer thick.
+double Gthick = 1000;                       // thickness of gratings; 1 micrometer = 1000 nm, this is in nm on purpose (see function ReTgenerator)
 
-double wedgeangle = 0; // Grating wedge angle. The variable alpha below depends on this. This is a free parameter. Appears to be related to beam splitting.
+double wedgeangle = 0;                      // Grating wedge angle. The variable alpha below depends on this. This is a free parameter. Appears to be related to beam splitting.
 // Going with the picture of the gratings above, this is if the horizontal grating has a rotation along the x-axis. i.e., twist around y-axis
 
-double tilt =0; // A free parameter. Beta variable below depends on this. If beam is perp. to grating, then tilt (and thus Beta) are 0. This is the twist about the x-axis.
+double tilt =0;                             // A free parameter. Beta variable below depends on this. If beam is perp. to grating, then tilt (and thus Beta) are 0. This is the twist about the x-axis.
 
-double res = 1000; // Resolution of the interaction in the gratings. Better varname?
+double res = 1000;                          // Resolution of the interaction in the gratings. Better varname?
 
-double zstart = -0.1; // defining bounds of the grating structure? This definitely corresponds to a location, probably the bottom of the grating.
-double zend = 2.1; // probably the end of the grating.
-double xstart = -0.00020; // what is this? It's negative 200 microns.
+double zstart = -0.1;                       // defining bounds of the grating structure? This definitely corresponds to a location, probably the bottom of the grating.
+double zend = 2.1;                          // probably the end of the grating.
+double xstart = -0.00020;                   // what is this? It's negative 200 microns.
 double xend = 0.00020;
-double ystart = -0.00011; // what is this? negative 110 microns?
+double ystart = -0.00011;                   // what is this? negative 110 microns?
 double yend = 0.00011;
 
 
-int col = 2;// colomns of ix array // remnant of the old code, even though it's not used (it's an argument for the gp0, gp1, gp2 functions, but doesn't do anything)
-int rowsT =41;// rows of ReT and ImT arrays; used to calculate phase shift
+int col = 2;                                // colomns of ix array // remnant of the old code, even though it's not used (it's an argument for the gp0, gp1, gp2 functions, but doesn't do anything)
+int rowsT =41;                              // rows of ReT and ImT arrays; used to calculate phase shift
 
 
 
@@ -187,6 +184,7 @@ int main(){
     //***
     //* User input:
     //* Total intensity or just final intereference patern?
+    //***
     printf("Do you want the total simulation [1] or the end interference pattern [2]? ");
     scanf("%d", &simchoice);
 
@@ -216,106 +214,112 @@ int main(){
     // same as above? All three different functions, but same parameters passed.
  
     // Mcomment - this is an example of embarassingly parallel computation.  Melanie will parallelize once cleaned up.
-    // Mcomment - I'm not a fan of this indenting structure.  Really hard to follow.  Leave first { in-line?  Indent all comments to same level?   
-    if (simchoice == 1)
-      {
-        printf("Do you want to have a logarithmic scale? [1 for yes] [Makes small intensities more visible]: ");
+    // Mcomment - I cleaned up this indent structure.  Follow this indent structure in the future.
+    //            The previous indent structure was outdated, unconventional, and unreadable.
+    if (simchoice == 1) {
+         printf("Do you want to have a logarithmic scale? [1 for yes] [Makes small intensities more visible]: ");
         scanf("%d", &logchoice);
 
         zlocstart = 0;
-      }
-    else if (simchoice == 2)
-      {
+    }
+    else if (simchoice == 2) {
         zlocstart = zpnts - 1;
-      }
+    }
 
-    for (int i=(zlocstart); i<zpnts; i++) // i = 299 is just to get last row of the z
-    {
-      memset(Grat3x, 0, rows * sizeof(double)); // so each time the loop repeats, you reset the array's positions and intensities to zero. 
-      memset(Grat3I, 0, rows * sizeof(double));
+    for (int i=(zlocstart); i<zpnts; i++) {
+        // i = 299 is just to get last row of the z
+        memset(Grat3x, 0, rows * sizeof(double)); 
+        // so each time the loop repeats, you reset the array's positions and intensities to zero. 
+        memset(Grat3I, 0, rows * sizeof(double));
              
         double zloc = zstart  +  i * zres; // where you are with respect to z. 
         
   
         // if, else if, etc. is to determine where you are on zloc, and depending on where you are, you interact with different gratings. 
 
-        if (zloc > G2_z) // if the location is above G2_z [which is 1 currently]
-        {
+        if (zloc > G2_z) { 
+            // if the location is above G2_z [which is 1 currently]
+        
             // Mcomment: This line is exactly and 100% why we MUST use better 
             // variable names.  This is an absolute mess.
-            gp2(G2_z-G1_z, zloc-G2_z, theta, el1, w1, r1, el1, w1, r1, G2_x, Grat3x, Grat3I, energy, rows, col, elecOrAtom, vel, xpnts, height, zloc, accountGrav); // gp2 returns two values, has to, since q is an array of 2 doubles
+            gp2(G2_z-G1_z, zloc-G2_z, theta, el1, w1, r1, el1, w1, r1, G2_x, Grat3x, Grat3I, energy, rows, col, elecOrAtom, vel, xpnts, height, zloc, accountGrav); 
+            // gp2 returns two values, has to, since q is an array of 2 doubles
                                                                       
-            max = maximumvalue(Grat3I, rows); // the largest value of ix.
+            max = maximumvalue(Grat3I, rows); 
+            // the largest value of ix.
 
-            ixgenerator(Grat3I, zloc, logchoice, rows); // ixgenerator returns two values, has to, since q1 is an array of 2 doubles
+            ixgenerator(Grat3I, zloc, logchoice, rows); 
+            // ixgenerator returns two values, has to, since q1 is an array of 2 doubles
  
          
         }
-        else                      // can probably be replaced, more efficiently, by elseifs. 
-        {
-            if (zloc > G1_z)
-            {
-                gp1(zloc - G1_z, r1, el1, w1,Grat3x, Grat3I,energy,rows,col, elecOrAtom, vel, xpnts, height, zloc, accountGrav); // if interacting with the first grating
+        else {
+            // can probably be replaced, more efficiently, by elseifs. 
+            if (zloc > G1_z) {
+                gp1(zloc - G1_z, r1, el1, w1,Grat3x, Grat3I,energy,rows,col, elecOrAtom, vel, xpnts, height, zloc, accountGrav); 
+                // if interacting with the first grating
 
-                max = maximumvalue(Grat3I, rows); // max value of ix here.
-                ixgenerator(Grat3I, zloc, logchoice, rows); // still ixgenerator is returning two values, since q1 is a pointer to an array of 2 doubles
+                max = maximumvalue(Grat3I, rows); 
+                // max value of ix here.
+                ixgenerator(Grat3I, zloc, logchoice, rows); 
+                // still ixgenerator is returning two values, since q1 is a pointer to an array of 2 doubles
 
-
-            }
-            else // simple GSM propagation until it hits the first grating
-            {
-                gp0(zloc, r0, el0, w0,Grat3x, Grat3I,energy,rows,col, xpnts); // if at the origin?
-
-                max = maximumvalue(Grat3I, rows); // as above
-                ixgenerator(Grat3I, zloc, logchoice, rows); // as above
 
             }
-        }
+            else {
+                // simple GSM propagation until it hits the first grating
+                gp0(zloc, r0, el0, w0,Grat3x, Grat3I,energy,rows,col, xpnts); 
+                // if at the origin?
+
+                max = maximumvalue(Grat3I, rows); 
+                // as above
+                ixgenerator(Grat3I, zloc, logchoice, rows); 
+                // as above
+
+            }
+        }   
         
         
    
         // REMEMBER: STILL INSIDE PREVIOUS FOR LOOP: for (i = 0; i < zpnts; i++ ) // Can optimize or make more efficient? Ranges or vectorize?
-        // Mcomment - I'll look at efficiency soon - for now, if you have to mention this, it really indicates your code is unreadable.
+        // Mcomment - for now, if you have to mention this, it really indicates your code is unreadable.
 
-        for (int j=0; j<rows; j++ ) // perhaps this for loop could be avoided with clever programming? Its purpose appears to just translate over values.
-        {
+        for (int j=0; j<rows; j++ ) {
+        // perhaps this for loop could be avoided with clever programming? Its purpose appears to just translate over values.
             
-            int f = rows * i + j; //400 * i + j; still keeping track of location.
+            int f = rows * i + j; 
+            //400 * i + j; still keeping track of location.
             
-            izx[f] = Grat3I[j]; // the f-th element of izx is set to be ix[j][1]; the intensity of the beam at the j-th point.
+            izx[f] = Grat3I[j]; 
+            // the f-th element of izx is set to be ix[j][1]; the intensity of the beam at the j-th point.
             
 
-           // Grat3x[int(izxnumels - f)] = izxnumels - f; // xpos from 0 to 299.
-           // Grat3I[int(izxnumels - f)] = izx[f]; // intensity for each expos 
+            // Grat3x[int(izxnumels - f)] = izxnumels - f; // xpos from 0 to 299.
+            // Grat3I[int(izxnumels - f)] = izx[f]; // intensity for each expos 
             
-            printf("the value of izx is:%0.15f \t %d \t %f \n", izx[f],f, max); // printing out izf, f, and the max value of ix.
-            
+            printf("the value of izx is:%0.15f \t %d \t %f \n", izx[f],f, max); 
+            // printing out izf, f, and the max value of ix.
         }
- 
         // Mcomment - this isn't necessary to say.
         // There is some code that's approximately here in McMorran's thesis, but not here now. 
-
-    
     }
- 
+    if (simchoice == 1) {
+        free(Grat3x); 
+        // free the memory used by this array, since the simulation is over, izx has all the data.
+        free(Grat3I); 
+        // same as above.
 
-    if (simchoice == 1)
-      {
-        free(Grat3x); // free the memory used by this array, since the simulation is over, izx has all the data.
-        free(Grat3I); // same as above.
-
-        SimplePlot::twoD("Intensity graph as particles diffract through gratings",izx,0.0,1.0,0.0,1.0,rows,rows); // using ROOT to plot izx
-      }
-
-    else if(simchoice == 2)
-      {
-            SimplePlot::graph("Intensity along the grating", Grat3x, Grat3I, rows);  // using ROOT to plot intensity vs. position at end of interferometer
-            free(Grat3x); // free the memory used by this array, since the simulation is over.
-            free(Grat3I); // same as above.
-      }
-
+        SimplePlot::twoD("Intensity graph as particles diffract through gratings",izx,0.0,1.0,0.0,1.0,rows,rows); 
+        // using ROOT to plot izx
+    }
+    else if(simchoice == 2) {
+        SimplePlot::graph("Intensity along the grating", Grat3x, Grat3I, rows);  
+        // using ROOT to plot intensity vs. position at end of interferometer
+        free(Grat3x); 
+        // free the memory used by this array, since the simulation is over.
+        free(Grat3I); 
+        // same as above.
+    }
     // free up the space used by the izx array.
     free(izx);
-
 }
-
