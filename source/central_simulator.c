@@ -2,6 +2,16 @@
 //* Central Simulator
 //* 
 //*     Adam, put concise description here.
+/* Icomment: This central program takes user input for:
+			 electronic or atomic beam type,
+			 inclusion or exclusion of gravitational acceleration,
+			 resolution of output graph,
+			 velocity of particles, 
+			 pitch of gratings,
+			 and intensity or final simulation paths,
+			 and calculates simulation parameters in order to perform the simulation 
+			 with the user desired arguments. 
+*/
 //*   
 //* Code inspired by thesis by Dr. Benjamin McMorran
 //* Put title of thesis and location here
@@ -26,7 +36,8 @@
 #include "complex.h"
 
 // Mcomment: are these custom-made header files?  They have very undescriptive names.
-// Mcoment: They're root headers, aren't they?  If so, comment that here.
+// Mcomment: They're root headers, aren't they?  If so, comment that here.
+// Icomment: Physics Simulation Root files must be installed in a folder in the main linux directory. 
 #include "TCanvas.h"
 #include "TGraph.h"
 #include "TH2D.h"
@@ -53,15 +64,16 @@ double const_e = 2.71828182845905;          // the irrational constant e.
 
 double cutoff = 0.000001;                   // at what point does the intensity cut off and be treated as 0. Can also be 5e-5 like in McMorran thesis. Or 0.001.
 
-// from McMorran's thesis, a value epsilon = ratio of permittivity of grating material to permittivity of free space
-// and the image charge is  + e  *  (epsilon - 1) / (epsilon  +  1)
-// for an ideal conductor image charge =  + e (electric charge), the energy due to this strength of image charge 1 nm from surface is U = -0.75eV
-
+/* 
+   from McMorran's thesis, a value epsilon = ratio of permittivity of grating material to permittivity of free space
+   and the image charge is  + e  *  (epsilon - 1) / (epsilon  +  1)
+   for an ideal conductor image charge =  + e (electric charge), the energy due to this strength of image charge 1 nm from surface is U = -0.75eV
+*/
 int useimagecharge = 0;                     // whether or not to consider image charge effects. 0 for False.
 
 double eta1 = .4;                           //G1 open fraction; how open the first grating is. With .4 open, a little over than half the muonium should pass through it.
 double eta2 = .4;                           //G2 open fraction; how open the second grating is.
-double period = 0.0000001;                  // period of grating - 100 nanometers.
+double g_period = 0.0000001;                  // period of grating - 100 nanometers.
 
 double r0 = -4.04;                          //initial radius of wavefront curvature; comes from initial beam
 double el0 = 0.000001;                      // initial coherence width; 50e-9 can also be used. Depends on initial beam
