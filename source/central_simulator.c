@@ -23,7 +23,8 @@
 //*         -- Additional parameters and functionality
 //*     Melanie Cornelius (Dooley), 1 Nov 2015 to present
 //*         -- Optimizations, standards, and readability edits
-//*
+//*		Isaac Gewarges, January 2016 to present
+//*			-- Optimizations, standards, and readability edits
 //* 
 //***
 
@@ -45,8 +46,11 @@
 #include "TROOT.h"
 #include "TStyle.h"
 
-#include "SimplePlot.h"        // Mcomment: Say
-#include "Misc.h"              // Mcomment: What each of these does
+#include "SimplePlot.h"        // Mcomment: Say  //Icomment: This program uses Root's TApplication.h and creates
+												//  		a plot based on values passed into the function. 
+#include "Misc.h"              // Mcomment: What each of these does //Icomment: contains functions of other miscellaneous tasks, 
+																  //          such as taking care of boundary conditions, 
+																  //          checking the max value in an array, etc.
 #include "BeamParams.h"        // Mcomment: Here
 #include "Gratings.h"
 #include "PhaseShifts.hh"
