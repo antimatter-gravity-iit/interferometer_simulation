@@ -10,7 +10,7 @@
 			 pitch of gratings,
 			 and intensity or final simulation paths,
 			 and calculates simulation parameters in order to perform the simulation 
-			 with the user desired arguments. 
+			 with the users desired arguments. 
 */
 //*   
 //* Code inspired by thesis by Dr. Benjamin McMorran
@@ -33,9 +33,8 @@
 #include <math.h>
 #include <complex.h>
 #include <string>
-
-#include "complex.h"
-
+#include <complex.h>
+#include <limits.h> 		//fix for islimit
 // Mcomment: are these custom-made header files?  They have very undescriptive names.
 // Mcomment: They're root headers, aren't they?  If so, comment that here.
 // Icomment: Physics Simulation Root files must be installed in a folder in the main linux directory. 
@@ -51,9 +50,9 @@
 #include "Misc.h"              // Mcomment: What each of these does //Icomment: contains functions of other miscellaneous tasks, 
 																  //          such as taking care of boundary conditions, 
 																  //          checking the max value in an array, etc.
-#include "BeamParams.h"        // Mcomment: Here
+#include "BeamParams.h"        // Mcomment: Here //Icomment: This program contains the functions defining the GSM beam behavior
 #include "Gratings.h"
-#include "PhaseShifts.hh"
+#include "PhaseShifts.h"
 
 
 
