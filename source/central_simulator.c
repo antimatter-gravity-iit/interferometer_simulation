@@ -31,13 +31,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <cmath>
+#include <cfloat>
 #include <complex.h>
-#include <string>
+#include <string> 
 #include <complex.h>
 #include <limits.h> 		//fix for islimit
 // Mcomment: are these custom-made header files?  They have very undescriptive names.
 // Mcomment: They're root headers, aren't they?  If so, comment that here.
-// Icomment: Physics Simulation Root files must be installed in a folder in the main linux directory. 
 #include "TCanvas.h"
 #include "TGraph.h"
 #include "TH2D.h"
@@ -219,7 +220,7 @@ int main(){
     izx = (double*) calloc(izxnumels, sizeof(double)); 
     zres = (zend-zstart)/zpnts; // step resolution used in computation
 
-    // Following three are used to calculate GSM values at the first grating. 
+    // Following three are used to calculate GSM values at the first grating. (Gaussian-Schell Model)
     // Mcomment: GSM?  Did you define this elsewhere?  Avoid acronyms when and where possible.  More keystrokes are better.
     double w1=w(G1_z,r0,el0,w0,energy); 
     // okay, using a function w to initialize this variable w1... should change the names if possible. w1 = coherence width of beam. 

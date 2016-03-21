@@ -5,10 +5,12 @@
 #include <math.h>
 #include <string>
 
+
 #include "PhaseShifts.h"
-#include "Gratings.h"
-#include "Misc.h"
 #include "BeamParams.h"
+#include "Misc.h"
+#include "Gratings.h"
+
 #include <complex.h>
 
 

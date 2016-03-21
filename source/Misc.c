@@ -1,4 +1,4 @@
-// Misc.cc - contains functions of other miscellaneous tasks, such as taking care of boundary conditions, checking the max value in an array, etc.
+// Misc.c - contains functions of other miscellaneous tasks, such as taking care of boundary conditions, checking the max value in an array, etc.
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -6,6 +6,9 @@
 #include <string>
 
 #include "Misc.h"
+//#include "PhaseShifts.h"
+//#include "Gratings.h"
+//#include "BeamParams.h"
 
 double maximumvalue(double arr[], int rows)
 {    
@@ -25,16 +28,16 @@ double maximumvalue(double arr[], int rows)
 double sinc(double x)
 {
     // this function avoids a division by 0; sinc is just defined to be sin(x)/x
-    double sinc;
+    double sinc_value;
     if (x==0)
     {
-        sinc = 1;
+        sinc_value = 1; 
     }
     else
     {
-        sinc = (sin(x))/x;// this function avoids a division by 0
+        sinc_value = (sin(x))/x;// this function avoids a division by 0 by testing for zero and assigning 1 to sinc(0)
     }
-    return(sinc);
+    return(sinc_value);
 }
 
 

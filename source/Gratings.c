@@ -8,11 +8,15 @@
 #include <string>
 #include <cmath>
 
+
 #include "Gratings.h"
 #include "BeamParams.h"
 #include "Misc.h"
 #include "PhaseShifts.h"
+
+
 #include <complex.h>
+#include <limits.h> 		//fix for islimit
 
 double ( * gp0(double z,double r0,double el0, double w0, double Grat3x[], double Grat3I[],double energy, int rows, int col, int xpnts))
 // get intensity profile 

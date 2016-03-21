@@ -11,4 +11,4 @@ double ( * gp2(double z12,double z23, double mytheta, double el1x, double w1x, d
 
 
 
-#endif // end Gratings.hh
+#endif // end Gratings.h

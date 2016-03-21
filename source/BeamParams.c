@@ -1,14 +1,14 @@
-// BeamParams.c - contains the functions defining the GSM beam behavior
+// BeamParams.c - contains the functions defining the GSM (Gaussian-Schell Model) beam behavior
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-#include <string>
+#include <string> 
 
 #include "BeamParams.h"
+#include "PhaseShifts.h"
 #include "Misc.h"
 #include "Gratings.h"
-#include "PhaseShifts.h"
 
 double zp(double z, double v) 
 {

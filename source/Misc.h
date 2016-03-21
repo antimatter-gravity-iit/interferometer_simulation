@@ -3,16 +3,20 @@
 #ifndef MISC_H
 #define MISC_H
 
-double sinc(double x); 
-// returns sin(x)/x
-
-int x2pnts(int value, int  * arr); 
-// checks for a certain x-position in the array
+#include "PhaseShifts.h"
+#include "Gratings.h"
+#include "BeamParams.h"
 
 double maximumvalue(double arr[], int rows); 
 // obtains the max value in an array
 
-double ( * ixgenerator(double a[], double zloc, int logchoice, int rows)); 
+double sinc(double x); 
+// returns sin(x)/x
+
+double ( *ixgenerator(double a[], double zloc, int logchoice, int rows)); 
 // accounts for decay (if applicable) and normalizing the intensity scale
+
+int x2pnts(int value, int *arr); 
+// checks for a certain x-position in the array
 
 #endif
