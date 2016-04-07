@@ -183,6 +183,16 @@ int main(int argc, char *argv[]){ //added arguments
 	switch (atoi(argv[1]){
 		case 0:
 		//add statements for custom particle structure
+		if(argv[2]!= NULL) accountGrav = atoi(argv[2]);
+		else{
+			printf("no gravity selection made. Cannot continue computation without this selection\n");
+			exit(1);
+		}
+		if(argv[3]!= NULL) elecOrAtom = atoi(argv[3]);
+		else{
+			printf("no particle type selected. Cannot continue computation without this selection\n");
+			exit(1);
+		}
 		break;
 		
 		case 1:
