@@ -88,11 +88,11 @@ double cutoff = 0.000001;                   // at what point does the intensity 
    for an ideal conductor image charge =  + e (electric charge), the energy due to this strength of image charge 1 nm from surface is U = -0.75eV
 */
 //int useimagecharge = 0;                     // whether or not to consider image charge effects. 0 for False. //not used in program.
-
+/* not used
 double eta1 = .4;                           //G1 open fraction; how open the first grating is. With .4 open, a little over than half the muonium should pass through it.
 double eta2 = .4;                           //G2 open fraction; how open the second grating is.
 double g_period = 0.0000001;                  // period of grating - 100 nanometers.
-
+*/
 double r0 = -4.04;                          //initial radius of wavefront curvature; comes from initial beam
 double el0 = 0.000001;                      // initial coherence width; 50e-9 can also be used. Depends on initial beam
 double w0 = 0.00003;                        // initial beam width -- this is probably assumed, the muonium beam width. Can also be: 2e-6, 1e-6, depends on initial beam
@@ -141,22 +141,23 @@ int rowsT =41;                              // rows of ReT and ImT arrays; used 
 
 
 
-int main(){
-    // the main function
-    // Mcomment - we know it's main - you labeled it as such. What does it do?  What does it call?  What does it need to run?  What should the user change?  Etc.
+int main(int argc, char *argv[]){ //added arguments
+	// the main function
+	/*arguments are currently in the order of:
+	
+	1. Default waveparticle structure. 0 = custom, 1 = charged photon, 2 = x-ray, 3 = hydrogen, 4 = muonium
+	2. Account gravity? 1 = True, 0 = False.
+	3. Electron beam or atom beam? Electron beam = 1, Atom beam = 2.
+	4. Resolution [300-400 recommended]. 
+	5. Velocity of particles in m/s
+	6. Pitch of gratings [in nm] 
+	7. Total simulation [1]? or final interfereance pattern [2]?
+	8. Null
+	9. Null
+	10.Null
+	
+	*/ 
     
-    //***
-    //* Mcomment: I'm commenting out variables not used here.  If I made a mistake, uncomment them.
-    // double e_charge = 0.00000000000000000016021765;                 // electric charge in Coulombs of electron (abs. value)
-    // double e_mass = 0.00000000000000000000000000000091093819;       // mass of an electron
-    // Mcomment: what is difPlancks? I see the explanation to the right, but I'm still unclear about the name.
-    // double difPlancks = 0.000000000000658212; // hbar in mev * s; used for VdW calculations
-    // double Plancks = 0.0000000000000000000000000000000006626068; // Planck's constant
-    // double mu_debroglie_wavelength = Plancks / (mu_mass * muonium_vel) // De Broglie Wavelength of the muonium atom
-    // double mu_mass = 0.000000000000000000000000000188353; // kg, 1.8835E-28 kg
-    // double chargeratio =0.0; //strength of image charge (units of e, electron charge); values of 0.03, 0.05, or more can be had
-    //***
-
     // These are variables actually used.
     int elecOrAtom = 2;         // variable that takes user input and makes calculations on whether electron or atom beam is desired to simulate
     int resolution;             // determines how many x rows and y columns are displayed in the planes
@@ -176,24 +177,56 @@ int main(){
     int izxsize;
     double zres;
     int zlocstart;
-    int accountGrav;
-
-    double energy = ((1.5 * pow(10,-18))/(pow(0.00000000001,2))) * (1);//((1.5 * pow(10,-18))/(pow(lambda,2))) * (1); //15000// energy
-
+	int accountGrav;
+    double energy = ((1.5 * pow(10,-18))/(pow(0.00000000001,2))) * (1);
+	
+	switch (atoi(argv[1]){
+		case 0:
+		//add statements for custom particle structure
+		break;
+		
+		case 1:
+		//charged photon particle to be simulated. 
+		break;
+		
+		case 2:
+		//x-ray photons to be simulated
+		break;
+		
+		case 3:
+		//hydrogen particle simulated
+		break;
+		
+		case 4:
+		//muonium particle simulated
+		break;
+		
+		default:
+		// print incorrect argument passed
+		exit(1);
+	}
+	
+    // Mcomment - we know it's main - you labeled it as such. What does it do?  What does it call?  What does it need to run?  What should the user change?  Etc.
+//((1.5 * pow(10,-18))/(pow(lambda,2))) * (1); //15000// energy
+	/*
+	Not used anymore due to cmd line arguments.
+	
     // User input:
     // Want gravity accounted for?
-	printf("Do you want gravity accounted for? [1 for yes, 0 for no]: ");
+	/*printf("Do you want gravity accounted for? [1 for yes, 0 for no]: ");
     scanf("%d", &accountGrav);
 	while(!((accountGrav != 0) != (accountGrav !=1))){
 		printf("please input a valid number\n");
 		printf("Do you want gravity accounted for? [1 for yes, 0 for no]: ");
 		scanf("%d", &accountGrav);	
 	}
-	
+	*/ 
 
 	// User input:
 	// Beam type
 	// 1 = electron beam, 2 = atom beam, default = 2
+	/*
+	Not used anymore due to cmd line arguments.
 	elecOrAtom = 2;
 	printf("Is this an electron beam [1] or atom beam [2]? ");
 	scanf("%d", &elecOrAtom);
@@ -240,7 +273,7 @@ int main(){
 
     // Mcomment: you never ask the user for this.  Do you want to?
     int logchoice = 0; // if the user wants a total simulation, ask them if they want it to be scaled logarithmically so they can see where more of the particles go
-
+	*/
     // initializing two arrays to contain the intensities and xpositions of each intensity -- Mcomment: I tried to fix this, but what is it actually saying?  It's the intensities of the x-positions and the intensities?  That doesn't make sense to me.
     Grat3I = (double*) calloc(resolution, sizeof(double));
     Grat3x = (double*) calloc(resolution, sizeof(double));
