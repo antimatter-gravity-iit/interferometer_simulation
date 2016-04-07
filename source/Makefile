@@ -25,7 +25,7 @@ all:	program sptest
 
 program: $(SRC) SimplePlot.cpp SimplePlot.h Gratings.c Gratings.h BeamParams.c BeamParams.h PhaseShifts.c PhaseShifts.h Misc.c Misc.h
 	$(CXX) $(CFLAGS) -o program  $(SRC) SimplePlot.cpp $(RPATH) $(LIBS) 	
-	#-Wall -Wextra  //extra debug code 
+#-Wall -Wextra  //extra debug code 
 
 sptest:	SimplePlot.h SimplePlot.cpp
 	$(CXX) $(CFLAGS) -DTEST -o sptest SimplePlot.cpp $(RPATH) $(LIBS)

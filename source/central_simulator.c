@@ -1,3 +1,12 @@
+/*
+Current set of tasks.
+- find unused variables
+- flow chart of what everything does
+- create struct for waveparticle
+- insert main cmd line args for different predefined structs and user inputs.
+- remove error testing and user input frames to replace with cmd line arguments.
+*/
+
 //***
 //* Central Simulator
 //* 
@@ -33,12 +42,13 @@
 #include <math.h>
 #include <cmath>
 #include <cfloat>
+#include <ctype.h>
 #include <complex.h>
 #include <string> 
 #include <complex.h>
-#include <limits.h> 		//fix for islimit
-// Mcomment: are these custom-made header files?  They have very undescriptive names.
-// Mcomment: They're root headers, aren't they?  If so, comment that here.
+#include <limits.h> 		//fix for islimit error
+
+
 #include "TCanvas.h"
 #include "TGraph.h"
 #include "TH2D.h"
@@ -46,34 +56,38 @@
 #include "TROOT.h"
 #include "TStyle.h"
 
-#include "SimplePlot.h"        // Mcomment: Say  //Icomment: This program uses Root's TApplication.h and creates
-												//  		a plot based on values passed into the function. 
-#include "Misc.h"              // Mcomment: What each of these does //Icomment: contains functions of other miscellaneous tasks, 
-																  //          such as taking care of boundary conditions, 
-																  //          checking the max value in an array, etc.
-#include "BeamParams.h"        // Mcomment: Here //Icomment: This program contains the functions defining the GSM beam behavior
+#include "SimplePlot.h"          //Icomment: This program uses Root's TApplication.h and creates
+						    	//  		a plot based on values passed into the function. 
+#include "Misc.h"                //          contains functions of other miscellaneous tasks, 
+							    //          such as taking care of boundary conditions, 
+							    //          checking the max value in an array, etc.
+#include "BeamParams.h"          //          This program contains the functions defining the GSM beam behavior
 #include "Gratings.h"
 #include "PhaseShifts.h"
 
 
+/*
+None of these variables are currently used.
 
-double mu_debroglie = 0.0000000005584;      // the result of the above equation
-double muonium_freq = 536890000000000000;   // muonium frequency
-double mu_lifetime = 0.0000022;             // half life average decay time of a muon, in seconds
-float C3 = 0.020453;                        // the VdW coefficient for hydrogen (assumed to be the same for muonium)
+//double mu_debroglie = 0.0000000005584;      // the result of the above equation  NOT USED IN MAIN PROGRAM
+//double muonium_freq = 536890000000000000;   // muonium frequency
+//double mu_lifetime = 0.0000022;             // half life average decay time of a muon, in seconds
+//float C3 = 0.020453;                        // the VdW coefficient for hydrogen (assumed to be the same for muonium)
+
 
 double Coulomb = 0.00000000898755179;       // force; m^2/(Coulomb^-2)
 double pi = 3.14159265358979;               // the constant irrational number pi.
 double const_e = 2.71828182845905;          // the irrational constant e.
 
 double cutoff = 0.000001;                   // at what point does the intensity cut off and be treated as 0. Can also be 5e-5 like in McMorran thesis. Or 0.001.
+*/
 
 /* 
    from McMorran's thesis, a value epsilon = ratio of permittivity of grating material to permittivity of free space
    and the image charge is  + e  *  (epsilon - 1) / (epsilon  +  1)
    for an ideal conductor image charge =  + e (electric charge), the energy due to this strength of image charge 1 nm from surface is U = -0.75eV
 */
-int useimagecharge = 0;                     // whether or not to consider image charge effects. 0 for False.
+//int useimagecharge = 0;                     // whether or not to consider image charge effects. 0 for False. //not used in program.
 
 double eta1 = .4;                           //G1 open fraction; how open the first grating is. With .4 open, a little over than half the muonium should pass through it.
 double eta2 = .4;                           //G2 open fraction; how open the second grating is.
@@ -92,10 +106,17 @@ double G1_z = 0.000001;                     // It being 1 micron high is arbitra
 //                                                ---------------------   -> at G1_z = 0.000001
 //                                                  (source going up)
 
+struct waveparticle {
+	// simple parameters (zloc, r0, el0, w0,Grat3x, Grat3I,energy,rows,col, xpnts)
+	//cannot use zloc because changes on different gsm params
+	
+	
+}GSMwave;
+
 double G2_z = 1;                            // assumed to be 1 meter away on z-axis.
 double G2_x = 0.00000005;                   //50 nm. Initial lateral offset of G2.
 
-double theta = 0;                           // could be 0.05 or more. This is the twist between gratings, in degrees
+double theta = 0;                           // could be 0.05 or more. This is the twist between 1st and second gratings, in degrees. 2nd and 3rd grating are fixed to same rotational twist.
 
 double thick = 0.000000014;                 // 14 nanometers. Not (real) thickness of gratings, most likely. Gratings are 1 micrometer thick.
 double Gthick = 1000;                       // thickness of gratings; 1 micrometer = 1000 nm, this is in nm on purpose (see function ReTgenerator)
@@ -137,18 +158,18 @@ int main(){
     //***
 
     // These are variables actually used.
-    int elecOrAtom = 2;
-    int resolution;
-    int xpnts;
-    int ypnts;
-    int zpnts;
-    int rows;
-    double vel; 
-    double pitch;  
-    double height;
+    int elecOrAtom = 2;         // variable that takes user input and makes calculations on whether electron or atom beam is desired to simulate
+    int resolution;             // determines how many x rows and y columns are displayed in the planes
+    int xpnts;                  // x points of intensity 
+    int ypnts;				    // y points of intensity
+    int zpnts;					// z points of intensity
+    int rows;					// max number of x points
+    double vel; 				// velocity of particles
+    double pitch;  				// distance from top of one grating to top of another
+    double height;			    // max number of y points
     double max;                 // maximum intensity in each slice of the z-plane
-    double *Grat3I;
-    double *Grat3x;
+    double *Grat3I;             // intensity array
+    double *Grat3x;             // array of x position of intensity
     int simchoice;
     double *izx;
     int izxnumels;
@@ -161,44 +182,57 @@ int main(){
 
     // User input:
     // Want gravity accounted for?
-    printf("Do you want gravity accounted for? [1 for yes]: ");
+	printf("Do you want gravity accounted for? [1 for yes, 0 for no]: ");
     scanf("%d", &accountGrav);
+	while(!((accountGrav != 0) != (accountGrav !=1))){
+		printf("please input a valid number\n");
+		printf("Do you want gravity accounted for? [1 for yes, 0 for no]: ");
+		scanf("%d", &accountGrav);	
+	}
+	
 
+	// User input:
+	// Beam type
+	// 1 = electron beam, 2 = atom beam, default = 2
+	elecOrAtom = 2;
+	printf("Is this an electron beam [1] or atom beam [2]? ");
+	scanf("%d", &elecOrAtom);
+	while(!((elecOrAtom != 1) != (elecOrAtom != 2))){
+		printf("please input a valid number\n");
+		printf("Is this an electron beam [1] or atom beam [2]? ");
+		scanf("%d", &elecOrAtom);
+	}
+	
     // User input:
-    // Beam type
-    // 1 = electron beam, 2 = atom beam, default = 2
-    elecOrAtom = 2;
-    printf("Is this an electron beam [1] or atom beam [2]? ");
-    scanf("%d", &elecOrAtom);
-
-    // User input:
-    // What resolution?
+	// resolution
     // Determines how many rows in the x and y planes.
     printf("How much resolution do you want in the simulation? [300-400 recommended]: ");
     scanf("%d", &resolution);
-    xpnts = resolution;
-    ypnts = resolution;
-    zpnts = resolution;
+	//while((resolution<100) 
+    xpnts = resolution; //max of x vals to be calculated
+    ypnts = resolution; //max of y vals to be calculated
+    zpnts = resolution; //max of z vals to be calculated
     rows = resolution;// rows of ix array
 
     // User input:
     // Velocity of particle or atom
-    printf("What is the velocity [m/s] of the atoms/electrons? ");
+	// Default velocity = 6400 m/s?
+    printf("What is the velocity [m/s] of the atoms/electrons? (default 6400) : ");
     scanf("%lf", &vel);
 
     //***
     //* User input:
-    //* Pitch of grating
+    //* Pitch of grating (from top of one slit to top of next slit)
     //* Default is 100 nm 
     //***
     pitch = 0.0000001;  
-    printf("Grating pitch (nm): ");
+    printf("Grating pitch (default is 100) (nm): ");
     scanf("%lf", &pitch);
     // Converting from nanometers to meters and from pitch to height
     height = (pitch / 2) / 1000000000;
     
     //***
-    //* User input:
+    //* User input:1
     //* Total intensity or just final intereference patern?
     //***
     printf("Do you want the total simulation [1] or the end interference pattern [2]? ");
@@ -233,7 +267,7 @@ int main(){
     // Mcomment - I cleaned up this indent structure.  Follow this indent structure in the future.
     //            The previous indent structure was outdated, unconventional, and unreadable.
     if (simchoice == 1) {
-         printf("Do you want to have a logarithmic scale? [1 for yes] [Makes small intensities more visible]: ");
+         printf("Do you want to have a logarithmic scale? [1 for yes, 2 for no] [Makes small intensities more visible]: ");
         scanf("%d", &logchoice);
 
         zlocstart = 0;
