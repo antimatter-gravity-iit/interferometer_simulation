@@ -131,7 +131,7 @@ double ( * gp1(double zloc,double r1,double el1, double w1, double Grat3x[], dou
                     
                     Grat3I[i] = Grat3I[i]  +   (coef * exp(-pi * pow(((Grat3x[i]-dm * lambda * z12/period)/w2),2) * cos(2 * pi * (dn/period) * (Grat3x[i]-dm * lambda * z12/period) * (1-z12/r2))));
                     // Since a[i][1] etc. is actually the ix array, and arrays essentially get passed by reference, this is modifying the ix array.
-                    continue; // why have this here? Is there a point?
+                    continue;
                 }
             }
         }
@@ -140,22 +140,22 @@ double ( * gp1(double zloc,double r1,double el1, double w1, double Grat3x[], dou
 
 //double ( * gp2(double z12,double z23, double mytheta, double el1x, double w1x, double r1x, double el1y, double w1y, double r1y, double G2_x, double Grat3x[], double Grat3I[], double energy, int rows, int col, int elecOrAtom, double vel, int xpnts, double width, double abszloc, int accountGrav))
 double ( * gp2(double zloc, double el1x, double w1x, double r1x, double Grat3x[], double Grat3I[]))
-
 {
-	double G2_x = sp.G2_x;
+	// get intensity profile after two grating
+	double G2_x = sp.G2_x; //x position after second grating
 	double r1y = r1x;
 	double w1y = w1x;
 	double el1y = el1x;
-    // get intensity profile after two grating
+    
 	int elecOrAtom = sp.elecOrAtom;
 	double vel = sp.vel;
 	int rows = sp.res;
 	int xpnts = rows;
-	double width = rows;
-	double abszloc = sp.height;
+	double width = sp.height;
+	double abszloc = zloc;
 	int accountGrav = sp.accountGrav;
-	double z12 = sp.G2_z - sp.G1_z;
-	double z23 = zloc -sp.G2_z;
+	double z12 = ((sp.G2_z) - (sp.G1_z));
+	double z23 = (zloc -(sp.G2_z));
 	double mytheta = sp.theta;
 	double energy = sp.energy;
     int rowsT =41;// rows of ReT and ImT array
@@ -170,7 +170,7 @@ double ( * gp2(double zloc, double el1x, double w1x, double r1x, double Grat3x[]
     double eta1 = sp.eta1; //G1 open fraction; how open the first grating is. With .4 open, a little over than half the muonium should pass through it.
     double eta2 = sp.eta2; //G2 open fraction; how open the second grating is.
     double lambda = sqrt((1.5 * pow(10,-18))/(energy)); // wavelength we're working with of particles/waves
-    double res = 1000; // This is the resolution we want this graph at.
+    double res = sp.res; // This is the resolution we want this graph at.
     double eta = width/period; // ratio of slit window 'height' to the period of the gratings
     // double vel = pow(2 * energy * e_charge/e_mass,1/2); electron velocity
     double alpha = wedgeangle * pi/180;
@@ -194,7 +194,7 @@ double ( * gp2(double zloc, double el1x, double w1x, double r1x, double Grat3x[]
     int b  =0;
     int c5 =0;
     int d5=0;
-   /* UNMODIFIED ORIGINALS
+   /* UNMODIFIED ORIGINAL functions
 	 double el3x = el(z13, r1x, el1x, w1x, energy);//G2z - G1z  +  zstart  +  0 * zres, r1, el1, w1; GSM coherence width in x-axis
     double w3x = w(z13,r1x,el1x,w1x, energy); // Beam width in x-axis
     double v3x = v(z13,r1x,el1x,w1x, energy); // Gaussian-Schell Model (GSM) radius of wavefront curvature in x-axis
@@ -216,6 +216,7 @@ double ( * gp2(double zloc, double el1x, double w1x, double r1x, double Grat3x[]
     }
     
     double ReT[41]={0}; 
+    // array of 41 0's for now.
     // array of 41 0's for now.
     int RealorIm = 1; 
     ReTandImTgenerator(ReT,energy, elecOrAtom, RealorIm, vel, width, abszloc, accountGrav); 

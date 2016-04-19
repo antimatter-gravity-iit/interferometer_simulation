@@ -89,6 +89,7 @@ double cutoff = 0.000001;                   // at what point does the intensity 
    for an ideal conductor image charge =  + e (electric charge), the energy due to this strength of image charge 1 nm from surface is U = -0.75eV
 */
 //Top down view of gratings:
+//                                                _ _ _ _ _ _ _ _ _ _ _   -> at G2_z + zstart
 
 //                                                ---------------------   -> at G2_z = 1,   z2
 //
@@ -99,8 +100,6 @@ double cutoff = 0.000001;                   // at what point does the intensity 
 
 int col = 2;                                // can be removed, colomns of ix array // remnant of the old code, even though it's not used (it's an argument for the gp0, gp1, gp2 functions, but doesn't do anything)
 int rowsT =41;                              // rows of ReT and ImT arrays; used to calculate phase shift
-
-
 
 int main(int argc, char *argv[]){ 
 	sp.accountGrav = atoi(argv[1]);
@@ -134,6 +133,7 @@ int main(int argc, char *argv[]){
 	sp.height = (sp.g_period / 2) / 1000000000;
 	sp.cutoff = 0.000001;
 	sp.logchoice = 0; //scaled logarithmically so they can see where more of the particles go [0] = no, [1] = yes.
+	
 	/*arguments are currently in the order of:
 argv[#]
 	
@@ -149,33 +149,32 @@ argv[#]
  	
     // initializing two arrays to contain the intensities and xpositions of each intensity -- Mcomment: I tried to fix this, but what is it actually saying?  It's the intensities of the x-positions and the intensities?  That doesn't make sense to me.
     int zlocstart;				// where z position begins
-	int rows = sp.res;					// times to repeate diffraction phase shifts (2, 1 for each grating)
-	double max;
+	int rows = sp.res;			// numbers of horizontal component arrays of full simulation graph
+	double max;					// used to store computed max value of intensity at a specific x location.
 	double *Grat3I;             // intensity array
     double *Grat3x;             // array of x position of intensity
-	Grat3I = (double*) calloc(sp.res, sizeof(double));
-    Grat3x = (double*) calloc(sp.res, sizeof(double));
+	Grat3I = (double*) calloc(sp.res, sizeof(double)); //allocate dynamic memory for intensity array
+    Grat3x = (double*) calloc(sp.res, sizeof(double)); //allocate dynamic memory for horizontal position array
 	
    
     // Mcomment: what is all of this?  Please describe.  Also, these do not have helpful
     // variable names - please fix.  It's very important for readability.  Just tell
     // me what you want them to be, and I'll make the change.
-   	int izxnumels = rows * rows;
-    double izxsize = izxnumels * sizeof(double);
-    double *izx = (double*) calloc(izxnumels, sizeof(double)); 
+   	int izxnumels = rows * rows;  //pixels on full simulation graph
+    double izxsize = izxnumels * sizeof(double); //size of pixels array
+    double *izx = (double*) calloc(izxnumels, sizeof(double)); // allocating dynamic memory for pixel array
     double zres = (sp.zend-sp.zstart)/sp.res; // step resolution used in computation
 
-    // Following three are used to calculate GSM values at the first grating. (Gaussian-Schell Model)
     // Mcomment: GSM?  Did you define this elsewhere?  Avoid acronyms when and where possible.  More keystrokes are better.
     //double w1=w(sp.G1_z,sp.r0,sp.el0,sp.w0,sp.energy); 
-    double w1=w(sp.G1_z, sp.r0, sp.el0, sp.w0); 
-
-	// okay, using a function w to initialize this variable w1... should change the names if possible. w1 = coherence width of beam. 
     //double r1 = v(sp.G1_z,sp.r0,sp.el0,sp.w0,sp.energy); 
-    double r1 = v(sp.G1_z, sp.r0, sp.el0, sp.w0); 
-
-	// same as above. r1 defined in the function.
 	//double el1=el(sp.G1_z,sp.r0,sp.el0,sp.w0,sp.energy); 
+	// okay, using a function w to initialize this variable w1... should change the names if possible. w1 = coherence width of beam. 
+  
+	// Following three are used to calculate GSM values at the first grating. (Gaussian-Schell Model)
+
+	double w1=w(sp.G1_z, sp.r0, sp.el0, sp.w0); //calculates first grating coherence width of beam
+    double r1 = v(sp.G1_z, sp.r0, sp.el0, sp.w0); 	
     double el1=el(sp.G1_z, sp.r0, sp.el0, sp.w0); 
     // same as above? All three different functions, but same parameters passed.
  
