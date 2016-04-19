@@ -72,6 +72,10 @@ void SimplePlot::graph(const char *title, const double x[], const double y[],
 	// create the graph (automatically goes into *c); this plots x vs y
 	TGraph *g = new TGraph(nValues,x,y);
 	g->SetTitle(title);
+	g->GetXaxis()->SetTitle("Horizontal displacement x (meters)");
+	g->GetYaxis()->SetTitle("Relative Intensity");
+	g->GetXaxis()->CenterTitle();
+	g->GetYaxis()->CenterTitle();
 	g->Draw("APL"); // draw Axes, markers at Points, and Lines
 	c->Update();
 
@@ -99,7 +103,7 @@ void SimplePlot::graph(const char *title, const float x[], const float y[],
 	g->SetTitle(title);
 	g->Draw("APL"); // draw Axes, markers at Points, and Lines
 	c->Update();
-
+	
 	// Run the Root event loop, until Quit ROOT is clicked
 	fprintf(stderr,"Click on 'File/Quit ROOT' to proceed\n");
 	app->Run(true);
@@ -147,10 +151,14 @@ void SimplePlot::twoD(const char *title, double value[],
 		}
 	}
 	double mean_x = h->GetMean(1);
-	printf("mean x = %.20f \n",mean_x);
-	printf("minimum measurement necessary to see gravitational effects: %.5fpm \n", (.5-mean_x)*400*1000000);       //convert um to pm
+	printf("Mean x = %.20f \n",mean_x);
+	printf("Minimum measurement necessary to see gravitational effects: %.3fnm \n", fabs((mean_x)*1000));       //convert um to pm
 
 	h->Draw(options);
+	h->GetXaxis()->SetTitle("Horizontal displacement x (micro meters)");
+	h->GetYaxis()->SetTitle("Verticle displacement y (micro meters)");
+	h->GetXaxis()->CenterTitle();
+	h->GetYaxis()->CenterTitle();
 	c->Update();
 
 	// Run the Root event loop, until Quit ROOT is clicked

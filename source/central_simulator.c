@@ -1,12 +1,3 @@
-/*
-Current set of tasks.
-- find unused variables (done)
-- flow chart of what everything does for drive (done)
-- create struct for waveparticle , charged particle (done)
-- insert main cmd line args for different predefined structs and user inputs. (done)
-- remove error testing and user input frames to replace with cmd line arguments. (done)
-*/
-
 //***
 //* Central Simulator
 //* 
@@ -48,7 +39,6 @@ Current set of tasks.
 #include <complex.h>
 #include <limits.h> 		//fix for islimit error
 
-
 #include "TCanvas.h"
 #include "TGraph.h"
 #include "TH2D.h"
@@ -65,7 +55,8 @@ Current set of tasks.
 #include "Gratings.h"
 #include "PhaseShifts.h"
 
-simparam sp;
+simparam sp; // sp is the simulation parameters structure that contains all of the simulation dependent variables.  The struct is located in Misc.h.
+
 /*
 None of these variables are currently used. They can be used for future simulation parameters
 
@@ -86,7 +77,6 @@ double cutoff = 0.000001;                   // at what point does the intensity 
    for an ideal conductor image charge =  + e (electric charge), the energy due to this strength of image charge 1 nm from surface is U = -0.75eV
 */
 //Top down view of gratings:
-//                                                _ _ _ _ _ _ _ _ _ _ _   -> at z = 3
 
 //                                                ---------------------   -> at G2_z = 1,   z2
 //
@@ -99,6 +89,8 @@ int col = 2;                                // can be removed, colomns of ix arr
 int rowsT =41;                              // rows of ReT and ImT arrays; used to calculate phase shift
 
 int main(int argc, char *argv[]){ 
+	
+	//initializing all of the simulator parameters by either default values or argument values.
 	sp.accountGrav = atoi(argv[1]);
 	sp.elecOrAtom = atoi(argv[2]);
 	sp.vel = atoi(argv[4]); //velocity of particle
@@ -276,7 +268,7 @@ argv[#]
         // free the memory used by this array, since the simulation is over, izx has all the data.
         free(Grat3I); 
         // same as above.
-        SimplePlot::twoD("Intensity graph as particles diffract through gratings",izx,0.0,1.0,0.0,1.0,rows,rows); 
+        SimplePlot::twoD("Intensity graph as particles diffract through gratings",izx,-200,200,0.0,220,rows,rows); 
         // using ROOT to plot izx
     }
     else if(sp.simchoice == 2) {
