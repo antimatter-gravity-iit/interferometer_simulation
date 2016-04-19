@@ -19,10 +19,11 @@ double zp(double z, double v)
     return(zp);
 }
 
-double w(double z,double r0, double el0, double w0, double energy) 
+//double w(double z,double r0, double el0, double w0, double energy) 
+double w(double z,double r0, double el0, double w0)
 {
     // Compute GSM beam width (GSM = Gaussian-Schell Model of gratings)
-    double lambda = sqrt((1.5 * pow(10,-18))/(energy)); 
+    double lambda = sqrt((1.5 * pow(10,-18))/(sp.energy)); 
     // variable containing value of the wavelength; wavelength of what?
     double w;
     w = (el0) * (fabs((z)/(zp(z,r0))) * ((sqrt((1 + (pow(((lambda * zp(z,r0))/(el0 * w0)),2))))))); 
@@ -30,20 +31,23 @@ double w(double z,double r0, double el0, double w0, double energy)
     return(w);
 }
 
-double el(double z,double r0, double el0, double w0, double energy) 
+//double el(double z,double r0, double el0, double w0, double energy) 
+double el(double z,double r0, double el0, double w0) 
 {
     // GSM beam coherence width
-    double lambda = sqrt((1.5 * pow(10,-18))/(energy)); 
+    double lambda = sqrt((1.5 * pow(10,-18))/(sp.energy)); 
     // again, really small value; should this be global? value containing the wavelength; wavelength of what?
     double w;
     w = (el0) * (fabs((z)/(zp(z,r0))) * ((sqrt((1 + (pow(((lambda * zp(z,r0))/(el0 * w0)),2))))))); 
     return(w);
 }
 
-double v(double z,double r0, double el0, double w0, double energy) 
+//double v(double z,double r0, double el0, double w0, double energy) 
+double v(double z,double r0, double el0, double w0) 
+
 {
     // compute GSM radius of wavefront curvature
-    double lambda = sqrt((1.5 * pow(10,-18))/(energy)); 
+    double lambda = sqrt((1.5 * pow(10,-18))/(sp.energy)); 
     // value containing wavelength; this is approx. wavelength of xrays.
     double v;
     v=(z)/(1-zp(z,r0)/(z * (1 + pow(((lambda * zp(z,r0)/(el0 * w0))),2)))); 

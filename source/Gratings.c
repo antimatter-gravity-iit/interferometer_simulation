@@ -18,38 +18,51 @@
 #include <complex.h>
 #include <limits.h> 		//fix for islimit
 
-double ( * gp0(double z,double r0,double el0, double w0, double Grat3x[], double Grat3I[],double energy, int rows, int col, int xpnts))
+//double ( * gp0(double z, double r0,double el0, double w0, double Grat3x[], double Grat3I[],double energy, int rows, int col, int xpnts))
+double ( * gp0(double z, double Grat3x[], double Grat3I[]))
 // get intensity profile 
 {
-    double xstart = -0.00020; // what is this? It's negative 200 microns.
-    double xend = 0.00020;
-    double pi = 3.14159265358979; // the constant irrational number pi.
+    double xstart = sp.xstart; // what is this? It's negative 200 microns.
+    double xend = sp.xend;
+    double pi = M_PI; // the constant irrational number pi.
     double w1;
     double jj;
-    w1 = w(z,r0,el0,w0,energy); // width of beam incoming
-    for(int i=0; i<rows; i++)
+   // w1 = w(z,sp.r0,sp.el0,sp.w0,sp.energy); // width of beam incoming
+	w1 = w(z, sp.r0, sp.el0, sp.w0); // width of beam incoming
+
+    for(int i=0; i<sp.res; i++)
     {
-        Grat3x[i]= xstart + (i) * ((xend-xstart)/(xpnts-1)); // current x-position at step i is put into a[i][0]
+        Grat3x[i]= xstart + (i) * ((xend-xstart)/(sp.res-1)); // current x-position at step i is put into a[i][0]
         jj = pow((Grat3x[i]/w1),2); //jj = (xpos/beamwidth)^2 
         Grat3I[i]=exp(-(pi * jj)); // a[i][1] is the intensity of the beam at the xposition at step i.
     }
 }
 
-double ( * gp1(double z12,double r1,double el1, double w1, double Grat3x[], double Grat3I[], double energy, int rows, int col, int elecOrAtom, double vel, int xpnts, double width, double abszloc, int accountGrav))
-{
-    // get intensity profile after one grating
-    int rowsT =41;// rows of ReT and ImT array
-    double xstart = -0.00020; // what is this? It's negative 200 microns.
-    double xend = 0.00020;
-    double pi = 3.14159265358979; // the constant irrational number pi.
-    double period = 0.0000001;// period of grating - 100 nanometers.
+//double ( * gp1(double z12,double r1,double el1, double w1, double Grat3x[], double Grat3I[], double energy, int rows, int col, int elecOrAtom, double vel, int xpnts, double width, double abszloc, int accountGrav))
+double ( * gp1(double zloc,double r1,double el1, double w1, double Grat3x[], double Grat3I[]))
 
-    double wedgeangle = 0; // Grating wedge angle. The variable alpha below depends on this. This is a free parameter. Appears to be related to beam splitting.
-    int useimagecharge = 0; // whether or not to consider image charge effects. 0 for False.
-    double tilt =0; // A free parameter. Beta variable below depends on this. If beam is perp. to grating, then tilt (and thus Beta) are 0. This is the twist about the x-axis.
-    double cutoff = 0.000001; // at what point does the intensity cut off and be treated as 0. Can also be 5e-5 like in McMorran thesis. Or 0.001.
-    double eta1 = .4; //G1 open fraction; how open the first grating is. With .4 open, a little over than half the muonium should pass through it.
-    double eta2 = .4; //G2 open fraction; how open the second grating is.
+{
+	double z12 = zloc - sp.G1_z;
+	double energy = sp.energy;
+	int rows = sp.res;
+	int elecOrAtom = sp.elecOrAtom;
+	double vel = sp.vel;
+	int xpnts = rows;
+	double width = rows;
+	double abszloc = sp.height;
+	int accountGrav = sp.accountGrav;
+	 // get intensity profile after one grating
+	int rowsT =41;// rows of ReT and ImT array
+	double xstart = sp.xstart; // what is this? It's negative 200 microns.
+    double xend = sp.xend;
+    double pi = M_PI; // the constant irrational number pi.
+    double period = 0.0000001;// period of grating - 100 nanometers.
+    double wedgeangle = sp.wedgeangle; // Grating wedge angle. The variable alpha below depends on this. This is a free parameter. Appears to be related to beam splitting.
+    int useimagecharge = sp.useimagecharge; // whether or not to consider image charge effects. 0 for False.
+    double tilt =sp.tilt; // A free parameter. Beta variable below depends on this. If beam is perp. to grating, then tilt (and thus Beta) are 0. This is the twist about the x-axis.
+    double cutoff = sp.cutoff; // at what point does the intensity cut off and be treated as 0. Can also be 5e-5 like in McMorran thesis. Or 0.001.
+	double eta1 = sp.eta1; //G1 open fraction; how open the first grating is. With .4 open, a little over than half the muonium should pass through it.
+    double eta2 = sp.eta2; //G2 open fraction; how open the second grating is.
     double coef; 
     double lim=5;
     double lambda = sqrt((1.5 * pow(10,-18))/(energy)); 
@@ -59,9 +72,12 @@ double ( * gp1(double z12,double r1,double el1, double w1, double Grat3x[], doub
     double alpha = wedgeangle * pi/180; // alpha and beta have been defined in almost every other function. Global variables? 
     double beta = tilt * pi; // defined in other functions too, same purpose.
     // Varnames could be better. w2, r2, el2? GSM width of beam, radius of GSM wavefront curvature, and GSM beam coherence width, respectively, after the first grating.
-    double w2=w(z12,r1,el1,w1,energy); // width of beam between z1 and z2 (after grating 1)
-    double r2 = v(z12,r1,el1,w1,energy); // radius of wavefront curvature between grating 1 and 2
-    double el2 = el(z12, r1, el1, w1,energy); // beam coherence width
+   // double w2=w(z12,r1,el1,w1,energy); // width of beam between z1 and z2 (after grating 1)
+    double w2=w(z12, r1, el1, w1); // width of beam between z1 and z2 (after grating 1)
+	//double r2 = v(z12,r1,el1,w1,energy); // radius of wavefront curvature between grating 1 and 2
+	double r2 = v(z12, r1, el1, w1); // radius of wavefront curvature between grating 1 and 2
+    //double el2 = el(z12, r1, el1, w1,energy); // beam coherence width
+	double el2 = el(z12, r1, el1, w1); // beam coherence width
     int pos[41]={0};
 
     for (int i=0; i<rowsT; i++) // since rowsT is currently 41, pos[i] = -20 to 20.
@@ -69,7 +85,7 @@ double ( * gp1(double z12,double r1,double el1, double w1, double Grat3x[], doub
         pos[i]=i-((rowsT-1)/2);
     }
 
-    double ReT[41]{0};
+    double ReT[41]={0};
     int RealorIm = 1;
     ReTandImTgenerator(ReT,energy, elecOrAtom, RealorIm, vel, width, abszloc, accountGrav); // calculates phase shift
     RealorIm = 2;
@@ -122,20 +138,37 @@ double ( * gp1(double z12,double r1,double el1, double w1, double Grat3x[], doub
     }
 }
 
-double ( * gp2(double z12,double z23, double mytheta, double el1x, double w1x, double r1x, double el1y, double w1y, double r1y, double G2_x, double Grat3x[], double Grat3I[], double energy, int rows, int col, int elecOrAtom, double vel, int xpnts, double width, double abszloc, int accountGrav))
+//double ( * gp2(double z12,double z23, double mytheta, double el1x, double w1x, double r1x, double el1y, double w1y, double r1y, double G2_x, double Grat3x[], double Grat3I[], double energy, int rows, int col, int elecOrAtom, double vel, int xpnts, double width, double abszloc, int accountGrav))
+double ( * gp2(double zloc, double el1x, double w1x, double r1x, double Grat3x[], double Grat3I[]))
+
 {
+	double G2_x = sp.G2_x;
+	double r1y = r1x;
+	double w1y = w1x;
+	double el1y = el1x;
     // get intensity profile after two grating
+	int elecOrAtom = sp.elecOrAtom;
+	double vel = sp.vel;
+	int rows = sp.res;
+	int xpnts = rows;
+	double width = rows;
+	double abszloc = sp.height;
+	int accountGrav = sp.accountGrav;
+	double z12 = sp.G2_z - sp.G1_z;
+	double z23 = zloc -sp.G2_z;
+	double mytheta = sp.theta;
+	double energy = sp.energy;
     int rowsT =41;// rows of ReT and ImT array
-    double xstart = -0.00020; // what is this? It's negative 200 microns.
-    double xend = 0.00020;
-    double pi = 3.14159265358979; // the constant irrational number pi.
+    double xstart = sp.xstart; // what is this? It's negative 200 microns.
+    double xend = sp.xend;
+    double pi = M_PI; // the constant irrational number pi.
     double period = 0.0000001;// period of grating - 100 nanometers.
-    double wedgeangle = 0; // Grating wedge angle. The variable alpha below depends on this. This is a free parameter. Appears to be related to beam splitting.
-    int useimagecharge = 0; // whether or not to consider image charge effects. 0 for False.
-    double tilt =0; // A free parameter. Beta variable below depends on this. If beam is perp. to grating, then tilt (and thus Beta) are 0. This is the twist about the x-axis.
-    double cutoff = 0.000001; // at what point does the intensity cut off and be treated as 0. Can also be 5e-5 like in McMorran thesis. Or 0.001.
-    double eta1 = .4; //G1 open fraction; how open the first grating is. With .4 open, a little over than half the muonium should pass through it.
-    double eta2 = .4; //G2 open fraction; how open the second grating is.
+    double wedgeangle = sp.wedgeangle; // Grating wedge angle. The variable alpha below depends on this. This is a free parameter. Appears to be related to beam splitting.
+    int useimagecharge = sp.useimagecharge; // whether or not to consider image charge effects. 0 for False.
+    double tilt =sp.tilt; // A free parameter. Beta variable below depends on this. If beam is perp. to grating, then tilt (and thus Beta) are 0. This is the twist about the x-axis.
+    double cutoff = sp.cutoff; // at what point does the intensity cut off and be treated as 0. Can also be 5e-5 like in McMorran thesis. Or 0.001.
+    double eta1 = sp.eta1; //G1 open fraction; how open the first grating is. With .4 open, a little over than half the muonium should pass through it.
+    double eta2 = sp.eta2; //G2 open fraction; how open the second grating is.
     double lambda = sqrt((1.5 * pow(10,-18))/(energy)); // wavelength we're working with of particles/waves
     double res = 1000; // This is the resolution we want this graph at.
     double eta = width/period; // ratio of slit window 'height' to the period of the gratings
@@ -161,13 +194,20 @@ double ( * gp2(double z12,double z23, double mytheta, double el1x, double w1x, d
     int b  =0;
     int c5 =0;
     int d5=0;
-    
-    double el3x = el(z13, r1x, el1x, w1x, energy);//G2z - G1z  +  zstart  +  0 * zres, r1, el1, w1; GSM coherence width in x-axis
+   /* UNMODIFIED ORIGINALS
+	 double el3x = el(z13, r1x, el1x, w1x, energy);//G2z - G1z  +  zstart  +  0 * zres, r1, el1, w1; GSM coherence width in x-axis
     double w3x = w(z13,r1x,el1x,w1x, energy); // Beam width in x-axis
     double v3x = v(z13,r1x,el1x,w1x, energy); // Gaussian-Schell Model (GSM) radius of wavefront curvature in x-axis
     double el3y = el(z13,r1y,el1y, w1y, energy); // Coherence width in y-axis
     double w3y = w(z13,r1y,el1y,w1y, energy); // Beam width in y-axis
     double v3y = v(z13,r1y,el1y,w1y, energy); // radius of wavefront curvature in y-axis
+	*/
+    double el3x = el(z13, r1x, el1x, w1x);//G2z - G1z  +  zstart  +  0 * zres, r1, el1, w1; GSM coherence width in x-axis
+    double w3x = w(z13,r1x,el1x,w1x); // Beam width in x-axis
+    double v3x = v(z13,r1x,el1x,w1x); // Gaussian-Schell Model (GSM) radius of wavefront curvature in x-axis
+    double el3y = el(z13,r1y,el1y,w1y); // Coherence width in y-axis
+    double w3y = w(z13,r1y,el1y,w1y); // Beam width in y-axis
+    double v3y = v(z13,r1y,el1y,w1y); // radius of wavefront curvature in y-axis
     
     int pos[41]={0}; // array of 41 elements
     for (int i=0; i<rowsT; i++) // rowsT = rows of ReT and ImT arrays = 41 for now

@@ -13,7 +13,6 @@
 
 #include <complex.h>
 
-
 double ( * ReTandImTgenerator(double ReTorImTar[], double energy, int elecOrAtom, int ReTorImT, double vel, double width, double abszloc, int accountGrav))
 {
      double xstart = -0.00020; // what is this? It's negative 200 microns.
@@ -21,7 +20,6 @@ double ( * ReTandImTgenerator(double ReTorImTar[], double energy, int elecOrAtom
   double pi = 3.14159265358979; // the constant irrational number pi.
   double period = 0.0000001;// period of grating - 100 nanometers.
   double gravAccel = -9.8;    // acceleration due to gravity. 
-
   double wedgeangle = 0; // Grating wedge angle. The variable alpha below depends on this. This is a free parameter. Appears to be related to beam splitting.
   int useimagecharge = 0; // whether or not to consider image charge effects. 0 for False.
   double tilt =0; // A free parameter. Beta variable below depends on this. If beam is perp. to grating, then tilt (and thus Beta) are 0. This is the twist about the x-axis.
@@ -29,9 +27,10 @@ double ( * ReTandImTgenerator(double ReTorImTar[], double energy, int elecOrAtom
   double eta1 = .4; //G1 open fraction; how open the first grating is. With .4 open, a little over than half the muonium should pass through it. Varname could be changed to better represent it.
   double eta2 = .4; //G2 open fraction; how open the second grating is.
   double thick = 0.000000014; // 14 nanometers. Not (real) thickness of gratings, most likely. Gratings are actually 1 micrometer thick. This is used for the electron part of the code.
-double Gthick = 1000; // thickness of gratings; 1 micrometer = 1000 nm, this is in nm on purpose (see function ReTgenerator) Varname could be better. Right now Gthick is used for the VdW effect for atoms.
-int rowsT =41;// rows of ReT and ImT array
-    double res = 1000; // This is the resolution we want this graph at. Varname could be better.
+	double Gthick = 1000; // thickness of gratings; 1 micrometer = 1000 nm, this is in nm on purpose (see function ReTgenerator) Varname could be better. Right now Gthick is used for the VdW effect for atoms.
+	int rowsT =41;// rows of ReT and ImT array
+    
+	double res = 1000; // This is the resolution we want this graph at. Varname could be better. MUST BE SAME AS IN MAIN!
     double chargeratio =0.0; //strength of image charge (units of e, electron charge); values of 0.03, 0.05, or more can be had
     float C3 = 0.020453; // the VdW coefficient for hydrogen (assumed to be the same for muonium) // THIS IS WHAT CAN BE CHANGED!
     double e_charge = 0.00000000000000000016021765; // electric charge in Coulombs of electron (abs. value)
