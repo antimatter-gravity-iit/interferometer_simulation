@@ -1,11 +1,10 @@
 /*
 Current set of tasks.
-- find new term for wave particle
-- find unused variables
-- flow chart of what everything does for drive
-- create struct for waveparticle , charged particle
-- insert main cmd line args for different predefined structs and user inputs.
-- remove error testing and user input frames to replace with cmd line arguments.
+- find unused variables (done)
+- flow chart of what everything does for drive (done)
+- create struct for waveparticle , charged particle (done)
+- insert main cmd line args for different predefined structs and user inputs. (done)
+- remove error testing and user input frames to replace with cmd line arguments. (done)
 */
 
 //***
@@ -34,7 +33,7 @@ Current set of tasks.
 //*     Melanie Cornelius (Dooley), 1 Nov 2015 to present
 //*         -- Optimizations, standards, and readability edits
 //*		Isaac Gewarges, January 2016 to present
-//*			-- Optimizations, standards, and readability edits
+//*			-- Optimizations, standards, readability edits, and variable organization.
 //* 
 //***
 
@@ -68,16 +67,14 @@ Current set of tasks.
 
 simparam sp;
 /*
-None of these variables are currently used.
+None of these variables are currently used. They can be used for future simulation parameters
 
-//double mu_debroglie = 0.0000000005584;      // the result of the above equation  NOT USED IN MAIN PROGRAM
-//double muonium_freq = 536890000000000000;   // muonium frequency
-//double mu_lifetime = 0.0000022;             // half life average decay time of a muon, in seconds
-//float C3 = 0.020453;                        // the VdW coefficient for hydrogen (assumed to be the same for muonium)
-
-
+double mu_debroglie = 0.0000000005584;      // the result of the above equation  NOT USED IN MAIN PROGRAM
+double muonium_freq = 536890000000000000;   // muonium frequency
+double mu_lifetime = 0.0000022;             // half life average decay time of a muon, in seconds
+float C3 = 0.020453;                        // the VdW coefficient for hydrogen (assumed to be the same for muonium)
 double Coulomb = 0.00000000898755179;       // force; m^2/(Coulomb^-2)
-double pi = 3.14159265358979;               // the constant irrational number pi.
+double pi = M_PI                            // the constant irrational number pi.
 double const_e = 2.71828182845905;          // the irrational constant e.
 
 double cutoff = 0.000001;                   // at what point does the intensity cut off and be treated as 0. Can also be 5e-5 like in McMorran thesis. Or 0.001.
@@ -89,7 +86,7 @@ double cutoff = 0.000001;                   // at what point does the intensity 
    for an ideal conductor image charge =  + e (electric charge), the energy due to this strength of image charge 1 nm from surface is U = -0.75eV
 */
 //Top down view of gratings:
-//                                                _ _ _ _ _ _ _ _ _ _ _   -> at G2_z + zstart
+//                                                _ _ _ _ _ _ _ _ _ _ _   -> at z = 3
 
 //                                                ---------------------   -> at G2_z = 1,   z2
 //
@@ -107,6 +104,7 @@ int main(int argc, char *argv[]){
 	sp.vel = atoi(argv[4]); //velocity of particle
 	sp.energy = ((1.5 * pow(10,-18))/(pow(0.00000000001,2))) * (1);
 	sp.simchoice = atoi(argv[6]);
+	if(sp.simchoice == 1)
 	sp.logchoice = atoi(argv[7]);
 	sp.useimagecharge =	0;
 	sp.eta1 = .4;
@@ -258,7 +256,7 @@ argv[#]
         // perhaps this for loop could be avoided with clever programming? Its purpose appears to just translate over values.
             
             int f = rows * i + j; 
-            //400 * i + j; still keeping track of location.
+            //resolution * i + j; still keeping track of location.
             
             izx[f] = Grat3I[j]; 
             // the f-th element of izx is set to be ix[j][1]; the intensity of the beam at the j-th point.
@@ -267,7 +265,7 @@ argv[#]
             // Grat3x[int(izxnumels - f)] = izxnumels - f; // xpos from 0 to 299.
             // Grat3I[int(izxnumels - f)] = izx[f]; // intensity for each expos 
             
-printf("the value of izx is:%0.15f \t %d \t %f \n", izx[f],f, max); // debug print            
+//      printf("the value of izx is:%0.15f \t %d \t %f \n", izx[f],f, max); // debug print
             // printing out izf, f, and the max value of ix.
         }
         // Mcomment - this isn't necessary to say.
@@ -278,7 +276,6 @@ printf("the value of izx is:%0.15f \t %d \t %f \n", izx[f],f, max); // debug pri
         // free the memory used by this array, since the simulation is over, izx has all the data.
         free(Grat3I); 
         // same as above.
-
         SimplePlot::twoD("Intensity graph as particles diffract through gratings",izx,0.0,1.0,0.0,1.0,rows,rows); 
         // using ROOT to plot izx
     }

@@ -141,11 +141,15 @@ void SimplePlot::twoD(const char *title, double value[],
 
 	// create the plot (automatically goes into *c)
 	TH2D *h = new TH2D(name, title, NX, Xmin, Xmax, NY, Ymin, Ymax);
-	for(int ix=0; ix<NX; ++ix) {
+	for(int ix=0; ix<NX; ++ix) { //  0   1    0     1   rows  rows
 		for(int iy=0; iy<NY; ++iy) {
 			h->SetBinContent(ix+1,iy+1,value[INDEX(ix,iy)]);
 		}
 	}
+	double mean_x = h->GetMean(1);
+	printf("mean x = %.20f \n",mean_x);
+	printf("minimum measurement necessary to see gravitational effects: %.5fpm \n", (.5-mean_x)*400*1000000);       //convert um to pm
+
 	h->Draw(options);
 	c->Update();
 
