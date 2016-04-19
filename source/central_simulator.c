@@ -1,8 +1,9 @@
 /*
 Current set of tasks.
+- find new term for wave particle
 - find unused variables
-- flow chart of what everything does
-- create struct for waveparticle
+- flow chart of what everything does for drive
+- create struct for waveparticle , charged particle
 - insert main cmd line args for different predefined structs and user inputs.
 - remove error testing and user input frames to replace with cmd line arguments.
 */
@@ -107,11 +108,13 @@ double G1_z = 0.000001;                     // It being 1 micron high is arbitra
 //                                                  (source going up)
 
 struct waveparticle {
-	// simple parameters (zloc, r0, el0, w0,Grat3x, Grat3I,energy,rows,col, xpnts)
-	//cannot use zloc because changes on different gsm params
+double charge;
+double charge_ratio;
+float VdW_coef;
 	
 	
-}GSMwave;
+	
+}waveparticle;
 
 double G2_z = 1;                            // assumed to be 1 meter away on z-axis.
 double G2_x = 0.00000005;                   //50 nm. Initial lateral offset of G2.
@@ -144,17 +147,15 @@ int rowsT =41;                              // rows of ReT and ImT arrays; used 
 int main(int argc, char *argv[]){ //added arguments
 	// the main function
 	/*arguments are currently in the order of:
+argv[#]
 	
-	1. Default waveparticle structure. 0 = custom, 1 = charged photon, 2 = x-ray, 3 = hydrogen, 4 = muonium
-	2. Account gravity? 1 = True, 0 = False.
-	3. Electron beam or atom beam? Electron beam = 1, Atom beam = 2.
-	4. Resolution [300-400 recommended]. 
-	5. Velocity of particles in m/s
-	6. Pitch of gratings [in nm] 
-	7. Total simulation [1]? or final interfereance pattern [2]?
-	8. Null
-	9. Null
-	10.Null
+	1. Account gravity? 1 = True, 0 = False.
+	2. Electron beam or atom beam? Electron beam = 1, Atom beam = 2. //ELECTRON BEAM NOT MODELED!!!
+	3. Resolution [300-400 recommended]. 
+	4. Velocity of particles in m/s
+	5. Pitch of gratings [in nm] 
+	6. Total simulation [1]? or final interference pattern [2]?
+	7. (if total simulation = 1), logscale[1] or normal scale[0]?
 	
 	*/ 
     
@@ -178,12 +179,23 @@ int main(int argc, char *argv[]){ //added arguments
     double zres;
     int zlocstart;
 	int accountGrav;
-    double energy = ((1.5 * pow(10,-18))/(pow(0.00000000001,2))) * (1);
+    double energy = ((1.5 * pow(10,-18))/(pow(0.00000000001,2))) * (1); //energy of electron
 	
-	switch (atoi(argv[1]){
+	/*switch (atoi(argv[1])){
 		case 0:
+		accountGrav = atoi(argv[2]);
+		elecOrAtom = atoi(argv[3]);
+		xpnts= atoi(argv[4]);
+		ypnts= xpnts;
+		zpnts= xpnts;
+		rows = xpnts;
+		vel = atoi(argv[5]);
+		pitch = atoi(argv[6]);
+		height = (pitch / 2) / 1000000000;
+		simchoice = atoi(argv[7]);
+
 		//add statements for custom particle structure
-		if(argv[2]!= NULL) accountGrav = atoi(argv[2]);
+		/*f(argv[2]!= NULL) accountGrav = atoi(argv[2]);
 		else{
 			printf("no gravity selection made. Cannot continue computation without this selection\n");
 			exit(1);
@@ -193,6 +205,43 @@ int main(int argc, char *argv[]){ //added arguments
 			printf("no particle type selected. Cannot continue computation without this selection\n");
 			exit(1);
 		}
+		if(argv[4]!= NULL){
+			xpnts = atoi(argv[4]); //max of x vals to be calculated
+			ypnts = atoi(argv[4]); //max of y vals to be calculated
+			zpnts = atoi(argv[4]); //max of z vals to be calculated
+			rows = atoi(argv[4]);  // rows of ix array
+		}
+		else{
+			printf("no valid resolution entered, using default 300\n");
+			xpnts = 300; //max of x vals to be calculated
+			ypnts = 300; //max of y vals to be calculated
+			zpnts = 300; //max of z vals to be calculated
+			rows = 300;  // rows of ix array
+		}
+		if(argv[5]!= NULL){
+			vel = atoi(argv[5]);
+		}
+		else{
+			printf("no valid velocity entered, using default 6400 m/s\n");
+			vel = 3600;
+		}
+		if(argv[6]!= NULL){
+			pitch = atoi(argv[6]);
+			height = (pitch / 2) / 1000000000;
+		}
+		else{
+			printf("no valid pitch entered, using default 100nm\n");
+			pitch = 0.0000001;
+			height = (pitch / 2) / 1000000000;
+		}
+		if(argv[7]!= NULL){
+			simchoice = atoi(argv[7]);
+		}
+		else{
+			printf("no valid simulation choice entered, using default final interference pattern\n");
+			simchoice = 2;
+		}
+		
 		break;
 		
 		case 1:
@@ -211,58 +260,58 @@ int main(int argc, char *argv[]){ //added arguments
 		//muonium particle simulated
 		break;
 		
-		default:
+//		default:
 		// print incorrect argument passed
-		exit(1);
+//		exit(1);
 	}
+	*/
 	
     // Mcomment - we know it's main - you labeled it as such. What does it do?  What does it call?  What does it need to run?  What should the user change?  Etc.
 //((1.5 * pow(10,-18))/(pow(lambda,2))) * (1); //15000// energy
-	/*
-	Not used anymore due to cmd line arguments.
 	
+	//Not used anymore due to cmd line arguments.
+	accountGrav=atoi(argv[1]);
     // User input:
-    // Want gravity accounted for?
-	/*printf("Do you want gravity accounted for? [1 for yes, 0 for no]: ");
+    /* Want gravity accounted for?
+	printf("Do you want gravity accounted for? [1 for yes, 0 for no]: ");
     scanf("%d", &accountGrav);
-	while(!((accountGrav != 0) != (accountGrav !=1))){
-		printf("please input a valid number\n");
-		printf("Do you want gravity accounted for? [1 for yes, 0 for no]: ");
-		scanf("%d", &accountGrav);	
-	}
-	*/ 
 
-	// User input:
+	*/ // User input:
 	// Beam type
 	// 1 = electron beam, 2 = atom beam, default = 2
 	/*
-	Not used anymore due to cmd line arguments.
+	//Not used anymore due to cmd line arguments.
 	elecOrAtom = 2;
 	printf("Is this an electron beam [1] or atom beam [2]? ");
 	scanf("%d", &elecOrAtom);
-	while(!((elecOrAtom != 1) != (elecOrAtom != 2))){
-		printf("please input a valid number\n");
-		printf("Is this an electron beam [1] or atom beam [2]? ");
-		scanf("%d", &elecOrAtom);
-	}
-	
+	*/
+	elecOrAtom =atoi(argv[2]);
+	/*
     // User input:
 	// resolution
     // Determines how many rows in the x and y planes.
     printf("How much resolution do you want in the simulation? [300-400 recommended]: ");
     scanf("%d", &resolution);
-	//while((resolution<100) 
     xpnts = resolution; //max of x vals to be calculated
     ypnts = resolution; //max of y vals to be calculated
     zpnts = resolution; //max of z vals to be calculated
     rows = resolution;// rows of ix array
-
-    // User input:
+	*/
+	resolution = atoi(argv[3]);
+	xpnts = atoi(argv[3]);
+	ypnts = atoi(argv[3]);
+	zpnts = atoi(argv[3]);
+    rows = resolution;
+	
+	/*
+	// User input:
     // Velocity of particle or atom
 	// Default velocity = 6400 m/s?
     printf("What is the velocity [m/s] of the atoms/electrons? (default 6400) : ");
     scanf("%lf", &vel);
-
+	*/
+	vel = atoi(argv[4]);
+	/*
     //***
     //* User input:
     //* Pitch of grating (from top of one slit to top of next slit)
@@ -272,22 +321,29 @@ int main(int argc, char *argv[]){ //added arguments
     printf("Grating pitch (default is 100) (nm): ");
     scanf("%lf", &pitch);
     // Converting from nanometers to meters and from pitch to height
-    height = (pitch / 2) / 1000000000;
+    */
+	pitch = atoi(argv[5]);
+	height = (pitch / 2) / 1000000000;
     
+	/*
     //***
     //* User input:1
     //* Total intensity or just final intereference patern?
     //***
-    printf("Do you want the total simulation [1] or the end interference pattern [2]? ");
+	printf("Do you want the total simulation [1] or the end interference pattern [2]? ");
     scanf("%d", &simchoice);
-
-    // Mcomment: you never ask the user for this.  Do you want to?
-    int logchoice = 0; // if the user wants a total simulation, ask them if they want it to be scaled logarithmically so they can see where more of the particles go
 	*/
+	simchoice = atoi(argv[6]);
+	
+    // Mcomment: you never ask the user for this.  Do you want to?
+    
+	
+	int logchoice = 0; // if the user wants a total simulation, ask them if they want it to be scaled logarithmically so they can see where more of the particles go
+	
     // initializing two arrays to contain the intensities and xpositions of each intensity -- Mcomment: I tried to fix this, but what is it actually saying?  It's the intensities of the x-positions and the intensities?  That doesn't make sense to me.
     Grat3I = (double*) calloc(resolution, sizeof(double));
     Grat3x = (double*) calloc(resolution, sizeof(double));
-
+	
    
     // Mcomment: what is all of this?  Please describe.  Also, these do not have helpful
     // variable names - please fix.  It's very important for readability.  Just tell
@@ -310,8 +366,9 @@ int main(int argc, char *argv[]){ //added arguments
     // Mcomment - I cleaned up this indent structure.  Follow this indent structure in the future.
     //            The previous indent structure was outdated, unconventional, and unreadable.
     if (simchoice == 1) {
-         printf("Do you want to have a logarithmic scale? [1 for yes, 2 for no] [Makes small intensities more visible]: ");
-        scanf("%d", &logchoice);
+       //  printf("Do you want to have a logarithmic scale? [1 for yes, 2 for no] [Makes small intensities more visible]: ");
+       // scanf("%d", &logchoice);
+		logchoice = atoi(argv[7]);
 
         zlocstart = 0;
     }
@@ -320,7 +377,7 @@ int main(int argc, char *argv[]){ //added arguments
     }
 
     for (int i=(zlocstart); i<zpnts; i++) {
-        // i = 299 is just to get last row of the z
+        // i = 299 is just to get last row of the z if resolution is set to 300. 
         memset(Grat3x, 0, rows * sizeof(double)); 
         // so each time the loop repeats, you reset the array's positions and intensities to zero. 
         memset(Grat3I, 0, rows * sizeof(double));
@@ -390,7 +447,7 @@ int main(int argc, char *argv[]){ //added arguments
             // Grat3x[int(izxnumels - f)] = izxnumels - f; // xpos from 0 to 299.
             // Grat3I[int(izxnumels - f)] = izx[f]; // intensity for each expos 
             
-            printf("the value of izx is:%0.15f \t %d \t %f \n", izx[f],f, max); 
+printf("the value of izx is:%0.15f \t %d \t %f \n", izx[f],f, max); // debug print            
             // printing out izf, f, and the max value of ix.
         }
         // Mcomment - this isn't necessary to say.
@@ -406,7 +463,7 @@ int main(int argc, char *argv[]){ //added arguments
         // using ROOT to plot izx
     }
     else if(simchoice == 2) {
-        SimplePlot::graph("Intensity along the grating", Grat3x, Grat3I, rows);  
+        SimplePlot::graph("Intensity along the last grating", Grat3x, Grat3I, rows);  
         // using ROOT to plot intensity vs. position at end of interferometer
         free(Grat3x); 
         // free the memory used by this array, since the simulation is over.

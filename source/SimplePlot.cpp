@@ -77,9 +77,8 @@ void SimplePlot::graph(const char *title, const double x[], const double y[],
 
 	// Run the Root event loop, until Quit ROOT is clicked
 	fprintf(stderr,"Click on 'File/Quit ROOT' to proceed\n");
-	app->Run(true);
-
-	// close the canvas and clean up
+    app->Run(true);
+	 //close the canvas and clean up
 	c->Close();
 	delete g;
 	delete c;
@@ -104,7 +103,6 @@ void SimplePlot::graph(const char *title, const float x[], const float y[],
 	// Run the Root event loop, until Quit ROOT is clicked
 	fprintf(stderr,"Click on 'File/Quit ROOT' to proceed\n");
 	app->Run(true);
-
 	// close the canvas and clean up
 	c->Close();
 	delete g;
