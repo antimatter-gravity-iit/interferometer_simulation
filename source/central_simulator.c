@@ -14,7 +14,8 @@
 */
 //*   
 //* Code inspired by thesis by Dr. Benjamin McMorran
-//* Put title of thesis and location here
+//* Electron Diffraction and Interferometry Using Nanostructures
+//* http://gradworks.umi.com/33/52/3352633.html
 //*
 //* Collaborators:
 //*     Arthur Romero, 16 July to 24 August 2015
@@ -23,7 +24,7 @@
 //*         -- Additional parameters and functionality
 //*     Melanie Cornelius (Dooley), 1 Nov 2015 to present
 //*         -- Optimizations, standards, and readability edits
-//*		Isaac Gewarges, January 2016 to present
+//*		Isaac Gewarges, January 2016 to April 28 2016
 //*			-- Optimizations, standards, readability edits, and variable organization.
 //* 
 //***
@@ -52,8 +53,8 @@
 							    //          such as taking care of boundary conditions, 
 							    //          checking the max value in an array, etc.
 #include "BeamParams.h"          //          This program contains the functions defining the GSM beam behavior
-#include "Gratings.h"
-#include "PhaseShifts.h"
+#include "Gratings.h"			//       Contains functions that compute the intensity profiles before the first grating, after the 1st, and the second grating.
+#include "PhaseShifts.h"		//       Contains functions that compute various phase shifts due to different physical effects
 
 simparam sp; // sp is the simulation parameters structure that contains all of the simulation dependent variables.  The struct is located in Misc.h.
 
@@ -68,7 +69,6 @@ double Coulomb = 0.00000000898755179;       // force; m^2/(Coulomb^-2)
 double pi = M_PI                            // the constant irrational number pi.
 double const_e = 2.71828182845905;          // the irrational constant e.
 
-double cutoff = 0.000001;                   // at what point does the intensity cut off and be treated as 0. Can also be 5e-5 like in McMorran thesis. Or 0.001.
 */
 
 /* 
@@ -90,7 +90,7 @@ int rowsT =41;                              // rows of ReT and ImT arrays; used 
 
 int main(int argc, char *argv[]){ 
 	
-	//initializing all of the simulator parameters by either default values or argument values.
+	//initializing all of the simulator parameters by either default values or argument values. variable definitions and comments are in misc.h
 	sp.accountGrav = atoi(argv[1]);
 	sp.elecOrAtom = atoi(argv[2]);
 	sp.vel = atoi(argv[4]); //velocity of particle
@@ -213,15 +213,18 @@ argv[#]
         else {
             // can probably be replaced, more efficiently, by elseifs. 
             if (zloc > sp.G1_z) {
-                //gp1(zloc - sp.G1_z, r1, el1, w1, Grat3x, Grat3I,sp.energy,rows,col, sp.elecOrAtom, sp.vel, sp.res, sp.height, zloc, sp.accountGrav); 
+                //sets intensity and positions for z locations above the 1st grating.
+				
+				//OLD IMPLEMENTATION:
+				//gp1(zloc - sp.G1_z, r1, el1, w1, Grat3x, Grat3I,sp.energy,rows,col, sp.elecOrAtom, sp.vel, sp.res, sp.height, zloc, sp.accountGrav); 
+				//NEW IMPLEMENTATION:
 				gp1(zloc, r1, el1, w1, Grat3x, Grat3I); 
 
-                // if interacting with the first grating
-
+                // if interacting with the first grating, calculates intensity profile.
                 max = maximumvalue(Grat3I, rows); 
-                // max value of ix here.
+                // max value of ix calculated here.
                 ixgenerator(Grat3I, zloc, sp.logchoice, rows); 
-                // still ixgenerator is returning two values, since q1 is a pointer to an array of 2 doubles
+                // still ixgenerator is returning two values (position and intensity), since q1 is a pointer to an array of 2 doubles
 
 
             }

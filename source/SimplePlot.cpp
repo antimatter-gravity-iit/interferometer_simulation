@@ -152,7 +152,7 @@ void SimplePlot::twoD(const char *title, double value[],
 	}
 	double mean_x = h->GetMean(1);
 	printf("Mean x = %.20f \n",mean_x);
-	printf("Minimum measurement necessary to see gravitational effects: %.3fnm \n", fabs((mean_x)*1000));       //convert um to pm
+	printf("Minimum measurement necessary to see gravitational effects: %.3fpm \n", fabs((mean_x)*1000000));       //convert um to nm
 
 	h->Draw(options);
 	h->GetXaxis()->SetTitle("Horizontal displacement x (micro meters)");

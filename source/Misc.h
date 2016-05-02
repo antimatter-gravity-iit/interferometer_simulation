@@ -19,11 +19,11 @@ int logchoice;								// whether or not to scale interferance pattern with a log
 int useimagecharge;// = 0;                     // whether or not to consider image charge effects. 0 for False. //not used in program.
 double eta1;// = .4;                           //G1 open fraction; how open the first grating is. With .4 open, a little over than half the muonium should pass through it.
 double eta2;// = .4;                           //G2 open fraction; how open the second grating is.
-double g_period;// = 0.0000001;                  // period of grating - 100 nanometers.
+double g_period;//                  // period of grating - 100 nanometers.
 double r0;// = -4.04;                          //initial radius of wavefront curvature; comes from initial beam
 double el0;//= 0.000001;                      // initial coherence width; 50e-9 can also be used. Depends on initial beam
 double w0;// = 0.00003;                        // initial beam width -- this is probably assumed, the muonium beam width. Can also be: 2e-6, 1e-6, depends on initial beam
-double G1_z;// = 0.000001;                     // It being 1 micron high is arbitrary, pretty sure. Also same as thickness of gratings. Top down view of gratings:
+double G1_z;// = 0.000001;                     // It being 1 micron high is arbitrary, pretty sure. Also same as thickness of gratings.
 double G2_z;// = 1;                            // assumed to be 1 meter away on z-axis.
 double G2_x;// = 0.00000005;                   //50 nm. Initial lateral offset of G2.
 double theta;// = 00.000001;                           // could be 0.05 or more. This is the twist between 1st and second gratings, in degrees. 2nd and 3rd grating are fixed to same rotational twist.
@@ -39,8 +39,8 @@ double xend;//= 0.00020;						// x position ends, 200 microns
 double ystart;// = -0.00011;                   // y position start, 110 microns
 double yend;// = 0.00011;					// y position ends, 110 microns
 double height;								//maximum z height
-double cutoff;								// minimum value compared intensity to in order to truncate or neglect certain values below cutoff value
-
+double cutoff;								// =.000001  minimum value compared intensity to in order to truncate or neglect certain values below cutoff value
+	                                         // at what point does the intensity cut off and be treated as 0. Can also be 5e-5 like in McMorran thesis. Or 0.001.
 }simparam;
 
 extern simparam sp;

@@ -42,21 +42,22 @@ double ( * gp0(double z, double Grat3x[], double Grat3I[]))
 double ( * gp1(double zloc,double r1,double el1, double w1, double Grat3x[], double Grat3I[]))
 
 {
-	double z12 = zloc - sp.G1_z;
+	double z12 = zloc - sp.G1_z;//z location between 1st and 2nd gratings
 	double energy = sp.energy;
 	int rows = sp.res;
 	int elecOrAtom = sp.elecOrAtom;
 	double vel = sp.vel;
 	int xpnts = rows;
 	double width = rows;
-	double abszloc = sp.height;
+	double abszloc = sp.height; //z position
 	int accountGrav = sp.accountGrav;
 	 // get intensity profile after one grating
 	int rowsT =41;// rows of ReT and ImT array
 	double xstart = sp.xstart; // what is this? It's negative 200 microns.
     double xend = sp.xend;
     double pi = M_PI; // the constant irrational number pi.
-    double period = 0.0000001;// period of grating - 100 nanometers.
+    //double period = sp.g_period;
+	double period = 0.000000100;// period of grating - 100 nanometers.
     double wedgeangle = sp.wedgeangle; // Grating wedge angle. The variable alpha below depends on this. This is a free parameter. Appears to be related to beam splitting.
     int useimagecharge = sp.useimagecharge; // whether or not to consider image charge effects. 0 for False.
     double tilt =sp.tilt; // A free parameter. Beta variable below depends on this. If beam is perp. to grating, then tilt (and thus Beta) are 0. This is the twist about the x-axis.
@@ -162,7 +163,8 @@ double ( * gp2(double zloc, double el1x, double w1x, double r1x, double Grat3x[]
     double xstart = sp.xstart; // what is this? It's negative 200 microns.
     double xend = sp.xend;
     double pi = M_PI; // the constant irrational number pi.
-    double period = 0.0000001;// period of grating - 100 nanometers.
+    //double period = sp.g_period;
+	double period = 0.0000001;// period of grating - 100 nanometers.
     double wedgeangle = sp.wedgeangle; // Grating wedge angle. The variable alpha below depends on this. This is a free parameter. Appears to be related to beam splitting.
     int useimagecharge = sp.useimagecharge; // whether or not to consider image charge effects. 0 for False.
     double tilt =sp.tilt; // A free parameter. Beta variable below depends on this. If beam is perp. to grating, then tilt (and thus Beta) are 0. This is the twist about the x-axis.
