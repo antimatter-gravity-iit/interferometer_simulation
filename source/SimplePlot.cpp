@@ -72,14 +72,17 @@ void SimplePlot::graph(const char *title, const double x[], const double y[],
 	// create the graph (automatically goes into *c); this plots x vs y
 	TGraph *g = new TGraph(nValues,x,y);
 	g->SetTitle(title);
+	g->GetXaxis()->SetTitle("Horizontal displacement x (meters)");
+	g->GetYaxis()->SetTitle("Relative Intensity");
+	g->GetXaxis()->CenterTitle();
+	g->GetYaxis()->CenterTitle();
 	g->Draw("APL"); // draw Axes, markers at Points, and Lines
 	c->Update();
 
 	// Run the Root event loop, until Quit ROOT is clicked
 	fprintf(stderr,"Click on 'File/Quit ROOT' to proceed\n");
-	app->Run(true);
-
-	// close the canvas and clean up
+    app->Run(true);
+	 //close the canvas and clean up
 	c->Close();
 	delete g;
 	delete c;
@@ -100,11 +103,10 @@ void SimplePlot::graph(const char *title, const float x[], const float y[],
 	g->SetTitle(title);
 	g->Draw("APL"); // draw Axes, markers at Points, and Lines
 	c->Update();
-
+	
 	// Run the Root event loop, until Quit ROOT is clicked
 	fprintf(stderr,"Click on 'File/Quit ROOT' to proceed\n");
 	app->Run(true);
-
 	// close the canvas and clean up
 	c->Close();
 	delete g;
@@ -143,12 +145,20 @@ void SimplePlot::twoD(const char *title, double value[],
 
 	// create the plot (automatically goes into *c)
 	TH2D *h = new TH2D(name, title, NX, Xmin, Xmax, NY, Ymin, Ymax);
-	for(int ix=0; ix<NX; ++ix) {
+	for(int ix=0; ix<NX; ++ix) { //  0   1    0     1   rows  rows
 		for(int iy=0; iy<NY; ++iy) {
 			h->SetBinContent(ix+1,iy+1,value[INDEX(ix,iy)]);
 		}
 	}
+	double mean_x = h->GetMean(1);
+	printf("Mean x = %.20f \n",mean_x);
+	printf("Minimum measurement necessary to see gravitational effects: %.3fpm \n", fabs((mean_x)*1000000));       //convert um to nm
+
 	h->Draw(options);
+	h->GetXaxis()->SetTitle("Horizontal displacement x (micro meters)");
+	h->GetYaxis()->SetTitle("Verticle displacement y (micro meters)");
+	h->GetXaxis()->CenterTitle();
+	h->GetYaxis()->CenterTitle();
 	c->Update();
 
 	// Run the Root event loop, until Quit ROOT is clicked

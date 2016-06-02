@@ -5,33 +5,36 @@
 #include <math.h>
 #include <string>
 
-#include "PhaseShifts.h"
-#include "Gratings.h"
-#include "Misc.h"
-#include "BeamParams.h"
-#include "complex.h"
 
+#include "PhaseShifts.h"
+#include "BeamParams.h"
+#include "Misc.h"
+#include "Gratings.h"
+
+#include <complex.h>
 
 double ( * ReTandImTgenerator(double ReTorImTar[], double energy, int elecOrAtom, int ReTorImT, double vel, double width, double abszloc, int accountGrav))
 {
-     double xstart = -0.00020; // what is this? It's negative 200 microns.
-  double xend = 0.00020;
-  double pi = 3.14159265358979; // the constant irrational number pi.
-  double period = 0.0000001;// period of grating - 100 nanometers.
-  double gravAccel = -9.8;    // acceleration due to gravity. 
-
-  double wedgeangle = 0; // Grating wedge angle. The variable alpha below depends on this. This is a free parameter. Appears to be related to beam splitting.
-  int useimagecharge = 0; // whether or not to consider image charge effects. 0 for False.
-  double tilt =0; // A free parameter. Beta variable below depends on this. If beam is perp. to grating, then tilt (and thus Beta) are 0. This is the twist about the x-axis.
-  double cutoff = 0.000001; // at what point does the intensity cut off and be treated as 0. Can also be 5e-5 like in McMorran thesis. Or 0.001.
-  double eta1 = .4; //G1 open fraction; how open the first grating is. With .4 open, a little over than half the muonium should pass through it. Varname could be changed to better represent it.
-  double eta2 = .4; //G2 open fraction; how open the second grating is.
-  double thick = 0.000000014; // 14 nanometers. Not (real) thickness of gratings, most likely. Gratings are actually 1 micrometer thick. This is used for the electron part of the code.
-double Gthick = 1000; // thickness of gratings; 1 micrometer = 1000 nm, this is in nm on purpose (see function ReTgenerator) Varname could be better. Right now Gthick is used for the VdW effect for atoms.
-int rowsT =41;// rows of ReT and ImT array
-    double res = 1000; // This is the resolution we want this graph at. Varname could be better.
-    double chargeratio =0.0; //strength of image charge (units of e, electron charge); values of 0.03, 0.05, or more can be had
-    float C3 = 0.020453; // the VdW coefficient for hydrogen (assumed to be the same for muonium)
+     double xstart = sp.xstart;//-0.00020; // what is this? It's negative 200 microns.
+  double xend = sp.xend; //0.00020;      // positive 200 microns
+  double pi = M_PI;//3.14159265358979; // the constant irrational number pi.
+  //double period =sp.g_period; //0.0000001;// period of grating - 100 nanometers.
+  double period = 0.0000001;  //
+	double gravAccel = -9.8;    // acceleration due to gravity. 
+  double wedgeangle = sp.wedgeangle; //0; // Grating wedge angle. The variable alpha below depends on this. This is a free parameter. Appears to be related to beam splitting.
+  int useimagecharge = sp.useimagecharge; //0; // whether or not to consider image charge effects. 0 for False.
+  double tilt =sp.tilt;//0; // A free parameter. Beta variable below depends on this. If beam is perp. to grating, then tilt (and thus Beta) are 0. This is the twist about the x-axis.
+  double cutoff = sp.cutoff;//0.000001; // at what point does the intensity cut off and be treated as 0. Can also be 5e-5 like in McMorran thesis. Or 0.001.
+  double eta1 = sp.eta1;// .4; //G1 open fraction; how open the first grating is. With .4 open, a little over than half the muonium should pass through it. Varname could be changed to better represent it.
+  double eta2 = sp.eta2; //.4; //G2 open fraction; how open the second grating is.
+  double thick = sp.thick;//0.000000014; // 14 nanometers. Not (real) thickness of gratings, most likely. Gratings are actually 1 micrometer thick. This is used for the electron part of the code.
+	double Gthick = sp.Gthick;//1000; // thickness of gratings; 1 micrometer = 1000 nm, this is in nm on purpose (see function ReTgenerator) Varname could be better. Right now Gthick is used for the VdW effect for atoms.
+	int rowsT =41;// rows of ReT and ImT array
+    double res = sp.res;//1000; // This is the resolution we want this graph at. Varname could be better. MUST BE SAME AS IN MAIN!
+    
+	//values not included in simparam structure.  can be moved there but not entirely necessary 
+	double chargeratio =0.0; //strength of image charge (units of e, electron charge); values of 0.03, 0.05, or more can be had //not used
+    float C3 = 0.020453; // the VdW coefficient for hydrogen (assumed to be the same for muonium) // THIS IS WHAT CAN BE CHANGED!
     double e_charge = 0.00000000000000000016021765; // electric charge in Coulombs of electron (abs. value)
     double Coulomb = 0.00000000898755179; // force; m^2/(Coulomb^-2)
     double difPlancks = 0.000000000000658212; // hbar in mev * s
@@ -112,7 +115,6 @@ int rowsT =41;// rows of ReT and ImT array
 
           // ex is how far you are from the grating 'wall'
     
-
           // exnm is how far from the wall in nanometers.
           exnmleft = ex * 1000000000;
           exnmright = (xmax - ex) * 1000000000; 
@@ -128,16 +130,18 @@ int rowsT =41;// rows of ReT and ImT array
           // Both electrons and atoms will fall due to gravity. According to Dr. Daniel Kaplan's paper at arxiv.org/ftp/arxiv/papers/1308/1308.0878.pdf, the phase shift caused is 2 * pi * g * t^2 / d, where t is the time in free fall and d is the period of the gratings.
           if (accountGrav == 1)
             {
-              phGrav = (2 * pi * gravAccel * pow(timeFreefall, 2)) / period;
+              phGrav = (2 * pi * gravAccel * pow(timeFreefall, 2)) / period;  // phase shift due to gravity on particles
             }
           else
             phGrav = 0;
          
           if (elecOrAtom == 1) // if we're dealing with an electron here
               {
-                // phE is a phase shift caused by electron Coulombic interaction, if we were modeling electrons
+
+// phE is a phase shift caused by electron Coulombic interaction, if we were modeling electrons
           phE = -width * thick * chargeratio * pow(e_charge,2) * (2 * pi * Coulomb/Plancks)/(vel * (.25 * pow(width,2)-pow(ex,2)));
-          
+
+
           if (ReTorImT == 1) // if it's the ReT array
             {
               ReTorImTar[j]  += cos(phM + fc + phGrav); // so fc and phM are both phase shifts; angles. 
@@ -164,11 +168,15 @@ int rowsT =41;// rows of ReT and ImT array
                 
                 
                 if (ReTorImT == 1) // if it's the ReT array
-                  {
-                    ReTorImTar[j]  += cos(phM + fc + phGrav); // so fc and phM are both phase shifts; angles. 
+                  { 
+					if (elecOrAtom == 1) ReTorImTar[j] += cos(phE + fc + phGrav); // check to see if electron, if yes, populate with position with phE phase shift
+					else 													
+                    ReTorImTar[j]  += cos(phM + fc + phGrav); // so fc and phM are both phase shifts; angles.
                   }
                 else if (ReTorImT == 2) // if it's the ImT array
                   {
+						if (elecOrAtom == 1) ReTorImTar[j] += sin(phE + fc + phGrav); // added now
+						else 
                          ReTorImTar[j]  += sin(phM + fc + phGrav); // so fc and phM are both phase shifts; angles. 
                   }
 
