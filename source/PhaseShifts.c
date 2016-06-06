@@ -15,47 +15,47 @@
 
 double ( * ReTandImTgenerator(double ReTorImTar[], double energy, int elecOrAtom, int ReTorImT, double vel, double width, double abszloc, int accountGrav))
 {
-     double xstart = sp.xstart;//-0.00020; // what is this? It's negative 200 microns.
-  double xend = sp.xend; //0.00020;      // positive 200 microns
-  double pi = M_PI;//3.14159265358979; // the constant irrational number pi.
-  //double period =sp.g_period; //0.0000001;// period of grating - 100 nanometers.
-  double period = 0.0000001;  //
+	double xstart = sp.xstart; // negative 200 microns
+	double xend = sp.xend; //0.00020;      // positive 200 microns
+  	double pi = M_PI;//3.14159265358979; // the constant irrational number pi.
+  	//double period =sp.g_period; //0.0000001;// period of grating - 100 nanometers.
+  	double period = 0.0000001;  //
 	double gravAccel = -9.8;    // acceleration due to gravity. 
-  double wedgeangle = sp.wedgeangle; //0; // Grating wedge angle. The variable alpha below depends on this. This is a free parameter. Appears to be related to beam splitting.
-  int useimagecharge = sp.useimagecharge; //0; // whether or not to consider image charge effects. 0 for False.
-  double tilt =sp.tilt;//0; // A free parameter. Beta variable below depends on this. If beam is perp. to grating, then tilt (and thus Beta) are 0. This is the twist about the x-axis.
-  double cutoff = sp.cutoff;//0.000001; // at what point does the intensity cut off and be treated as 0. Can also be 5e-5 like in McMorran thesis. Or 0.001.
-  double eta1 = sp.eta1;// .4; //G1 open fraction; how open the first grating is. With .4 open, a little over than half the muonium should pass through it. Varname could be changed to better represent it.
-  double eta2 = sp.eta2; //.4; //G2 open fraction; how open the second grating is.
-  double thick = sp.thick;//0.000000014; // 14 nanometers. Not (real) thickness of gratings, most likely. Gratings are actually 1 micrometer thick. This is used for the electron part of the code.
-	double Gthick = sp.Gthick;//1000; // thickness of gratings; 1 micrometer = 1000 nm, this is in nm on purpose (see function ReTgenerator) Varname could be better. Right now Gthick is used for the VdW effect for atoms.
+  	double wedgeangle = sp.wedgeangle; /0; //Grating wedge angle. The variable alpha below depends on this. This is a free parameter. Appears to be related to beam splitting.
+  	int useimagecharge = sp.useimagecharge; //0; // whether or not to consider image charge effects. 0 for False.
+  	double tilt =sp.tilt;  //zero; // A free parameter. Beta variable below depends on this. If beam is perp. to grating, then tilt (and thus Beta) are 0. This is the twist about the x-axis.
+  	double cutoff = sp.cutoff;// 0.000001; // at what point does the intensity cut off and be treated as 0. Can also be 5e-5 like in McMorran thesis. Or 0.001.
+  	double eta1 = sp.eta1; //.4; //G1 open fraction; how open the first grating is. With .4 open, a little over than half the muonium should pass through it. Varname could be changed to better represent it.
+  	double eta2 = sp.eta2; //.4; //G2 open fraction; how open the second grating is.
+  	double thick = sp.thick; // 0.000000014; // 14 nanometers. Not (real) thickness of gratings, most likely. Gratings are actually 1 micrometer thick. This is used for the electron part of the code.
+	double Gthick = sp.Gthick;// 1000; // thickness of gratings; 1 micrometer = 1000 nm, this is in nm on purpose (see function ReTgenerator) Varname could be better. Right now Gthick is used for the VdW effect for atoms.
 	int rowsT =41;// rows of ReT and ImT array
-    double res = sp.res;//1000; // This is the resolution we want this graph at. Varname could be better. MUST BE SAME AS IN MAIN!
+    	double res = sp.res;//1000; // This is the resolution we want this graph at. Varname could be better. MUST BE SAME AS IN MAIN!
     
 	//values not included in simparam structure.  can be moved there but not entirely necessary 
 	double chargeratio =0.0; //strength of image charge (units of e, electron charge); values of 0.03, 0.05, or more can be had //not used
-    float C3 = 0.020453; // the VdW coefficient for hydrogen (assumed to be the same for muonium) // THIS IS WHAT CAN BE CHANGED!
-    double e_charge = 0.00000000000000000016021765; // electric charge in Coulombs of electron (abs. value)
-    double Coulomb = 0.00000000898755179; // force; m^2/(Coulomb^-2)
-    double difPlancks = 0.000000000000658212; // hbar in mev * s
-    double Plancks = 0.0000000000000000000000000000000006626068; // Planck's constant
+    	float C3 = 0.020453; // the VdW coefficient for hydrogen (assumed to be the same for muonium) // THIS IS WHAT CAN BE CHANGED!
+    	double e_charge = 0.00000000000000000016021765; // electric charge in Coulombs of electron (abs. value)
+    	double Coulomb = 0.00000000898755179; // force; m^2/(Coulomb^-2)
+    	double difPlancks = 0.000000000000658212; // hbar in mev * s
+    	double Plancks = 0.0000000000000000000000000000000006626068; // Planck's constant
   
-  double eta = width/period; // ratio of 'height' of slit/windows in gratings to the period of the gratings. Varname - is it clear?
-  // double vel = pow(2 * energy * e_charge/e_mass,1/2); // velocity of an electron? 
-  double nmvel = vel * 1000000000;  // converting a m/s velocity to nm/s.
-    double alpha = wedgeangle * pi/180; // depends on wedgeangle above, which is a relatively free parameter. Appears to be bend of 'window' (slits in grating), if they bend forward or not.
-    double beta = tilt * pi; // depends on tilt angle, = 0 if beam is normal to gratings
-    double exnmleft; // how many nm from the left side of each slit are we?
-    double exnmright; // how many nm from the right side of each slit are we?
-    long double xmin; // beginning of path of wave through the slit
-    long double xmax; // end of path of wave/beam through the slit
-    float fc;
-    float phE; // phase shift if dealing with electrons
-    long double phM; // phase shift if dealing with neutral atoms/molecules
-    double phGrav; // phase shift due to gravity.
-    float ex;
-    double timeFreefall;
-    int j;
+  	double eta = width/period; // ratio of 'height' of slit/windows in gratings to the period of the gratings
+  	// double vel = pow(2 * energy * e_charge/e_mass,1/2); // velocity of an electron? 
+  	double nmvel = vel * 1000000000;  // converting a m/s velocity to nm/s.
+    	double alpha = wedgeangle * pi/180; // depends on wedgeangle above, which is a relatively free parameter. Appears to be bend of 'window' (slits in grating), if they bend forward or not.
+    	double beta = tilt * pi; // depends on tilt angle, = 0 if beam is normal to gratings
+    	double exnmleft; // how many nm from the left side of each slit are we?
+    	double exnmright; // how many nm from the right side of each slit are we?
+    	long double xmin; // beginning of path of wave through the slit
+    	long double xmax; // end of path of wave/beam through the slit
+    	float fc;
+    	float phE; // phase shift if dealing with electrons
+    	long double phM; // phase shift if dealing with neutral atoms/molecules
+    	double phGrav; // phase shift due to gravity.
+    	float ex;
+    	double timeFreefall;
+    	int j;
 
     if (beta>=0){ // if the beam is not normal/perpendicular to the gratings it encounters
         
@@ -66,17 +66,18 @@ double ( * ReTandImTgenerator(double ReTorImTar[], double energy, int elecOrAtom
         if (beta<=alpha) { // if the beam is very orthogonal to gratings (almost 90 degrees), or wedge angle is significant
             xmax=(width * cos(beta))/2-width/res;
         }
-        else // if beam is not very perpendicular to gratings, then it travels through the slit diagonally, covering more distance, more image charge interaction, etc.
-        {
+        else { // if beam is not very perpendicular to gratings, then it travels through the slit diagonally, covering more distance, more image charge interaction, etc.
             xmax= width  *  cos(beta)/2 - width/res  +  thick  *  (tan(alpha)-tan(beta));
         }
     }
     else // if beta < 0; this time xmin changes, xmax is the same
     {
         xmax = (width * cos(beta)/2)-width/res;
+
         if (fabsl(beta)<=alpha) { // fabsl is for long doubles and returns a long double absolute value; once again, if the tilt isn't that bad, one bound (this time xmin) is just width * cos(beta)/2  +  width/res.
           xmin = -((width * cos(beta))/2) + width/res; 
         }
+
         else // if the beam is far from perpendicular to grating slits
         {
             xmin = -((width * cos(beta))/2) + width/res - thick * (tan(alpha)-tan(beta));

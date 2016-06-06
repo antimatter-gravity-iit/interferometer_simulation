@@ -10,14 +10,11 @@
 //#include "Gratings.h"
 //#include "BeamParams.h"
 
-double maximumvalue(double arr[], int rows)
-{    
+double maximumvalue(double arr[], int rows){    
     // finds the max value of the array
     double m =0;
-    for (int i = 0; i < rows; i++ )
-    {
-        if (m<arr[i])
-        {
+    for (int i = 0; i < rows; i++ ){
+        if (m<arr[i]){
             m = arr[i];// finds the maximum value of the array
         }
     }
@@ -25,17 +22,11 @@ double maximumvalue(double arr[], int rows)
 }
 
 
-double sinc(double x)
-{
-    // this function avoids a division by 0; sinc is just defined to be sin(x)/x
-    double sinc_value;
-    if (x==0)
-    {
-        sinc_value = 1; 
-    }
-    else
-    {
-        sinc_value = (sin(x))/x;// this function avoids a division by 0 by testing for zero and assigning 1 to sinc(0)
+double sinc(double x){
+    // this function avoids a division by x=0, sinc is defined to be sin(x)/x which will definied as 1 in such case
+    double sinc_value=1;
+    if (x!=0){
+        sinc_value = (sin(x))/x;
     }
     return(sinc_value);
 }
@@ -59,27 +50,24 @@ double *ixgenerator(double a[], double zloc, int logchoice, int rows)
     // right now gratings are treated as being 0.5m apart. Divide zloc by 36.075 to get the proper distances, 1.4cm, between gratings.
     double realzloc = zloc / 36.075;
 
-    for (int i=0; i<rows; i++) 
-    {
-        // HALF-LIFE DECAY - means normalizing the intensity at the point i to what the intensity should be after a certain time t. This will be approximated by substituting distance, zloc, for t; x = vt, v = 6300, so t = x/6300. In this case it's z instead of x. Since the electrons should become more and more as the antimuons decay, we actually want the electron presence to start out small, then go up.
+    for (int i=0; i<rows; i++) {
+        /* HALF-LIFE DECAY - means normalizing the intensity at the point i to what the intensity should be after a certain time t. This will be 	  *approximated by substituting distance, zloc, for t; x = vt, v = 6300, so t = x/6300. In this case it's z instead of x. Since the electrons 		 *should become more and more as the antimuons decay, we actually want the electron presence to start out small, then go up.
+	 */
+
         // Modeling electrons:
         // a[i][1] = a[i][1] * (1 - pow(const_e, (-1 * realzloc / 6300)/mu_lifetime)); // why is mu_lifetime included for an electron modeling array?
 
         // Modeling muonium: 
         a[i] = a[i] * (pow(const_e, (-1 * realzloc / 6300)/mu_lifetime));
         
-        if (a[i]<min) // could also have min = 0
-        {
+        if (a[i]<min){ // could also have min = 0
             a[i]=0;
         }
 
         // a[i][1] = a[i][1]/max;//divides each element of the array by max, normalize it
-        if (logchoice == 1)
+        if (logchoice == 1 && a[i] > 0)
         {
-            if (a[i] > 0) {
-            a[i] = log(a[i]/min); 
-            // tries to make sure all elements are above 1, then takes the logarithm to scale the stuff better
-            }
+            a[i] = log(a[i]/min); // it tries to make sure all elements are above 1, then takes the logarithm to scale the stuff better
         }
     }
 }
