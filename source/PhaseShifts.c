@@ -23,7 +23,7 @@ double ( * ReTandImTgenerator(double ReTorImTar[], double energy, int elecOrAtom
 	double gravAccel = -9.8;    // acceleration due to gravity. 
   	double wedgeangle = sp.wedgeangle; /0; //Grating wedge angle. The variable alpha below depends on this. This is a free parameter. Appears to be related to beam splitting.
   	int useimagecharge = sp.useimagecharge; //0; // whether or not to consider image charge effects. 0 for False.
-  	double tilt =sp.tilt;  //zero; // A free parameter. Beta variable below depends on this. If beam is perp. to grating, then tilt (and thus Beta) are 0. This is the twist about the x-axis.
+  	double tilt =sp.tilt;  //0; // A free parameter. Beta variable below depends on this. If beam is perp. to grating, then tilt (and thus Beta) are 0. This is the twist about the x-axis.
   	double cutoff = sp.cutoff;// 0.000001; // at what point does the intensity cut off and be treated as 0. Can also be 5e-5 like in McMorran thesis. Or 0.001.
   	double eta1 = sp.eta1; //.4; //G1 open fraction; how open the first grating is. With .4 open, a little over than half the muonium should pass through it. Varname could be changed to better represent it.
   	double eta2 = sp.eta2; //.4; //G2 open fraction; how open the second grating is.
@@ -34,14 +34,13 @@ double ( * ReTandImTgenerator(double ReTorImTar[], double energy, int elecOrAtom
     
 	//values not included in simparam structure.  can be moved there but not entirely necessary 
 	double chargeratio =0.0; //strength of image charge (units of e, electron charge); values of 0.03, 0.05, or more can be had //not used
-    	float C3 = 0.020453; // the VdW coefficient for hydrogen (assumed to be the same for muonium) // THIS IS WHAT CAN BE CHANGED!
+    	float C3 = 0.020453; // the VdW coefficient for hydrogen (assumed to be the same for muonium) //
     	double e_charge = 0.00000000000000000016021765; // electric charge in Coulombs of electron (abs. value)
     	double Coulomb = 0.00000000898755179; // force; m^2/(Coulomb^-2)
     	double difPlancks = 0.000000000000658212; // hbar in mev * s
     	double Plancks = 0.0000000000000000000000000000000006626068; // Planck's constant
   
   	double eta = width/period; // ratio of 'height' of slit/windows in gratings to the period of the gratings
-  	// double vel = pow(2 * energy * e_charge/e_mass,1/2); // velocity of an electron? 
   	double nmvel = vel * 1000000000;  // converting a m/s velocity to nm/s.
     	double alpha = wedgeangle * pi/180; // depends on wedgeangle above, which is a relatively free parameter. Appears to be bend of 'window' (slits in grating), if they bend forward or not.
     	double beta = tilt * pi; // depends on tilt angle, = 0 if beam is normal to gratings
@@ -70,25 +69,21 @@ double ( * ReTandImTgenerator(double ReTorImTar[], double energy, int elecOrAtom
             xmax= width  *  cos(beta)/2 - width/res  +  thick  *  (tan(alpha)-tan(beta));
         }
     }
-    else // if beta < 0; this time xmin changes, xmax is the same
-    {
+    else { // if beta < 0; this time xmin changes, xmax is the same
         xmax = (width * cos(beta)/2)-width/res;
 
         if (fabsl(beta)<=alpha) { // fabsl is for long doubles and returns a long double absolute value; once again, if the tilt isn't that bad, one bound (this time xmin) is just width * cos(beta)/2  +  width/res.
           xmin = -((width * cos(beta))/2) + width/res; 
         }
 
-        else // if the beam is far from perpendicular to grating slits
-        {
+        else { // if the beam is far from perpendicular to grating slits
             xmin = -((width * cos(beta))/2) + width/res - thick * (tan(alpha)-tan(beta));
         }
         
     }
     
-    for(int n=-((rowsT-1)/2);n<=((rowsT-1)/2);n++) // looks like it's from n = -20 to 20, when rowsT = 41 (like now). For within a for? Maybe can be made more efficiently.
-    {
-        for(ex=xmin; ex<xmax; ex +=width/res) //copied from above; res = step resolution in x-axis. ex += height of window / steps = (40 nm / 1000)
-        {
+    for(int n=-((rowsT-1)/2);n<=((rowsT-1)/2);n++) {
+        for(ex=xmin; ex<xmax; ex +=width/res) { //copied from above; res = step resolution in x-axis. ex += height of window / steps = (40 nm / 1000)
 
           ////// THIS IS NOT IMPLEMENTED YET, ORIGINALLY IGOR PRO CODE THAT WAS IN HERE
 
@@ -129,59 +124,54 @@ double ( * ReTandImTgenerator(double ReTorImTar[], double energy, int elecOrAtom
           timeFreefall = (realzloc/ vel);
 
           // Both electrons and atoms will fall due to gravity. According to Dr. Daniel Kaplan's paper at arxiv.org/ftp/arxiv/papers/1308/1308.0878.pdf, the phase shift caused is 2 * pi * g * t^2 / d, where t is the time in free fall and d is the period of the gratings.
-          if (accountGrav == 1)
-            {
+          if (accountGrav == 1) {
               phGrav = (2 * pi * gravAccel * pow(timeFreefall, 2)) / period;  // phase shift due to gravity on particles
             }
           else
             phGrav = 0;
          
-          if (elecOrAtom == 1) // if we're dealing with an electron here
-              {
+          if (elecOrAtom == 1) { // if we're dealing with an electron here
 
 // phE is a phase shift caused by electron Coulombic interaction, if we were modeling electrons
-          phE = -width * thick * chargeratio * pow(e_charge,2) * (2 * pi * Coulomb/Plancks)/(vel * (.25 * pow(width,2)-pow(ex,2)));
+          	phE = -width * thick * chargeratio * pow(e_charge,2) * (2 * pi * Coulomb/Plancks)/(vel * (.25 * pow(width,2)-pow(ex,2)));
 
 
-          if (ReTorImT == 1) // if it's the ReT array
-            {
-              ReTorImTar[j]  += cos(phM + fc + phGrav); // so fc and phM are both phase shifts; angles. 
-            }
-          else if (ReTorImT == 2) // if it's the ImT array
-            {
-              ReTorImTar[j]  += sin(phM + fc + phGrav); // so fc and phM are both phase shifts; angles. 
-            }
-              }
+          	if (ReTorImT == 1) { // if it's the ReT array
+              		ReTorImTar[j]  += cos(phM + fc + phGrav); // so fc and phM are both phase shifts; angles. 
+            	}
+          	else if (ReTorImT == 2) { // if it's the ImT array
+              		ReTorImTar[j]  += sin(phM + fc + phGrav); // so fc and phM are both phase shifts; angles. 
+            	}
+          }
           
-          else if (elecOrAtom == 2) // if we're dealing with an atom here
-            {
-              if (exnmleft == 0 | exnmright == 0)
-                  {
+          else if (elecOrAtom == 2) { // if we're dealing with an atom here
+              	if (exnmleft == 0 | exnmright == 0){
+
                     phM = 0;
  // phM is phase shift on Muonium/other neutral molecules due to Van der Waals effects through the gratings.
-                  }
-              else
-                  {
+                }
+              	
+		else {
                     phM = -C3 * Gthick / (difPlancks * nmvel * pow(exnmleft, 3)) -  -C3 * Gthick / (difPlancks * nmvel * pow(exnmright, 3));
-                  }
+                }
                 
                 j=n + ((rowsT-1)/2); // j goes from 0 to 40 (right now rowsT = 41)
                 
                 
-                if (ReTorImT == 1) // if it's the ReT array
-                  { 
-					if (elecOrAtom == 1) ReTorImTar[j] += cos(phE + fc + phGrav); // check to see if electron, if yes, populate with position with phE phase shift
-					else 													
+                if (ReTorImT == 1) { // if it's the ReT array 
+					
+			if (elecOrAtom == 1) ReTorImTar[j] += cos(phE + fc + phGrav); // check to see if electron, if yes, populate with position with phE phase shift
+			else 													
                     ReTorImTar[j]  += cos(phM + fc + phGrav); // so fc and phM are both phase shifts; angles.
-                  }
-                else if (ReTorImT == 2) // if it's the ImT array
-                  {
-						if (elecOrAtom == 1) ReTorImTar[j] += sin(phE + fc + phGrav); // added now
-						else 
+                }
+                else if (ReTorImT == 2) { // if it's the ImT array
+			if (elecOrAtom == 1) ReTorImTar[j] += sin(phE + fc + phGrav); // added now
+						
+			else 
                          ReTorImTar[j]  += sin(phM + fc + phGrav); // so fc and phM are both phase shifts; angles. 
-                  }
+                }
 
-            }  
+          }  
           
 
             
