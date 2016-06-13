@@ -24,11 +24,11 @@ RPATH = -Wl,-rpath,$(ROOT)/lib
 all:	program sptest
 
 program: $(SRC) SimplePlot.cpp SimplePlot.h Gratings.c Gratings.h BeamParams.c BeamParams.h PhaseShifts.c PhaseShifts.h Misc.c Misc.h
-	$(CXX) $(CFLAGS) -o program  $(SRC) SimplePlot.cpp $(RPATH) $(LIBS) 	
+	$(CXX) $(CFLAGS) -fext-numeric-literals -o program  $(SRC) SimplePlot.cpp $(RPATH) $(LIBS) 	
 #-Wall -Wextra  //extra debug code 
 
 sptest:	SimplePlot.h SimplePlot.cpp
-	$(CXX) $(CFLAGS) -DTEST -o sptest SimplePlot.cpp $(RPATH) $(LIBS)
+	$(CXX) $(CFLAGS) -DTEST -fext-numeric-literals -o sptest SimplePlot.cpp $(RPATH) $(LIBS)
 
 clean:
 	rm -f *.o program sptest
