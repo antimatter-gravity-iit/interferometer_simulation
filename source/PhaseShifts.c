@@ -21,7 +21,7 @@ double ( * ReTandImTgenerator(double ReTorImTar[], double energy, int elecOrAtom
   	//double period =sp.g_period; //0.0000001;// period of grating - 100 nanometers.
   	double period = 0.0000001;  //
 	double gravAccel = -9.8;    // acceleration due to gravity. 
-  	double wedgeangle = sp.wedgeangle; /0; //Grating wedge angle. The variable alpha below depends on this. This is a free parameter. Appears to be related to beam splitting.
+  	double wedgeangle = sp.wedgeangle; //0; //Grating wedge angle. The variable alpha below depends on this. This is a free parameter. Appears to be related to beam splitting.
   	int useimagecharge = sp.useimagecharge; //0; // whether or not to consider image charge effects. 0 for False.
   	double tilt =sp.tilt;  //0; // A free parameter. Beta variable below depends on this. If beam is perp. to grating, then tilt (and thus Beta) are 0. This is the twist about the x-axis.
   	double cutoff = sp.cutoff;// 0.000001; // at what point does the intensity cut off and be treated as 0. Can also be 5e-5 like in McMorran thesis. Or 0.001.
