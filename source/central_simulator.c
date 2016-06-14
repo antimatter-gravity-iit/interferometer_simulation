@@ -8,7 +8,7 @@
  * Collaborators:
  *     Arthur Romero, 16 July to 24 August 2015
  *         -- Original author
- *     Adam Denchfield, 20 October 2015 to present
+ *     Adam Denchfield, 20 October 2015 to December 2015
  *         -- Additional parameters and functionality
  *     Melanie Cornelius (Dooley), 1 Nov 2015 to present
  *         -- Optimizations, standards, and readability edits
@@ -19,6 +19,8 @@
  *         -- Comments tagged with LRcomment
  *     Lucas Neves Abrantes, 23 May 2016 to present
  *         -- Comments tagged with LAcomment
+ *     Yuri Rossi Tonin, 6 May 2016 to present
+ *         -- Comments tagged with Ycomment
  *
  * This central program takes user input for:
  *     electronic or atomic beam type,
