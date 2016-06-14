@@ -32,6 +32,15 @@ double sinc(double x){
 }
 
 
+/* 
+ * The function 'ixgenerator' is the x direction intensity calculator. It normalizes and compares intensities
+ * to cutoff value, then determines which value to input to the array of x intensitites. Its arguments are:
+ * 	intensity at the time of calculation (an initially empty array);
+ * 	zlocation;
+ * 	choice of scale for the plot; and
+ * 	number of rows.
+ * The function only modifies the array fed to it; it doesn't return any value. 
+ */
 
 double *ixgenerator(double a[], double zloc, int logchoice, int rows) 
 {

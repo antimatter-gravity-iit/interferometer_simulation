@@ -72,11 +72,11 @@ double ( * ReTandImTgenerator(double ReTorImTar[], double energy, int elecOrAtom
     else { // if beta < 0; this time xmin changes, xmax is the same
         xmax = (width * cos(beta)/2)-width/res;
 
-        if (fabsl(beta)<=alpha) { // fabsl is for long doubles and returns a long double absolute value; once again, if the tilt isn't that bad, one bound (this time xmin) is just width * cos(beta)/2  +  width/res.
+    if (fabsl(beta)<=alpha) { // fabsl is for long doubles and returns a long double absolute value; once again, if the tilt isn't that bad, one bound (this time xmin) is just width * cos(beta)/2  +  width/res.
           xmin = -((width * cos(beta))/2) + width/res; 
         }
 
-        else { // if the beam is far from perpendicular to grating slits
+    else { // if the beam is far from perpendicular to grating slits
             xmin = -((width * cos(beta))/2) + width/res - thick * (tan(alpha)-tan(beta));
         }
         
