@@ -1,0 +1,60 @@
+===================================
+Installing the program from source
+===================================
+
+Prerequisites
+-----------------------------------
+ * CERN ROOT v6.06.02 or higher;
+ * gcc and g++ compilers version 5.4.0 or higher.
+
+IMPORTANT: In the Makefile (step 2 below), the ROOT symbolic constant has to be set to the path where ROOT is installed.
+
+Basic build-and-run
+-----------------------------------
+You can build the interferometer simulation from the source files and run it in 5 easy steps:
+
+1. Download or clone the Git repository located at https://github.com/antimatter-gravity-iit/interferometer_simulation.
+   If you've downloaded it as a compressed file, extract the contents before proceeding.
+
+Now say the path to the directory where you placed the compressed file or where you executed the clone command is /<path>/<to>/<directory>.
+Inside it there should now be a directory called "interferometer_simulation" (without the quotes), unless you specified a different name.
+
+2. Enter the new directory; its path should be /<path>/<to>/<directory>/interferometer_simulation. Inside it you'll find another directory
+called "source" (without the quotes). Enter it and examine its contents; you should see a bunch of .c, .h and .cpp source code files, and
+another file called simply Makefile.
+
+3. Type the command "make" (without the quotes) into the terminal and hit enter. After the compiling is done you should see two new
+executable files in the "source" directory called "program" and "sptest". If this is true, hooray! You've built the program succesfully.
+
+4. Run the "sptest" program with the terminal command "./sptest" (without the quotes). You should see a ROOT window show up with some
+test plot in it. Click "File>Quit ROOT" in this window to continue. Repeat until no more windows show up.
+
+5. If the previous step ran smoothly, you're ready to go! To run the program, use the command "./program" followed by the values you
+want to input into it. For example: if you want a full simulation of 6400 m/s fast atom beam interferometry plotted on the usual scale,
+accounting for gravity, with a resolution of 300 lines (perpendicular to the z direction) and a grating pitch of 100 nm, you have to type
+"./program 1 2 300 6400 100 1 0". Yup. After the program runs (it can take several minutes) you should be shown a ROOT plot with the
+simulation, which you can save as a pdf. Done!
+
+This is the list of arguments in the order you have to input them to the program: 
+
+ * 1. Account for gravity? 1 = True, 0 = False.
+ * 2. Electron beam or atom beam? Electron beam = 1, Atom beam = 2. ELECTRON BEAM NOT MODELED!!!
+ * 3. Resolution [300-400 recommended]. 
+ * 4. Velocity of particles in m/s.
+ * 5. Pitch of gratings [in nm] 
+ * 6. Output the total simulation [1]? or the final interference pattern [2]?
+ * 7. (if argv[6] == 1), logscale [1] or normal scale [0]?
+
+Other build options
+-----------------------------------
+These are all the targets you can supply to the "make" command (step 3 above):
+	
+	all             builds the usual program plus the test program (default)
+    program         builds the usual program only
+    sptest          builds a test program for SimplePlot Misc.c BeamParams.c Gratings.c PhaseShifts.c
+    debug_program   builds usual program with added debugging information (necessary for gdb) and extra warnings
+    debug_sptest    builds test program with added debugging information and extra warnings
+    debug           builds all with debugging information
+    clean           removes output files (executables)
+
+For example; running "make sptest" only creates the test program, while "make clean" removes the executable files.               
