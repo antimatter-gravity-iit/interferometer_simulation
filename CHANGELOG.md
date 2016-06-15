@@ -1,59 +1,58 @@
-# interferometer_simulation
-Simulates phase shift of particles (due to various effects) moving through 
-3-grating interferometer
+# Change Log
 
-______________________
-**Effects Accounted For:**
-______________________
-- Gravity
+Summary of changes made since Summer 2016. 
 
-- VanDerWaals effect
+- Version indication is by date of last commit.
 
+- Changes are summarized across sequences of commits, with the final commit from each sequence being identified by hash number.
 
-______________________
-**Authors:**
-______________________
-- Dr. Ben McMorran (put credentials here)
+## [2016-06-14](https://github.com/lnevesabrantes/interferometer_simulation/commit/e518c780e3f1bf5c5165599272aecc56e7440afe) (current)
+Commit **e518c780e3f1bf5c5165599272aecc56e7440afe**
 
-- Arthur Romero, IIT research student, summer 2015
+**One-line summary:** Makefile update; minor commentary and indentation edits.
 
-- Adam Denchfield, IIT IPRO student, fall 2015
+File: **central_simulator.c**
+- Updated collaborator list.
 
-- Melanie Cornelius (nee Dooley), IIT IPRO and research student, fall 2014 
-       through fall 2015
+File: **Makefile**
+- Added *-fext-numeric-literals* flag to Makefile targets. This fixed a compiler error on g++-5.
+- Eliminated obsolete comments from a past implementation;
+- Changed ROOT path and added other options for developer convenience;
+- Added comment about path where ROOT is installed (must be altered according to the user's system);
+- Created 3 new targets for debugging;
+- Incorporated existing (but inactive) debug flags into new targets;
+- Updated "clean" target;
+- Updated target description.
 
-- Dr. Tom Roberts (put credentials here)
+File: **Misc.c**
+- Added comment to ixgenerator function (copied from central_simulator.c). 
 
+File: **PhaseShifts.c**
+- Corrected mistake with commented variable initialization.
 
-______________________
-**How to Commit:**
-______________________
-- Place all source files in the source/ dir
+## [2016-06-07](https://github.com/lnevesabrantes/interferometer_simulation/commit/15041ff13e1f9e6d274aa64181e563c07ac30a0e) 
+Commit **15041ff13e1f9e6d274aa64181e563c07ac30a0e**
 
-- In general, keep functions pertaining to different effects in different files
+**One-line summary:** extensive comment cleanup (with some additions); minor changes in control-flow structures.
 
-- Name variables descriptively. If a variable pertains to a common physics term
-       or symbol, place that symbol in a nearby comment
+Files: **central_simulator.c**, **BeamParams.c**, **BeamParams.h**, **Gratings.c**, **Gratings.h**, **Misc.c**, **Misc.h**, **PhaseShifts.c**
+- Cleaned up most comments on files listed above. Removed obsolete implementations that survived as comments, stripped ancient personal commentary and obscure bits of unused code, and generally deleted anything that wasn't meant to be final;
+- Block comments were also reformatted based on agreed-upon conventions.
 
-- Comment functions explaining the math in use 
+File: **central_simulator.c**
+- Significant reformatted the initial comment section. Updated collaborator list, moved various comments there and standardized the block comment structure;
+- Added function descriptions by Isaac Gewarges to the code. These were previously on a separate spreadsheet;
+- As suggested in the code itself, replaced *if* statement nested inside an *else* by standard *else-if* sequence;
+- Re-standardized indent structure inside the main function.
 
-- Add any new effect into this README
+File: **Misc.c**
+- Rewrote the function *sinc* with a different *if-else* structure;
+- Rewrote nested *if* sequence as a single 'if' block.   
 
+File: **Misc.h**
+- Removed commented variable initializations from parameter structure (actual initializations are on central_simulator.c).
 
-______________________
-**General Git Etiquette:**
-______________________
-- **DO NOT commit executables** (.out files by default)
+## [2016-06-02](https://github.com/lnevesabrantes/interferometer_simulation/commit/2f25cd198c6595d801ff2745bce7926e9ff5da17) 
+Commit **2f25cd198c6595d801ff2745bce7926e9ff5da17**
 
-- DO NOT make dated folders in any directory except output/
-
-- In general, avoid committing output files - the output directory is a 
-       compromise between programming convention and needs of professors and 
-       students in class.  Remember - you can always store your outputs in the 
-       Google Drive or on iGroups.
-
-- That said, DO NOT commit output files unless:
-
-  - You have a good reason to track the output (IE, showing new functionality)
-
-  - You have placed the output in a dated directory within the output/ dir
+**One-line summary:** This is the code as it was before any modifications by the Summer 2016 team.
