@@ -141,7 +141,7 @@ int main(int argc, char *argv[]){
 	sp.height = (sp.g_period / 2) / 1000000000;
 	sp.cutoff = 0.000001;
 	// Scaled logarithmically so they can see where more of the particles go [0] = no, [1] = yes.
-	sp.logchoice = 0;
+	//sp.logchoice = 0;
 	
 	/*
 	 * TODO LAcomment: make sense of this. Remember Mcomment: "I tried to fix this, but what is it actually saying?
