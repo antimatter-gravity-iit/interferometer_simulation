@@ -36,7 +36,7 @@ double ( * gp0(double z, double Grat3x[], double Grat3I[]))
 }
 
 
-	double ( * gp1(double zloc,double r1,double el1, double w1, double Grat3x[], double Grat3I[]))
+double ( * gp1(double zloc,double r1,double el1, double w1, double Grat3x[], double Grat3I[]))
 
 {
 	double z12 = zloc - sp.G1_z;	//z location between 1st and 2nd gratings
@@ -119,7 +119,7 @@ double ( * gp0(double z, double Grat3x[], double Grat3I[]))
                 }
 
                 // lambda is the wavelength of our particles/waves
-                coef = coef * exp(-pi * (dn * (lambda * z12/(pow(period * el2,2)))));
+                coef = coef * exp(-pi *dn * pow((lambda * z12)/(period * el2),2));
                 // added isfinite macro in order to avoid inf values
 
                 if (std::isfinite(coef)==0) { // if coef is infinite, then:
@@ -127,7 +127,7 @@ double ( * gp0(double z, double Grat3x[], double Grat3I[]))
                 }
               
                 if (coef>=cutoff) { // if coef ends up larger than cutoff value, add the values to the current a[i][1]'s intensities.
-                    Grat3I[i] = Grat3I[i]  +   (coef * exp(-pi * pow(((Grat3x[i]-dm * lambda * z12/period)/w2),2) * cos(2 * pi * (dn/period) * (Grat3x[i]-dm * lambda * z12/period) * (1-z12/r2))));
+                    Grat3I[i] = Grat3I[i]  +   (coef * exp(-pi * pow(((Grat3x[i]-dm * lambda * z12/period)/w2),2)) * cos(2 * pi * (dn/period) * (Grat3x[i]-dm * lambda * z12/period) * (1-z12/r2)));
                     // Since a[i][1] etc. is actually the ix array, and arrays essentially get passed by reference, this is modifying the ix array.
                     continue;
                 }
