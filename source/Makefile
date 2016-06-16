@@ -24,7 +24,8 @@ SRC = *.c
 # ROOT = $(HOME)/InstalledRoot
 
 # Lucas Abrantes's computer
-ROOT = /opt/root/build
+# ROOT = /opt/root/build
+ROOT = /usr/local
 
 CFLAGS = $(shell $(ROOT)/bin/root-config --cflags)
 LIBS =   $(shell $(ROOT)/bin/root-config --libs)
