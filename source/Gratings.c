@@ -21,7 +21,6 @@ double ( * gp0(double z, double Grat3x[], double Grat3I[]))
 {
     double xstart = sp.xstart;
     double xend = sp.xend;
-    double pi = M_PI; // the constant irrational number pi.
     double w1;
     double jj;
 
@@ -32,7 +31,7 @@ double ( * gp0(double z, double Grat3x[], double Grat3I[]))
     {
         Grat3x[i]= xstart + (i) * ((xend-xstart)/(sp.res-1)); // current x-position at step i is put into a[i][0]
         jj = pow((Grat3x[i]/w1),2); //jj = (xpos/beamwidth)^2 
-        Grat3I[i]=exp(-(pi * jj)); // a[i][1] is the intensity of the beam at the xposition at step i.
+        Grat3I[i]=exp(-(M_PI * jj)); // a[i][1] is the intensity of the beam at the xposition at step i.
     }
 }
 
@@ -53,7 +52,6 @@ double ( * gp1(double zloc,double r1,double el1, double w1, double Grat3x[], dou
 	int rowsT =41;// rows of ReT and ImT array
 	double xstart = sp.xstart; 
     	double xend = sp.xend;
-    	double pi = M_PI; // the constant irrational number pi.
     	//double period = sp.g_period;
 	double period = 0.000000100;// period of grating - 100 nanometers.
     	double wedgeangle = sp.wedgeangle; /*
@@ -73,8 +71,8 @@ double ( * gp1(double zloc,double r1,double el1, double w1, double Grat3x[], dou
     	// wavelength of what particles/waves we're working with; 
     	double eta = width/period; // ratio of window 'height' to period of grating
     	//double vel = pow(2 * energy * e_charge/e_mass,1/2); // electron velocity
-    	double alpha = wedgeangle * pi/180; // alpha and beta have been defined in almost every other function. Global variables? 
-    	double beta = tilt * pi; // defined in other functions too, same purpose.
+    	double alpha = wedgeangle * M_PI/180; // alpha and beta have been defined in almost every other function. Global variables? 
+    	double beta = tilt * M_PI; // defined in other functions too, same purpose.
     	/* Explanation of variables:
 	 * w2 = GSM width of beam after the first grating.
 	 * r2 = radius of GSM wavefront curvature after the first grating
@@ -112,7 +110,7 @@ double ( * gp1(double zloc,double r1,double el1, double w1, double Grat3x[], dou
                 double dm = (m + n)/2;
 
                 if (useimagecharge==0) { // if useimagecharge = 0, ignore image charge effects at G1. 
-                    coef = sinc(eta1 * pi * n)  *  (sinc(eta1 * pi * m) * pow((eta1), 2));
+                    coef = sinc(eta1 * M_PI * n)  *  (sinc(eta1 * M_PI * m) * pow((eta1), 2));
                     
                 }
 
@@ -121,7 +119,7 @@ double ( * gp1(double zloc,double r1,double el1, double w1, double Grat3x[], dou
                 }
 
                 // lambda is the wavelength of our particles/waves
-                coef = coef * exp(-pi * pow((dn * lambda * z12)/(period * el2),2));
+                coef = coef * exp(-M_PI * pow((dn * lambda * z12)/(period * el2),2));
                 // added isfinite macro in order to avoid inf values
 
                 if (std::isfinite(coef)==0 || coef < cutoff) { // if coef is infinite, then:
@@ -129,7 +127,7 @@ double ( * gp1(double zloc,double r1,double el1, double w1, double Grat3x[], dou
                 }
               
                 else { // if coef ends up larger than cutoff value, add the values to the current a[i][1]'s intensities.
-                    Grat3I[i] = Grat3I[i]  +   coef * exp(-pi * pow(((Grat3x[i]-dm * lambda * z12/period)/w2),2)) * cos(2 * pi * (dn/period) * (Grat3x[i]-dm * lambda * z12/period) * (1-z12/r2));
+                    Grat3I[i] = Grat3I[i]  +   coef * exp(-M_PI * pow(((Grat3x[i]-dm * lambda * z12/period)/w2),2)) * cos(2 * M_PI * (dn/period) * (Grat3x[i]-dm * lambda * z12/period) * (1-z12/r2));
                     // Since a[i][1] etc. is actually the ix array, and arrays essentially get passed by reference, this is modifying the ix array.
                     continue;
                 }
@@ -161,7 +159,6 @@ double ( * gp2(double zloc, double el1x, double w1x, double r1x, double Grat3x[]
     	int rowsT =41;// rows of ReT and ImT array
     	double xstart = sp.xstart; // what is this? It's negative 200 microns.
     	double xend = sp.xend;
-    	double pi = M_PI; // the constant irrational number pi.
 	double period = 0.0000001;// period of grating - 100 nanometers.
     	double wedgeangle = sp.wedgeangle; /* Grating wedge angle. The variable alpha below depends on this. This is a free parameter. Appears to be 						    *related to beam splitting.
 					    */
@@ -175,9 +172,9 @@ double ( * gp2(double zloc, double el1x, double w1x, double r1x, double Grat3x[]
     	double lambda = sqrt((1.5 * pow(10,-18))/(energy)); // wavelength we're working with of particles/waves
     	double res = sp.res; // This is the resolution we want this graph at.
     	double eta = width/period; // ratio of slit window 'height' to the period of the gratings
-        double alpha = wedgeangle * pi/180;
-    	double beta = tilt * pi; // 0 if beam is normal to gratings
-    	double theta = pi * mytheta/180;
+        double alpha = wedgeangle * M_PI/180;
+    	double beta = tilt * M_PI; // 0 if beam is normal to gratings
+    	double theta = M_PI * mytheta/180;
     	double d1=period; // period = period of gratings
     	double d2=period;
     	double z13 = z12  +  z23; // z distance between grating 1 and 3
@@ -257,8 +254,8 @@ double ( * gp2(double zloc, double el1x, double w1x, double r1x, double Grat3x[]
                         d5 = (x2pnts(n2, (int  * )pos));
                         
                         if (useimagecharge==0){ // 0 means ignore image charge effects, 1 means include image charge effects
-                            coef = sinc(eta1 * pi * m1) +  0 * _Complex_I;
-                            coef = coef * (sinc(eta1 * pi * m2)) +  0 * _Complex_I;
+                            coef = sinc(eta1 * M_PI * m1) +  0 * _Complex_I;
+                            coef = coef * (sinc(eta1 * M_PI * m2)) +  0 * _Complex_I;
                         }
                         else { // assumes G1 is identical to G2
                             coef = ReT[a5]  +  ImT[a5] * _Complex_I; // 
@@ -268,17 +265,17 @@ double ( * gp2(double zloc, double el1x, double w1x, double r1x, double Grat3x[]
                         coef = coef * (ReT[c5]  +  ImT[c5] * _Complex_I);
                         coef = coef * (ReT[d5]  +  ImT[d5] * _Complex_I);
                         // next factor responsible for the twist dependence of visibility
-                        coef=coef * (exp(-pi * pow(((dn * sin(theta) * lambda * (z23))/(d2 * el3y)),2)));
-                        coef=coef * (exp(-pi * pow((lambda * z23 * (dn * cos(theta) + dm * z13/z23)/(d1 * el3x)),2)));
+                        coef=coef * (exp(-M_PI * pow(((dn * sin(theta) * lambda * (z23))/(d2 * el3y)),2)));
+                        coef=coef * (exp(-M_PI * pow((lambda * z23 * (dn * cos(theta) + dm * z13/z23)/(d1 * el3x)),2)));
                         /* a[i][1] only has significant values if coef's real or imag parts are above the cutoff value. Otherwise a is returned as 0 				 * intensity.
 			 */
                         if (((__real__ coef)>=cutoff) || ((__imag__ coef)>=cutoff)) {
                             phi = dn * n * (1-z23/v3x) * pow((cos(theta)),2)  +  dn * n * (1-z23/v3y) * pow((sin(theta)),2)  +  dn * m * (1-z13/v3x) * cos(theta);
                             phi = phi  + (dm * n * (1-z13/v3x) * cos(theta)  +  dm * m * (z13/z23) * (1-z13/v3x));
-                            phi = phi * (2 * pi * lambda * z23/(pow(d1,2)));
-                            phi = phi - (2 * pi * dn * G2_x/d2);
-                            phiI[i] = ((phi-(2 * pi * (phix[i])/d2) * (dn * cos(theta) * (1-z23/v3x)  +  dm * (1-z13/v3x))));
-                            Grat3I[i] = Grat3I[i]  +  ((((__real__ coef) * cos(phiI[i]) - (__imag__ coef) * sin(phiI[i])) * exp(-pi * pow(((phix[i]-(lambda * z23/d1) * (n * cos(theta) + m * (z13/z23)))/w3x),2))));
+                            phi = phi * (2 * M_PI * lambda * z23/(pow(d1,2)));
+                            phi = phi - (2 * M_PI * dn * G2_x/d2);
+                            phiI[i] = ((phi-(2 * M_PI * (phix[i])/d2) * (dn * cos(theta) * (1-z23/v3x)  +  dm * (1-z13/v3x))));
+                            Grat3I[i] = Grat3I[i]  +  ((((__real__ coef) * cos(phiI[i]) - (__imag__ coef) * sin(phiI[i])) * exp(-M_PI * pow(((phix[i]-(lambda * z23/d1) * (n * cos(theta) + m * (z13/z23)))/w3x),2))));
                         }
                     }
                 }

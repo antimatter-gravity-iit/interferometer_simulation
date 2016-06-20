@@ -17,7 +17,6 @@ double ( * ReTandImTgenerator(double ReTorImTar[], double energy, int elecOrAtom
 {
 	double xstart = sp.xstart; // negative 200 microns
 	double xend = sp.xend; //0.00020;      // positive 200 microns
-  	double pi = M_PI;//3.14159265358979; // the constant irrational number pi.
   	//double period =sp.g_period; //0.0000001;// period of grating - 100 nanometers.
   	double period = 0.0000001;  //
 	double gravAccel = -9.8;    // acceleration due to gravity. 
@@ -42,8 +41,8 @@ double ( * ReTandImTgenerator(double ReTorImTar[], double energy, int elecOrAtom
   
   	double eta = width/period; // ratio of 'height' of slit/windows in gratings to the period of the gratings
   	double nmvel = vel * 1000000000;  // converting a m/s velocity to nm/s.
-    	double alpha = wedgeangle * pi/180; // depends on wedgeangle above, which is a relatively free parameter. Appears to be bend of 'window' (slits in grating), if they bend forward or not.
-    	double beta = tilt * pi; // depends on tilt angle, = 0 if beam is normal to gratings
+    	double alpha = wedgeangle * M_PI/180; // depends on wedgeangle above, which is a relatively free parameter. Appears to be bend of 'window' (slits in grating), if they bend forward or not.
+    	double beta = tilt * M_PI; // depends on tilt angle, = 0 if beam is normal to gratings
     	double exnmleft; // how many nm from the left side of each slit are we?
     	double exnmright; // how many nm from the right side of each slit are we?
     	long double xmin; // beginning of path of wave through the slit
@@ -115,7 +114,7 @@ double ( * ReTandImTgenerator(double ReTorImTar[], double energy, int elecOrAtom
           exnmleft = ex * 1000000000;
           exnmright = (xmax - ex) * 1000000000; 
           // fc is another electron thing; or the diffraction pattern? 2pi*n*x/period?
-          fc = 2 * pi * n * ex/period; // so the first fc = 2  *  pi  *  -20  *  xmin / period, last fc = 2  *  pi  *  20  *  xmax / period. Looks like fc is a quantity proportional to distance from bottom/top of each 'window'/slit
+          fc = 2 * M_PI * n * ex/period; // so the first fc = 2  *  pi  *  -20  *  xmin / period, last fc = 2  *  pi  *  20  *  xmax / period. Looks like fc is a quantity proportional to distance from bottom/top of each 'window'/slit
             
           // abszloc is actually wrong; the code thinks the total z is 1m. It's actually closer to 2.8cm. Divide abszloc by 36.075 to get real value.
           double realzloc = abszloc / 36.075;
@@ -125,7 +124,7 @@ double ( * ReTandImTgenerator(double ReTorImTar[], double energy, int elecOrAtom
 
           // Both electrons and atoms will fall due to gravity. According to Dr. Daniel Kaplan's paper at arxiv.org/ftp/arxiv/papers/1308/1308.0878.pdf, the phase shift caused is 2 * pi * g * t^2 / d, where t is the time in free fall and d is the period of the gratings.
           if (accountGrav == 1) {
-              phGrav = (2 * pi * gravAccel * pow(timeFreefall, 2)) / period;  // phase shift due to gravity on particles
+              phGrav = (2 * M_PI * gravAccel * pow(timeFreefall, 2)) / period;  // phase shift due to gravity on particles
             }
           else
             phGrav = 0;
@@ -133,7 +132,7 @@ double ( * ReTandImTgenerator(double ReTorImTar[], double energy, int elecOrAtom
           if (elecOrAtom == 1) { // if we're dealing with an electron here
 
 // phE is a phase shift caused by electron Coulombic interaction, if we were modeling electrons
-          	phE = -width * thick * chargeratio * pow(e_charge,2) * (2 * pi * Coulomb/Plancks)/(vel * (.25 * pow(width,2)-pow(ex,2)));
+          	phE = -width * thick * chargeratio * pow(e_charge,2) * (2 * M_PI * Coulomb/Plancks)/(vel * (.25 * pow(width,2)-pow(ex,2)));
 
 
           	if (ReTorImT == 1) { // if it's the ReT array
