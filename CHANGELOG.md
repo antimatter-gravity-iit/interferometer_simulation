@@ -6,7 +6,30 @@ Summary of changes made since Summer 2016.
 
 - Changes are summarized across sequences of commits, with the final commit from each sequence being identified by hash number.
 
-## [2016-06-14](https://github.com/lnevesabrantes/interferometer_simulation/commit/e518c780e3f1bf5c5165599272aecc56e7440afe) (current)
+## [2016-06-16](https://github.com/lnevesabrantes/interferometer_simulation/commit/9fede859df7ec4bcda48c86f521227b0ff8394de) (current)
+Commit **9fede859df7ec4bcda48c86f521227b0ff8394de**
+
+**One-line summary:** added info files, corrected math error in GSM simulation, and allowed choice of scale.
+
+Files: **CHANGELOG.md**, **CONTRIBUTING.md**, **INSTALL**
+- Added change log, coding conventions and installation instructions to the repository.
+
+File: **README.md**
+- Updated collaborator list and added reference to other info files.
+
+File: **central_simulator.c**
+- Commented a line that apparently forced usage of a regular scale in the simulation plot.
+
+File: **Gratings.c**
+- Corrected equations in lines 122 and 130 according to article in http://journals.aps.org/pra/abstract/10.1103/PhysRevA.78.013601 .
+
+File: **Makefile**
+- Changed standard ROOT path.
+
+File: **PhaseShifts.c**
+- Clarified indentation.
+
+## [2016-06-14](https://github.com/lnevesabrantes/interferometer_simulation/commit/e518c780e3f1bf5c5165599272aecc56e7440afe)
 Commit **e518c780e3f1bf5c5165599272aecc56e7440afe**
 
 **One-line summary:** Makefile update; minor commentary and indentation edits.
