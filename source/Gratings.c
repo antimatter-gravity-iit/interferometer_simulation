@@ -124,11 +124,11 @@ double ( * gp1(double zloc,double r1,double el1, double w1, double Grat3x[], dou
                 coef = coef * exp(-pi * pow((dn * lambda * z12)/(period * el2),2));
                 // added isfinite macro in order to avoid inf values
 
-                if (std::isfinite(coef)==0) { // if coef is infinite, then:
+                if (std::isfinite(coef)==0 || coef < cutoff) { // if coef is infinite, then:
                     coef=0;
                 }
               
-                if (coef>=cutoff) { // if coef ends up larger than cutoff value, add the values to the current a[i][1]'s intensities.
+                else { // if coef ends up larger than cutoff value, add the values to the current a[i][1]'s intensities.
                     Grat3I[i] = Grat3I[i]  +   coef * exp(-pi * pow(((Grat3x[i]-dm * lambda * z12/period)/w2),2)) * cos(2 * pi * (dn/period) * (Grat3x[i]-dm * lambda * z12/period) * (1-z12/r2));
                     // Since a[i][1] etc. is actually the ix array, and arrays essentially get passed by reference, this is modifying the ix array.
                     continue;
