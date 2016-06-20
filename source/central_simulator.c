@@ -105,24 +105,26 @@ int main(int argc, char *argv[]){
 	sp.elecOrAtom = atoi(argv[2]);
 	// Velocity of particle.
 	sp.vel = atoi(argv[4]);
-	sp.energy = ((1.5 * pow(10,-18))/(pow(0.00000000001,2))) * (1);
+	// Why was it defined like this? This equation seems to come from DeBroglie's model.
+	sp.energy = 1.5e-18 / pow(1e-11,2) * (1);
+	// sp.energy = 1.5e4
 	sp.simchoice = atoi(argv[6]);
 	// TODO LAcomment: add comment explaining why this 'if' exists.
 	if(sp.simchoice == 1)
 	sp.logchoice = atoi(argv[7]);
 	sp.useimagecharge = 0;
-	sp.eta1 = .4;
-	sp.eta2 = .4;
+	sp.eta1 = 0.4;
+	sp.eta2 = 0.4;
 	sp.g_period = atoi(argv[5]);
 	sp.initial_radius_of_wavefront_curvature = -4.04;
-	sp.initial_coherence_width = 0.000001;
-        sp.initial_beamwidth = 0.00003;
-	sp.G1_z = 0.000001;
-	sp.G2_z = 1;
-	sp.G2_x = 0.00000005;
-	sp.theta = 0.000001;
-	sp.thick = 0.000000014;
-	sp.Gthick = 1000;
+	sp.initial_coherence_width = 1.0e-6;
+        sp.initial_beamwidth = 3.0e-5;
+	sp.G1_z = 1.0e-6;
+	sp.G2_z = 1.0;
+	sp.G2_x = 5e-8;
+	sp.theta = 1e-6;
+	sp.thick = 1.4e-8;
+	sp.Gthick = 1.0e3;
 	// Wedge angle.
 	sp.wedgeangle =	0;
 	// Tilt.
@@ -131,15 +133,15 @@ int main(int argc, char *argv[]){
 	sp.res = atoi(argv[3]);
 	sp.zstart = -0.1;
 	sp.zend = 2.1;
-	sp.xstart = -0.00020;
+	sp.xstart = -2.0e-4;
 	// xend.
-	sp.xend = 0.00020;
+	sp.xend = 2.0e-4;
 	// ystart.
-	sp.ystart = -0.00011;
+	sp.ystart = -1.1e-4;
 	// yend.
-	sp.yend = 0.00011;
-	sp.height = (sp.g_period / 2) / 1000000000;
-	sp.cutoff = 0.000001;
+	sp.yend = 1.1e-4;
+	sp.height = (sp.g_period / 2) / 1.0e9;
+	sp.cutoff = 1e-6;
 	// Scaled logarithmically so they can see where more of the particles go [0] = no, [1] = yes.
 	//sp.logchoice = 0;
 	
