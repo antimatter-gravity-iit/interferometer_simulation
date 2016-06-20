@@ -27,7 +27,7 @@ double calculate_width(double z, double r0, double el0, double w0, double which_
     // Computes GSM beam width and beam coherence width (GSM = Gaussian-Schell Model of gratings)
     double lambda = sqrt(1.5e-18 / sp.energy);
     double width;
-    width = initial_width * fabs(z / zp(z,r0)) * sqrt(1 + pow(((lambda * zp(z,r0))/(el0 * w0)),2)); 
+    width = which_width * fabs(z / zp(z,r0)) * sqrt(1 + pow(((lambda * zp(z,r0))/(el0 * w0)),2)); 
     return(width);
 }
 
