@@ -1,6 +1,11 @@
-# interferometer_simulation
+# Interferometer simulation
 Simulates phase shift of particles (due to various effects) moving through 
-3-grating interferometer
+a 3-grating interferometer.
+
+For installation instructions, refer to the INSTALL file. 
+A summary of changes can be found in CHANGELOG.md.
+
+The current coding conventions are contained in CONTRIBUTING.md.
 
 ______________________
 **Effects Accounted For:**
@@ -13,17 +18,24 @@ ______________________
 ______________________
 **Authors:**
 ______________________
-- Dr. Ben McMorran (put credentials here)
+- Dr. Ben McMorran, Assistant Professor, University of Oregon
 
 - Arthur Romero, IIT research student, summer 2015
 
 - Adam Denchfield, IIT IPRO student, fall 2015
 
 - Melanie Cornelius (nee Dooley), IIT IPRO and research student, fall 2014 
-       through fall 2015
+       through present
 
-- Dr. Tom Roberts (put credentials here)
+- Dr. Tom Roberts, IIT Research Professor of Physics
 
+- Isaac Gewarges, IIT IPRO student, spring 2016
+
+- Lucas Maia Rios, IIT research student, summer 2016
+
+- Lucas Neves Abrantes, IIT research student, summer 2016
+
+- Yuri Rossi Tonin, IIT research student, summer 2016
 
 ______________________
 **How to Commit:**
@@ -57,3 +69,12 @@ ______________________
   - You have a good reason to track the output (IE, showing new functionality)
 
   - You have placed the output in a dated directory within the output/ dir
+
+# [License](https://github.com/antimatter-gravity-iit/interferometer_simulation/blob/master/LICENSE)
+
+   Copyright (C) 2016 Antimatter Gravity Interferometer Group, Illinois Institute of Technology (IIT). 
+
+   This program is free software; you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation; either version 2 of the License, or
+   (at your option) any later version.
