@@ -19,9 +19,9 @@ int useimagecharge;                     	// whether or not to consider image cha
 double eta1;	                           	// G1 open fraction; how open the first grating is. With .4 open, a little over than half the muonium should pass through it.
 double eta2;	                           	// G2 open fraction; how open the second grating is.
 double g_period;                  		// period of grating - 100 nanometers.
-double r0;	                          	// initial radius of wavefront curvature; comes from initial beam
-double el0;		                      	// initial coherence width; 50e-9 can also be used. Depends on initial beam
-double w0;	                        	// initial beam width -- this is probably assumed, the muonium beam width. Can also be: 2e-6, 1e-6, depends on initial beam
+double initial_radius_of_wavefront_curvature;   // Corresponds to r0 in older versions.
+double initial_coherence_width;                 // Corresponds to el0 in older versions. 50e-9 can also be used.
+double initial_beamwidth;                      	// Corresponds to w0 in older versions. Muonium beam width. Can also be: 2e-6, 1e-6.
 double G1_z;		                     	// It being 1 micron high is arbitrary, pretty sure. Also same as thickness of gratings.
 double G2_z;                            	// assumed to be 1 meter away on z-axis.
 double G2_x;		                   	// 50 nm. Initial lateral offset of G2.

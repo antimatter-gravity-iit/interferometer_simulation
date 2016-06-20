@@ -25,7 +25,8 @@ double ( * gp0(double z, double Grat3x[], double Grat3I[]))
     double w1;
     double jj;
 
-	w1 = w(z, sp.r0, sp.el0, sp.w0); // width of beam incoming
+    // Width of incoming beam, calculated from initial parameters.
+    w1 = calculate_width(z, sp.initial_radius_of_wavefront_curvature, sp.initial_coherence_width, sp.initial_beamwidth, sp.initial_beamwidth); 
 
     for(int i=0; i<sp.res; i++)
     {
@@ -74,13 +75,14 @@ double ( * gp1(double zloc,double r1,double el1, double w1, double Grat3x[], dou
     	//double vel = pow(2 * energy * e_charge/e_mass,1/2); // electron velocity
     	double alpha = wedgeangle * pi/180; // alpha and beta have been defined in almost every other function. Global variables? 
     	double beta = tilt * pi; // defined in other functions too, same purpose.
-    // Varnames could be better. w2, r2, el2? GSM width of beam, radius of GSM wavefront curvature, and GSM beam coherence width, respectively, after the first grating.
-   // double w2=w(z12,r1,el1,w1,energy); // width of beam between z1 and z2 (after grating 1)
-    	double w2=w(z12, r1, el1, w1); // width of beam between z1 and z2 (after grating 1)
-	//double r2 = v(z12,r1,el1,w1,energy); // radius of wavefront curvature between grating 1 and 2
+    	/* Explanation of variables:
+	 * w2 = GSM width of beam after the first grating.
+	 * r2 = radius of GSM wavefront curvature after the first grating
+	 * el2 = GSM beam coherence width after the first grating.
+    	 */
+	double w2=calculate_width(z12, r1, el1, w1, w1); // width of beam between z1 and z2 (after grating 1)
 	double r2 = v(z12, r1, el1, w1); // radius of wavefront curvature between grating 1 and 2
-    //double el2 = el(z12, r1, el1, w1,energy); // beam coherence width
-	double el2 = el(z12, r1, el1, w1); // beam coherence width
+	double el2 = calculate_width(z12, r1, el1, w1, el1); // beam coherence width
     	int pos[41]={0};
 
     for (int i=0; i<rowsT; i++) // since rowsT is currently 41, pos[i] = -20 to 20.
@@ -122,11 +124,11 @@ double ( * gp1(double zloc,double r1,double el1, double w1, double Grat3x[], dou
                 coef = coef * exp(-pi * pow((dn * lambda * z12)/(period * el2),2));
                 // added isfinite macro in order to avoid inf values
 
-                if (std::isfinite(coef)==0 || coef < cutoff) { // if coef is infinite, then:
+                if (std::isfinite(coef)==0) { // if coef is infinite, then:
                     coef=0;
                 }
               
-                else { // if coef ends up larger than cutoff value, add the values to the current a[i][1]'s intensities.
+                if (coef>=cutoff) { // if coef ends up larger than cutoff value, add the values to the current a[i][1]'s intensities.
                     Grat3I[i] = Grat3I[i]  +   coef * exp(-pi * pow(((Grat3x[i]-dm * lambda * z12/period)/w2),2)) * cos(2 * pi * (dn/period) * (Grat3x[i]-dm * lambda * z12/period) * (1-z12/r2));
                     // Since a[i][1] etc. is actually the ix array, and arrays essentially get passed by reference, this is modifying the ix array.
                     continue;
@@ -195,12 +197,17 @@ double ( * gp2(double zloc, double el1x, double w1x, double r1x, double Grat3x[]
     	int b  =0;
     	int c5 =0;
     	int d5=0;
-    	double el3x = el(z13, r1x, el1x, w1x);//G2z - G1z  +  zstart  +  0 * zres, r1, el1, w1; GSM coherence width in x-axis
-    	double w3x = w(z13,r1x,el1x,w1x); // Beam width in x-axis
-    	double v3x = v(z13,r1x,el1x,w1x); // Gaussian-Schell Model (GSM) radius of wavefront curvature in x-axis
-    	double el3y = el(z13,r1y,el1y,w1y); // Coherence width in y-axis
-    	double w3y = w(z13,r1y,el1y,w1y); // Beam width in y-axis
-    	double v3y = v(z13,r1y,el1y,w1y); // radius of wavefront curvature in y-axis
+	/* Explanation of variables:
+	 * w3 = GSM width of beam after the second grating.
+	 * r3 = radius of GSM wavefront curvature after the second grating
+	 * el3 = GSM beam coherence width after the second grating.
+    	 */
+    	double el3x = calculate_width(z13, r1x, el1x, w1x, el1x);	// z13 == G2z - G1z + zstart + 0 * zres; GSM coherence width in x-axis
+    	double w3x = calculate_width(z13, r1x, el1x, w1x, w1x); 	// Beam width in x-axis
+    	double v3x = v(z13,r1x,el1x,w1x); 				// Gaussian-Schell Model (GSM) radius of wavefront curvature in x-axis
+    	double el3y = calculate_width(z13, r1y, el1y, w1y, el1y); 	// Coherence width in y-axis
+    	double w3y = calculate_width(z13, r1y, el1y, w1y, w1y); 	// Beam width in y-axis
+    	double v3y = v(z13,r1y,el1y,w1y); 				// radius of wavefront curvature in y-axis
     
     	int pos[41]={0}; // array of 41 elements
 

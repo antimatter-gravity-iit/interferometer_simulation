@@ -114,9 +114,9 @@ int main(int argc, char *argv[]){
 	sp.eta1 = .4;
 	sp.eta2 = .4;
 	sp.g_period = atoi(argv[5]);
-	sp.r0 = -4.04;
-	sp.el0 = 0.000001;
-	sp.w0 =	0.00003;
+	sp.initial_radius_of_wavefront_curvature = -4.04;
+	sp.initial_coherence_width = 0.000001;
+        sp.initial_beamwidth = 0.00003;
 	sp.G1_z = 0.000001;
 	sp.G2_z = 1;
 	sp.G2_x = 0.00000005;
@@ -179,10 +179,10 @@ int main(int argc, char *argv[]){
 	 *  Note that they all output a double.
 	 */
 		
-	double w1 = w(sp.G1_z, sp.r0, sp.el0, sp.w0); 		
-    	double r1 = v(sp.G1_z, sp.r0, sp.el0, sp.w0); 	
-    	double el1 = el(sp.G1_z, sp.r0, sp.el0, sp.w0); 
- 
+	double w1 = calculate_width(sp.G1_z, sp.r0, sp.el0, sp.w0, sp.w0);
+	double el1 = calculate_width(sp.G1_z, sp.r0, sp.el0, sp.w0, sp.el0);
+	double r1 = v(sp.G1_z, sp.r0, sp.el0, sp.w0);
+
 	// Follow this indent structure in the future.
 	if (sp.simchoice == 1) {
 		sp.logchoice = atoi(argv[7]);

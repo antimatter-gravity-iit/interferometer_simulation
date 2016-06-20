@@ -18,19 +18,17 @@ double zp(double z, double v) {
     return(zp);
 }
 
-double w(double z,double r0, double el0, double w0) {
-    // Compute GSM beam width (GSM = Gaussian-Schell Model of gratings)
-    double lambda = sqrt((1.5 * pow(10,-18))/(sp.energy));
-    double w = (el0) * (fabs((z)/(zp(z,r0))) * ((sqrt((1 + (pow(((lambda * zp(z,r0))/(el0 * w0)),2))))))); 
-    return(w);
-}
-
-double el(double z,double r0, double el0, double w0) {
-    // GSM beam coherence width
-    double lambda = sqrt((1.5 * pow(10,-18))/(sp.energy)); 
-    double w;
-    w = (el0) * (fabs((z)/(zp(z,r0))) * ((sqrt((1 + (pow(((lambda * zp(z,r0))/(el0 * w0)),2))))))); 
-    return(w);
+/* The following are the same variables that are defined in the simulation parameters structure in the file Misc.h:
+ * r0 = initial_radius_of_wavefront_curvature
+ * el0 = initial_coherence_width
+ * w0 = initial_beamwidth
+ */
+double calculate_width(double z, double r0, double el0, double w0, double which_width) {
+    // Computes GSM beam width and beam coherence width (GSM = Gaussian-Schell Model of gratings)
+    double lambda = sqrt(1.5e-18 / sp.energy);
+    double width;
+    width = initial_width * fabs(z / zp(z,r0)) * sqrt(1 + pow(((lambda * zp(z,r0))/(el0 * w0)),2)); 
+    return(width);
 }
 
 double v(double z,double r0, double el0, double w0) {

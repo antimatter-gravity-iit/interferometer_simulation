@@ -5,6 +5,11 @@
 
 double ( * gp0(double z, double Grat3x[], double Grat3I[]));
 
+/* The following parameters have the same names as the variables defined in the file Misc.h:
+ * r0 = sp.initial_radius_of_wavefront_curvature 
+ * el0 = sp.initial_coherence_width
+ * w0 = sp.initial_beamwidth
+ */
 double ( * gp1(double zloc,double r0,double el0, double w0, double Grat3x[], double Grat3I[]));
 
 double ( * gp2(double zloc, double el1x, double w1x, double r1x, double Grat3x[], double Grat3I[]));
