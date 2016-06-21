@@ -18,6 +18,10 @@
 void ( * gp0(double z, double Grat3x[], double Grat3I[]))
 // get intensity profile 
 {
+	time_t start, end; //starting a timer to get the time spent in function gp0
+	start = clock();
+	double diff=0;
+
 	double xstart = sp.xstart;
 	double xend = sp.xend;
 	double w1;
@@ -31,12 +35,20 @@ void ( * gp0(double z, double Grat3x[], double Grat3I[]))
 		jj = pow((Grat3x[i]/w1),2); 				// jj = (xpos/beamwidth)^2 
 		Grat3I[i]=exp(-(M_PI * jj)); 				// a[i][1] is the intensity of the beam at the xposition at step i.
 	}
+
+	end = clock();
+	diff =((double) (end - start));
+	//printf("%f\n",diff); //printing the time spent in gp0.
 }
 
 
 void ( * gp1(double zloc,double r1,double el1, double w1, double Grat3x[], double Grat3I[]))
 // get intensity profile after one grating
 {
+	time_t start, end; //starting a timer to get the time spent in function gp1
+	start = clock();
+	double diff=0;
+
 	double z12 = zloc - sp.G1_z;		//z location between 1st and 2nd gratings
 	double energy = sp.energy;
 	int rows = sp.res;
@@ -130,10 +142,19 @@ void ( * gp1(double zloc,double r1,double el1, double w1, double Grat3x[], doubl
 			}
 		}
 	}
+
+	end = clock();
+	diff =((double) (end - start));
+	//printf("%f\n",diff); //printing the time spent in gp1.
+
 }
 
 void ( * gp2(double zloc, double el1x, double w1x, double r1x, double Grat3x[], double Grat3I[]))
-{
+{	
+	time_t start, end; //starting a timer to get the time spent in function gp2
+	start = clock();
+	double diff=0;
+
 	// get intensity profile after two grating
 	double G2_x = sp.G2_x; //x position after second grating
 	double r1y = r1x;
@@ -240,13 +261,9 @@ void ( * gp2(double zloc, double el1x, double w1x, double r1x, double Grat3x[], 
 	phix[i]= xstart + (i) * ((xend-xstart)/(xpnts-1));
 	}
     	
-	double diff=0;
+	
 
 	for (int i=0; i<rows; i++) {
-		printf("Calculating loop for row equal to %d\n",i); //checking if the looping is working
-		clock_t start, end; //starting a clock to get the average time spent in the following four for loops
-		start = clock();
-
 		for (int m1=-lim; m1<=lim; m1++) {
 			for (int m2=-lim; m2<=lim; m2++) {
 				for (int n1=-lim; n1<=lim; n1++) {
@@ -295,13 +312,14 @@ void ( * gp2(double zloc, double el1x, double w1x, double r1x, double Grat3x[], 
 	    		}
 		}
 		
-		end = clock();
-		diff = diff + ((double) (end - start));
+		
+		
     	}
-
-	diff=diff/rows;
-	//printf("%f\n",diff); //printing the average time spent in the four for loops before.
 
 	free(phix);
 	free(phiI);
+
+	end = clock();
+	diff =((double) (end - start));
+	//printf("%f\n",diff); //printing the time spent in gp2.
 }
