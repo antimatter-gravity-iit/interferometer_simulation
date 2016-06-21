@@ -5,6 +5,7 @@
 #include <math.h>
 #include <string>
 #include <cmath>
+#include <time.h>
 
 #include "Gratings.h"
 #include "BeamParams.h"
@@ -238,8 +239,14 @@ void ( * gp2(double zloc, double el1x, double w1x, double r1x, double Grat3x[], 
 	for (int i=0; i<rows; i++) {
 	phix[i]= xstart + (i) * ((xend-xstart)/(xpnts-1));
 	}
-    
+    	
+	double diff=0;
+
 	for (int i=0; i<rows; i++) {
+		printf("Calculating loop for row equal to %d\n",i); //checking if the looping is working
+		clock_t start, end; //starting a clock to get the average time spent in the following four for loops
+		start = clock();
+
 		for (int m1=-lim; m1<=lim; m1++) {
 			for (int m2=-lim; m2<=lim; m2++) {
 				for (int n1=-lim; n1<=lim; n1++) {
@@ -287,7 +294,14 @@ void ( * gp2(double zloc, double el1x, double w1x, double r1x, double Grat3x[], 
 				}
 	    		}
 		}
+		
+		end = clock();
+		diff = diff + ((double) (end - start));
     	}
+
+	diff=diff/rows;
+	//printf("%f\n",diff); //printing the average time spent in the four for loops before.
+
 	free(phix);
 	free(phiI);
 }
