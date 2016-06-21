@@ -6,12 +6,10 @@
 #include <string>
 #include <cmath>
 
-
 #include "Gratings.h"
 #include "BeamParams.h"
 #include "Misc.h"
 #include "PhaseShifts.h"
-
 
 #include <complex.h>
 #include <limits.h> 		//fix for islimit
@@ -19,61 +17,62 @@
 double ( * gp0(double z, double Grat3x[], double Grat3I[]))
 // get intensity profile 
 {
-    double xstart = sp.xstart;
-    double xend = sp.xend;
-    double w1;
-    double jj;
+	double xstart = sp.xstart;
+	double xend = sp.xend;
+	double w1;
+	double jj;
 
-    // Width of incoming beam, calculated from initial parameters.
-    w1 = calculate_width(z, sp.initial_radius_of_wavefront_curvature, sp.initial_coherence_width, sp.initial_beamwidth, sp.initial_beamwidth); 
+	// Width of incoming beam, calculated from initial parameters.
+	w1 = calculate_width(z, sp.initial_radius_of_wavefront_curvature, sp.initial_coherence_width, sp.initial_beamwidth, sp.initial_beamwidth); 
 
-    for(int i=0; i<sp.res; i++)
-    {
-        Grat3x[i]= xstart + (i) * ((xend-xstart)/(sp.res-1)); // current x-position at step i is put into a[i][0]
-        jj = pow((Grat3x[i]/w1),2); //jj = (xpos/beamwidth)^2 
-        Grat3I[i]=exp(-(M_PI * jj)); // a[i][1] is the intensity of the beam at the xposition at step i.
-    }
+	for(int i=0; i<sp.res; i++) {
+	Grat3x[i]= xstart + (i) * ((xend-xstart)/(sp.res-1)); 	// current x-position at step i is put into a[i][0]
+	jj = pow((Grat3x[i]/w1),2); 				// jj = (xpos/beamwidth)^2 
+	Grat3I[i]=exp(-(M_PI * jj)); 				// a[i][1] is the intensity of the beam at the xposition at step i.
+	}
 }
 
 
 double ( * gp1(double zloc,double r1,double el1, double w1, double Grat3x[], double Grat3I[]))
-
+// get intensity profile after one grating
 {
-	double z12 = zloc - sp.G1_z;	//z location between 1st and 2nd gratings
+	double z12 = zloc - sp.G1_z;		//z location between 1st and 2nd gratings
 	double energy = sp.energy;
 	int rows = sp.res;
 	int elecOrAtom = sp.elecOrAtom;
 	double vel = sp.vel;
 	int xpnts = rows;
 	double width = rows;
-	double abszloc = sp.height; //z position
+	double abszloc = sp.height; 		//z position
 	int accountGrav = sp.accountGrav;
-	// get intensity profile after one grating
-	int rowsT =41;// rows of ReT and ImT array
+	int rowsT =41;				// rows of ReT and ImT array
 	double xstart = sp.xstart; 
     	double xend = sp.xend;
     	//double period = sp.g_period;
-	double period = 0.000000100;// period of grating - 100 nanometers.
-    	double wedgeangle = sp.wedgeangle; /*
-					   *Grating wedge angle. The variable alpha below depends on this. This is a free parameter. Appears to be 						   *related to beam splitting.
-					   */
-    	int useimagecharge = sp.useimagecharge; // whether or not to consider image charge effects. 0 for False.
-    	double tilt =sp.tilt; /*
-			       *A free parameter. Beta variable below depends on this. If beam is perp. to grating, then tilt (and thus Beta) are 0. 				       *This is the twist about the x-axis
-			       */
-    	double cutoff = sp.cutoff; // at what point does the intensity cut off and be treated as 0. Can also be 5e-5 like in McMorran thesis. Or 0.001.
-	double eta1 = sp.eta1; /*G1 open fraction; how open the first grating is. With .4 open, a little over than half the muonium should pass 				*through it
-				*/
-    	double eta2 = sp.eta2; //G2 open fraction; how open the second grating is.
+	double period = 0.000000100;		// period of grating - 100 nanometers.
+	// Grating wedge angle. Variable alpha below depends on this. This is a free parameter. Appears to be related to beam splitting.
+    	double wedgeangle = sp.wedgeangle;
+    	int useimagecharge = sp.useimagecharge;	// whether or not to consider image charge effects. 0 for False.
+	/* 
+	 * A free parameter. Beta variable below depends on this. If beam is perpendicular to gratings, then tilt (and thus Beta) is 0.
+	 * This is the twist about the x-axis.
+	 */
+    	double tilt =sp.tilt; 
+    	double cutoff = sp.cutoff; 		// The point at which the intensity cuts off and is treated as 0.
+	// G1 open fraction; how open the first grating is. With 0.4 open, a little over than half the muonium should pass through.
+	double eta1 = sp.eta1; 
+	// G2 open fraction; how open the second grating is.
+    	double eta2 = sp.eta2; 		
     	double coef; 
     	double lim=5;
     	double lambda = sqrt((1.5 * pow(10,-18))/(energy)); 
-    	// wavelength of what particles/waves we're working with; 
-    	double eta = width/period; // ratio of window 'height' to period of grating
-    	//double vel = pow(2 * energy * e_charge/e_mass,1/2); // electron velocity
-    	double alpha = wedgeangle * M_PI/180; // alpha and beta have been defined in almost every other function. Global variables? 
-    	double beta = tilt * M_PI; // defined in other functions too, same purpose.
-    	/* Explanation of variables:
+	// wavelength of what particles/waves we're working with; 
+	double eta = width/period; 		// ratio of window 'height' to period of grating
+	//double vel = pow(2 * energy * e_charge/e_mass,1/2); electron velocity
+    	double alpha = wedgeangle * M_PI/180; 	// alpha and beta have been defined in almost every other function. Global variables? 
+    	double beta = tilt * M_PI; 		// defined in other functions too, same purpose.
+    	/*
+	 * Explanation of variables:
 	 * w2 = GSM width of beam after the first grating.
 	 * r2 = radius of GSM wavefront curvature after the first grating
 	 * el2 = GSM beam coherence width after the first grating.
@@ -83,59 +82,54 @@ double ( * gp1(double zloc,double r1,double el1, double w1, double Grat3x[], dou
 	double el2 = calculate_width(z12, r1, el1, w1, el1); // beam coherence width
     	int pos[41]={0};
 
-    for (int i=0; i<rowsT; i++) // since rowsT is currently 41, pos[i] = -20 to 20.
-    {
-        pos[i]=i-((rowsT-1)/2);
-    }
+	for (int i=0; i<rowsT; i++) // since rowsT is currently 41, pos[i] = -20 to 20.
+	{
+	pos[i]=i-((rowsT-1)/2);
+	}
 
-    	double ReT[41]={0};
-    	int RealorIm = 1;
-    	ReTandImTgenerator(ReT,energy, elecOrAtom, RealorIm, vel, width, abszloc, accountGrav); // calculates phase shift
-    	RealorIm = 2;
-    	double ImT[41]={0};
-    	ReTandImTgenerator(ImT,energy, elecOrAtom, RealorIm, vel, width, abszloc, accountGrav); // calculates phase shift for imaginary part
+	double ReT[41]={0};
+	int RealorIm = 1;
+	ReTandImTgenerator(ReT,energy, elecOrAtom, RealorIm, vel, width, abszloc, accountGrav); // calculates phase shift
+	RealorIm = 2;
+	double ImT[41]={0};
+	ReTandImTgenerator(ImT,energy, elecOrAtom, RealorIm, vel, width, abszloc, accountGrav); // calculates phase shift for imaginary part
 
-    for (int i=0; i<rows; i++) {
-        // a[i][0] just comprises all the xpositions you are thinking of as the beam passes through a grating.
-        Grat3x[i] = xstart + (i) * ((xend-xstart)/(xpnts-1));
-    }
+	for (int i=0; i<rows; i++) {
+	// a[i][0] just comprises all the xpositions you are thinking of as the beam passes through a grating.
+	Grat3x[i] = xstart + (i) * ((xend-xstart)/(xpnts-1));
+	}
     
-    for (int i=0; i<rows; i++) { 
-        for (int n=-lim; n<=lim; n++) 
-        {
-            for (int m=-lim; m<=lim; m++)
-            {
-                double dn =n-m; 
-                // Varname could be better. n, m, dn, dm are all vague. I STILL don't know what they represent. Something to ask Dr. McMorran about?I know they're used to compute a part of the grating interaction, and I think they're distances from something, but not sure what. 
-                double dm = (m + n)/2;
+	for (int i=0; i<rows; i++) { 
+		for (int n=-lim; n<=lim; n++) {
+			for (int m=-lim; m<=lim; m++) {
+				double dn =n-m; 
+				// TODO: explain what n, m, dm, dn are. LR, Y 
+				double dm = (m + n)/2;
 
-                if (useimagecharge==0) { // if useimagecharge = 0, ignore image charge effects at G1. 
-                    coef = sinc(eta1 * M_PI * n)  *  (sinc(eta1 * M_PI * m) * pow((eta1), 2));
-                    
-                }
+				if (useimagecharge==0) { // if useimagecharge = 0, ignore image charge effects at G1. 
+					coef = sinc(eta1 * M_PI * n)  *  (sinc(eta1 * M_PI * m) * pow((eta1), 2));
+				}
 
-                else { // if usechargeimage = 1, don't ignore image charge effects at G1.
-                    coef =  ReT[x2pnts(n, (int  * )pos)]  *  ReT[x2pnts(m,(int  * )pos)]  +  ImT[x2pnts(n,(int  * )pos)]  *  ImT[x2pnts(m,(int  * )pos)];
-                }
+				else { // if usechargeimage = 1, don't ignore image charge effects at G1.
+					coef = ReT[x2pnts(n, (int * )pos)] * ReT[x2pnts(m,(int * )pos)] + ImT[x2pnts(n,(int * )pos)] * ImT[x2pnts(m,(int * )pos)];
+				}
 
-                // lambda is the wavelength of our particles/waves
-                coef = coef * exp(-M_PI * pow((dn * lambda * z12)/(period * el2),2));
-                // added isfinite macro in order to avoid inf values
+				// lambda is the wavelength of our particles/waves
+				coef = coef * exp(-M_PI * pow((dn * lambda * z12)/(period * el2),2));
+				// added isfinite macro in order to avoid inf values
 
-                if (std::isfinite(coef)==0 || coef < cutoff) { // if coef is infinite, then:
-                    coef=0;
-                }
-              
-                else { // if coef ends up larger than cutoff value, add the values to the current a[i][1]'s intensities.
-                    Grat3I[i] = Grat3I[i]  +   coef * exp(-M_PI * pow(((Grat3x[i]-dm * lambda * z12/period)/w2),2)) * cos(2 * M_PI * (dn/period) * (Grat3x[i]-dm * lambda * z12/period) * (1-z12/r2));
-                    // Since a[i][1] etc. is actually the ix array, and arrays essentially get passed by reference, this is modifying the ix array.
-                    continue;
-                }
-            }
-        }
-    }
+				if (std::isfinite(coef)==0 || coef < cutoff) { // if coef is infinite, then:
+					coef=0;
+				}
+			      	else { // if coef ends up larger than cutoff value, add the values to the current a[i][1]'s intensities.
+					Grat3I[i] = Grat3I[i]  +   coef * exp(-M_PI * pow(((Grat3x[i]-dm * lambda * z12/period)/w2),2)) * cos(2 * M_PI * (dn/period) * (Grat3x[i]-dm * lambda * z12/period) * (1-z12/r2));
+				    // Since a[i][1] etc. is actually the ix array, and arrays essentially get passed by reference, this is modifying the ix array.
+				    continue;
+				}
+			}
+		}
+	}
 }
-
 
 double ( * gp2(double zloc, double el1x, double w1x, double r1x, double Grat3x[], double Grat3I[]))
 {
@@ -160,15 +154,18 @@ double ( * gp2(double zloc, double el1x, double w1x, double r1x, double Grat3x[]
     	double xstart = sp.xstart; // what is this? It's negative 200 microns.
     	double xend = sp.xend;
 	double period = 0.0000001;// period of grating - 100 nanometers.
-    	double wedgeangle = sp.wedgeangle; /* Grating wedge angle. The variable alpha below depends on this. This is a free parameter. Appears to be 						    *related to beam splitting.
-					    */
-    	int useimagecharge = sp.useimagecharge; // whether or not to consider image charge effects. 0 for False.
-    	double tilt =sp.tilt; /* A free parameter. Beta variable below depends on this. If beam is perp. to grating, then tilt (and thus Beta) are 0. 				       *This is the twist about the x-axis.
-			       */
-    	double cutoff = sp.cutoff; // at what point does the intensity cut off and be treated as 0. Can also be 5e-5 like in McMorran thesis. Or 0.001.
-    	double eta1 = sp.eta1; /*G1 open fraction; how open the first grating is. With .4 open, a little over than half the muonium should pass 				*through it.
-				*/
-    	double eta2 = sp.eta2; //G2 open fraction; how open the second grating is.
+    	double wedgeangle = sp.wedgeangle;
+    	int useimagecharge = sp.useimagecharge;	// whether or not to consider image charge effects. 0 for False.
+	/* 
+	 * A free parameter. Beta variable below depends on this. If beam is perpendicular to gratings, then tilt (and thus Beta) is 0.
+	 * This is the twist about the x-axis.
+	 */
+    	double tilt =sp.tilt; 
+    	double cutoff = sp.cutoff; 		// The point at which the intensity cuts off and is treated as 0.
+	// G1 open fraction; how open the first grating is. With 0.4 open, a little over than half the muonium should pass through.
+	double eta1 = sp.eta1; 
+	// G2 open fraction; how open the second grating is.
+    	double eta2 = sp.eta2;
     	double lambda = sqrt((1.5 * pow(10,-18))/(energy)); // wavelength we're working with of particles/waves
     	double res = sp.res; // This is the resolution we want this graph at.
     	double eta = width/period; // ratio of slit window 'height' to the period of the gratings
@@ -231,57 +228,55 @@ double ( * gp2(double zloc, double el1x, double w1x, double r1x, double Grat3x[]
     	phix = (double*) calloc(rows, sizeof(double)); // it has same x-positions as Grat3x as shown below
     	phiI = (double*) calloc(rows, sizeof(double)); // it will affect Grat3I array
     
-    for (int i=0; i<rows; i++) {
-      phix[i]= xstart + (i) * ((xend-xstart)/(xpnts-1));
-    }
+	for (int i=0; i<rows; i++) {
+	phix[i]= xstart + (i) * ((xend-xstart)/(xpnts-1));
+	}
     
-    for (int i=0; i<rows; i++) {
-
-        for (int m1=-lim; m1<=lim; m1++) {
-
-            for (int m2=-lim; m2<=lim; m2++) {
-
-                for (int n1=-lim; n1<=lim; n1++) {
-
-                    for (int n2=-lim; n2<=lim; n2++) {
-                        dn =n1-n2;
-                        n = ((double)(n1 + n2))/2;
-                        dm = m1-m2;
-                        m = ((double)(m1 + m2))/2;
-                        a5 = (x2pnts(m1, (int  * )pos));
-                        b = (x2pnts(m2, (int  * )pos));
-                        c5 = (x2pnts(n1, (int  * )pos));
-                        d5 = (x2pnts(n2, (int  * )pos));
-                        
-                        if (useimagecharge==0){ // 0 means ignore image charge effects, 1 means include image charge effects
-                            coef = sinc(eta1 * M_PI * m1) +  0 * _Complex_I;
-                            coef = coef * (sinc(eta1 * M_PI * m2)) +  0 * _Complex_I;
-                        }
-                        else { // assumes G1 is identical to G2
-                            coef = ReT[a5]  +  ImT[a5] * _Complex_I; // 
-                            coef = coef  *  ( (ReT[b]-ImT[b] * _Complex_I) );
-                        }
-                        
-                        coef = coef * (ReT[c5]  +  ImT[c5] * _Complex_I);
-                        coef = coef * (ReT[d5]  +  ImT[d5] * _Complex_I);
-                        // next factor responsible for the twist dependence of visibility
-                        coef=coef * (exp(-M_PI * pow(((dn * sin(theta) * lambda * (z23))/(d2 * el3y)),2)));
-                        coef=coef * (exp(-M_PI * pow((lambda * z23 * (dn * cos(theta)/d2 + dm * z13/(d1*z23))/el3x),2)));
-                        /* a[i][1] only has significant values if coef's real or imag parts are above the cutoff value. Otherwise a is returned as 0 				 * intensity.
-			 */
-                        if (((__real__ coef)>=cutoff) || ((__imag__ coef)>=cutoff)) {
-                            phi = dn * n * (1-z23/v3x) * pow((cos(theta)),2)  +  dn * n * (1-z23/v3y) * pow((sin(theta)),2)  +  dn * m * (1-z13/v3x) * cos(theta);
-                            phi = phi  + (dm * n * (1-z13/v3x) * cos(theta)  +  dm * m * (z13/z23) * (1-z13/v3x));
-                            phi = phi * (2 * M_PI * lambda * z23/(pow(d1,2)));
-                            phi = phi - (2 * M_PI * dn * G2_x/d2);
-                            phiI[i] = ((phi-(2 * M_PI * (phix[i])/d2) * (dn * cos(theta) * (1-z23/v3x)  +  dm * (1-z13/v3x))));
-                            Grat3I[i] = Grat3I[i]  +  ((((__real__ coef) * cos(phiI[i]) - (__imag__ coef) * sin(phiI[i])) * exp(-M_PI * pow(((phix[i]-(lambda * z23/d1) * (n * cos(theta) + m * (z13/z23)))/w3x),2))));
-                        }
-                    }
-                }
-            }
-        }
-    }
-    free(phix);
-    free(phiI);
+	for (int i=0; i<rows; i++) {
+		for (int m1=-lim; m1<=lim; m1++) {
+			for (int m2=-lim; m2<=lim; m2++) {
+				for (int n1=-lim; n1<=lim; n1++) {
+					for (int n2=-lim; n2<=lim; n2++) {
+						dn =n1-n2;
+						n = ((double)(n1 + n2))/2;
+						dm = m1-m2;
+						m = ((double)(m1 + m2))/2;
+						a5 = (x2pnts(m1, (int  * )pos));
+						b = (x2pnts(m2, (int  * )pos));
+						c5 = (x2pnts(n1, (int  * )pos));
+						d5 = (x2pnts(n2, (int  * )pos));
+						// 0 means ignore image charge effects, 1 means include image charge effects
+						if (useimagecharge==0) {
+						    coef = sinc(eta1 * M_PI * m1) +  0 * _Complex_I;
+						    coef = coef * (sinc(eta1 * M_PI * m2)) +  0 * _Complex_I;
+						}
+						else { // assumes G1 is identical to G2
+						    coef = ReT[a5]  +  ImT[a5] * _Complex_I; // 
+						    coef = coef  *  ( (ReT[b]-ImT[b] * _Complex_I) );
+						}
+						
+						coef = coef * (ReT[c5]  +  ImT[c5] * _Complex_I);
+						coef = coef * (ReT[d5]  +  ImT[d5] * _Complex_I);
+						// next factor responsible for the twist dependence of visibility
+						coef=coef * (exp(-M_PI * pow(((dn * sin(theta) * lambda * (z23))/(d2 * el3y)),2)));
+						coef=coef * (exp(-M_PI * pow((lambda * z23 * (dn * cos(theta)/d2 + dm * z13/(d1*z23))/el3x),2)));
+						/*
+						 * a[i][1] only has significant values if the real or imaginary parts of coef are above
+						 * the cutoff value. Otherwise a is returned as 0 intensity.
+						 */
+						if (((__real__ coef)>=cutoff) || ((__imag__ coef)>=cutoff)) {
+						    phi = dn * n * (1-z23/v3x) * pow((cos(theta)),2)  +  dn * n * (1-z23/v3y) * pow((sin(theta)),2)  +  dn * m * (1-z13/v3x) * cos(theta);
+						    phi = phi  + (dm * n * (1-z13/v3x) * cos(theta)  +  dm * m * (z13/z23) * (1-z13/v3x));
+						    phi = phi * (2 * M_PI * lambda * z23/(pow(d1,2)));
+						    phi = phi - (2 * M_PI * dn * G2_x/d2);
+						    phiI[i] = ((phi-(2 * M_PI * (phix[i])/d2) * (dn * cos(theta) * (1-z23/v3x)  +  dm * (1-z13/v3x))));
+						    Grat3I[i] = Grat3I[i]  +  ((((__real__ coef) * cos(phiI[i]) - (__imag__ coef) * sin(phiI[i])) * exp(-M_PI * pow(((phix[i]-(lambda * z23/d1) * (n * cos(theta) + m * (z13/z23)))/w3x),2))));
+						}
+					}
+				}
+	    		}
+		}
+    	}
+	free(phix);
+	free(phiI);
 }
