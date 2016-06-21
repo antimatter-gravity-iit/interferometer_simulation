@@ -266,7 +266,7 @@ double ( * gp2(double zloc, double el1x, double w1x, double r1x, double Grat3x[]
                         coef = coef * (ReT[d5]  +  ImT[d5] * _Complex_I);
                         // next factor responsible for the twist dependence of visibility
                         coef=coef * (exp(-M_PI * pow(((dn * sin(theta) * lambda * (z23))/(d2 * el3y)),2)));
-                        coef=coef * (exp(-M_PI * pow((lambda * z23 * (dn * cos(theta) + dm * z13/z23)/(d1 * el3x)),2)));
+                        coef=coef * (exp(-pi * pow((lambda * z23 * (dn * cos(theta)/d2 + dm * z13/(d1*z23))/el3x),2)));
                         /* a[i][1] only has significant values if coef's real or imag parts are above the cutoff value. Otherwise a is returned as 0 				 * intensity.
 			 */
                         if (((__real__ coef)>=cutoff) || ((__imag__ coef)>=cutoff)) {
