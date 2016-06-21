@@ -1,11 +1,28 @@
 /* 
  * Central Simulator
+ * Copyright (C) 2016 Antimatter Gravity Interferometer Group, Illinois Institute of Technology (IIT). 
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ *
+ * 				*
  *
  * Code inspired by thesis by Dr. Benjamin McMorran
  * Electron Diffraction and Interferometry Using Nanostructures
  * http://gradworks.umi.com/33/52/3352633.html
  *
- * Collaborators:
+ *  Collaborators:
  *     Arthur Romero, 16 July to 24 August 2015
  *         -- Original author
  *     Adam Denchfield, 20 October 2015 to December 2015
@@ -22,23 +39,25 @@
  *     Yuri Rossi Tonin, 6 May 2016 to present
  *         -- Comments tagged with Ycomment
  *
+ * 				*
+ *
  * This central program takes user input for:
  *     electronic or atomic beam type,
  *     inclusion or exclusion of gravitational acceleration,
  *     resolution of output graph,
- *     velocity of particles, 
+ *     velocity of particles,
  *     pitch of gratings,
- *     and intensity or final simulation paths,
- * and calculates simulation parameters in order to perform the simulation with the users desired arguments.
+ *     and choice of intensity profile or final simulation paths,
+ * and calculates simulation parameters in order to perform the simulation with the user's desired arguments.
  *
  * Top-down view of gratings:
  *
  *
- *                                              ---------------------   -> at G2_z = 1,         z2
+ *                                    ---------------------   -> at G2_z = 1,         z2
  *
- *                                              ---------------------   -> at G1_z = 0.000001,  z1
+ *                                    ---------------------   -> at G1_z = 0.000001,  z1
  *
- *                                                (beam going up)
+ *                                       (beam going up)
  */ 
 
 #include <stdio.h>
