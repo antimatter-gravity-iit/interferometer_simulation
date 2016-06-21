@@ -14,7 +14,7 @@
 #include <complex.h>
 #include <limits.h> 		//fix for islimit
 
-double ( * gp0(double z, double Grat3x[], double Grat3I[]))
+void ( * gp0(double z, double Grat3x[], double Grat3I[]))
 // get intensity profile 
 {
 	double xstart = sp.xstart;
@@ -33,7 +33,7 @@ double ( * gp0(double z, double Grat3x[], double Grat3I[]))
 }
 
 
-double ( * gp1(double zloc,double r1,double el1, double w1, double Grat3x[], double Grat3I[]))
+void ( * gp1(double zloc,double r1,double el1, double w1, double Grat3x[], double Grat3I[]))
 // get intensity profile after one grating
 {
 	double z12 = zloc - sp.G1_z;		//z location between 1st and 2nd gratings
@@ -131,7 +131,7 @@ double ( * gp1(double zloc,double r1,double el1, double w1, double Grat3x[], dou
 	}
 }
 
-double ( * gp2(double zloc, double el1x, double w1x, double r1x, double Grat3x[], double Grat3I[]))
+void ( * gp2(double zloc, double el1x, double w1x, double r1x, double Grat3x[], double Grat3I[]))
 {
 	// get intensity profile after two grating
 	double G2_x = sp.G2_x; //x position after second grating
