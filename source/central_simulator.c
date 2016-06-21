@@ -160,6 +160,7 @@ int main(int argc, char *argv[]){
 	// yend.
 	sp.yend = 1.1e-4;
 	sp.height = (sp.g_period / 2) / 1.0e9;
+	// Point at which the intensity cuts off and is treated as 0. Can also be 5e-5 like in McMorran thesis, or 0.001.
 	sp.cutoff = 1e-6;
 	// Scaled logarithmically so they can see where more of the particles go [0] = no, [1] = yes.
 	//sp.logchoice = 0;

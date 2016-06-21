@@ -26,9 +26,9 @@ double ( * gp0(double z, double Grat3x[], double Grat3I[]))
 	w1 = calculate_width(z, sp.initial_radius_of_wavefront_curvature, sp.initial_coherence_width, sp.initial_beamwidth, sp.initial_beamwidth); 
 
 	for(int i=0; i<sp.res; i++) {
-	Grat3x[i]= xstart + (i) * ((xend-xstart)/(sp.res-1)); 	// current x-position at step i is put into a[i][0]
-	jj = pow((Grat3x[i]/w1),2); 				// jj = (xpos/beamwidth)^2 
-	Grat3I[i]=exp(-(M_PI * jj)); 				// a[i][1] is the intensity of the beam at the xposition at step i.
+		Grat3x[i]= xstart + (i) * ((xend-xstart)/(sp.res-1)); 	// current x-position at step i is put into a[i][0]
+		jj = pow((Grat3x[i]/w1),2); 				// jj = (xpos/beamwidth)^2 
+		Grat3I[i]=exp(-(M_PI * jj)); 				// a[i][1] is the intensity of the beam at the xposition at step i.
 	}
 }
 
