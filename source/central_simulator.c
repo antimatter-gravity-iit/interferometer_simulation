@@ -92,9 +92,6 @@
 // sp is the simulation parameters structure that contains all of the simulation dependent variables. The struct is located in Misc.h.
 simparam sp;
 
-// TODO LAcomment: Understand usage and clarify need for keeping. Why remove if it could be altered in a different implementation?
-// "Number of columns of ix array. Remnant of the old code. It's an argument for the gp0, gp1, gp2 functions, but doesn't do anything."
-int col = 2;                                
 // Rows of ReT and ImT arrays; used to calculate phase shift.
 int rowsT = 41;                              
 
