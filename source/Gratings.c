@@ -191,6 +191,13 @@ double ( * gp2(double zloc, double el1x, double w1x, double r1x, double Grat3x[]
     	int b  =0;
     	int c5 =0;
     	int d5=0;
+        double argument_d;
+        double argument_f;
+        double argument_p;
+        double argument_v;
+        double function_d;
+        double function_v;
+
 	/* Explanation of variables:
 	 * w3 = GSM width of beam after the second grating.
 	 * r3 = radius of GSM wavefront curvature after the second grating
@@ -245,6 +252,16 @@ double ( * gp2(double zloc, double el1x, double w1x, double r1x, double Grat3x[]
 						b = (x2pnts(m2, (int  * )pos));
 						c5 = (x2pnts(n1, (int  * )pos));
 						d5 = (x2pnts(n2, (int  * )pos));
+
+						//argument_d corresponds to the argument of equation 18b from McMorran & Cronin 2008. Note that y=0
+                        			argument_d = -M_PI*(pow( phix[i]-lambda*z23*(n*cos(theta)/d2 + m*z13/(d1*z23) ),2 )/pow(w3x,2) + pow((n*sin(theta)*lambda)/(d2*w3y),2));
+                        			//argument_f corresponds to the argument of equation 18c from McMorran & Cronin 2008. Note that y=0
+                        			argument_f = -2*M_PI * phix[i] * ((dn*cos(theta)/d2)*(1-z23/v3x) + (dm/d1)*(1-z13/v3x));
+                        			//argument_p corresponds to the argument of equation 18d from McMorran & Cronin 2008
+                        			argument_p = (2*M_PI*lambda*z13*dm/d1)*(n*cos(theta)/d2 + m/d1)*(1-z13/v3x) +     (2*M_PI*lambda*z23*dn/d2)*( (m*cos(theta)/d1) * (1-z13/v3x) - (n*z23/d2)*(pow(cos(theta),2)/v3x)+pow(sin(theta),2)/v3y ) ;
+                        			//argument_v corresponds to the argument of equation 18e from McMorran & Cronin 2008
+                        			argument_v = -M_PI* pow(lambda*z23* (dn*cos(theta)/d2 + dm*z13/(d1*z23)),2)/pow(el3x,2) -M_PI*pow(dn*sin(theta)*lambda*z23/(d2*el3y),2);
+
 						// 0 means ignore image charge effects, 1 means include image charge effects
 						if (useimagecharge==0) {
 						    coef = sinc(eta1 * M_PI * m1) +  0 * _Complex_I;
@@ -256,21 +273,15 @@ double ( * gp2(double zloc, double el1x, double w1x, double r1x, double Grat3x[]
 						}
 						
 						coef = coef * (ReT[c5]  +  ImT[c5] * _Complex_I);
-						coef = coef * (ReT[d5]  +  ImT[d5] * _Complex_I);
-						// next factor responsible for the twist dependence of visibility
-						coef=coef * (exp(-M_PI * pow(((dn * sin(theta) * lambda * (z23))/(d2 * el3y)),2)));
-						coef=coef * (exp(-M_PI * pow((lambda * z23 * (dn * cos(theta)/d2 + dm * z13/(d1*z23))/el3x),2)));
-						/*
-						 * a[i][1] only has significant values if the real or imaginary parts of coef are above
-						 * the cutoff value. Otherwise a is returned as 0 intensity.
-						 */
+						coef = coef * (ReT[d5]  -  ImT[d5] * _Complex_I);
+						
 						if (((__real__ coef)>=cutoff) || ((__imag__ coef)>=cutoff)) {
-						    phi = dn * n * (1-z23/v3x) * pow((cos(theta)),2)  +  dn * n * (1-z23/v3y) * pow((sin(theta)),2)  +  dn * m * (1-z13/v3x) * cos(theta);
-						    phi = phi  + (dm * n * (1-z13/v3x) * cos(theta)  +  dm * m * (z13/z23) * (1-z13/v3x));
-						    phi = phi * (2 * M_PI * lambda * z23/(pow(d1,2)));
-						    phi = phi - (2 * M_PI * dn * G2_x/d2);
-						    phiI[i] = ((phi-(2 * M_PI * (phix[i])/d2) * (dn * cos(theta) * (1-z23/v3x)  +  dm * (1-z13/v3x))));
-						    Grat3I[i] = Grat3I[i]  +  ((((__real__ coef) * cos(phiI[i]) - (__imag__ coef) * sin(phiI[i])) * exp(-M_PI * pow(((phix[i]-(lambda * z23/d1) * (n * cos(theta) + m * (z13/z23)))/w3x),2))));
+						    
+                        			function_d = exp(argument_d);                      
+                        			function_v = exp(argument_v);
+                        			phiI[i] = argument_f + argument_p;
+                        
+                        			Grat3I[i] = Grat3I[i]  +  ((__real__ coef) * cos(phiI[i]) - (__imag__ coef) * sin(phiI[i]))*function_d*function_v ;
 						}
 					}
 				}
