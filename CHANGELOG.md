@@ -38,7 +38,7 @@ File: **central_simulator.c**
 - Rewrote values in scientific notation.
 
 File: **Gratings.c**, **Gratings.h**
-- Changed **gp0**, **gp1** and **gp2** function types to void (they do not return anything).
+- Changed *gp0*, *gp1* and *gp2* function types to void (they do not return anything).
 
 File: **Gratings.c**, **PhaseShifts.c**
 - Replaced definition of *pi* by standard *math.h* library *M_PI* constant.
