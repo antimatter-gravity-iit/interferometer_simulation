@@ -92,7 +92,7 @@ Other build options
 ------------------------------------------------------------
 These are all the targets you can supply to the "make" command (step 3 above):
 	
-	all             builds the usual program plus the test program (default)
+    all             builds the usual program plus the test program (default)
     program         builds the usual program only
     sptest          builds a test program for SimplePlot Misc.c BeamParams.c Gratings.c PhaseShifts.c
     debug_program   builds usual program with added debugging information (necessary for gdb) and extra warnings

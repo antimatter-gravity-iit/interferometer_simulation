@@ -60,7 +60,11 @@ double *ixgenerator(double a[], double zloc, int logchoice, int rows)
     double realzloc = zloc / 36.075;
 
     for (int i=0; i<rows; i++) {
-        /* HALF-LIFE DECAY - means normalizing the intensity at the point i to what the intensity should be after a certain time t. This will be 	  *approximated by substituting distance, zloc, for t; x = vt, v = 6300, so t = x/6300. In this case it's z instead of x. Since the electrons 		 *should become more and more as the antimuons decay, we actually want the electron presence to start out small, then go up.
+        /*
+	 * HALF-LIFE DECAY - means normalizing the intensity at the point i to what the intensity should be after a certain time t.
+	 * This will be approximated by substituting distance, zloc, for t; x = vt, v = 6300, so t = x/6300.
+	 * In this case it's z instead of x. Since the electrons should become more and more as the antimuons decay, we actually want
+	 * the electron presence to start out small, then go up.
 	 */
 
         // Modeling electrons:
