@@ -131,7 +131,8 @@ int main(int argc, char *argv[]){
 	sp.useimagecharge = 0;
 	sp.eta1 = 0.4;
 	sp.eta2 = 0.4;
-	sp.g_period = atoi(argv[5]);
+	// The period is inputted in nanometers (e.g. 100), but the program uses it in meters (e.g. 100.0e-9 == 1.0e-7).
+	sp.g_period = atof(argv[5]) / 1.0e9;
 	sp.initial_radius_of_wavefront_curvature = -4.04;
 	sp.initial_coherence_width = 1.0e-6;
         sp.initial_beamwidth = 3.0e-5;
@@ -156,7 +157,8 @@ int main(int argc, char *argv[]){
 	sp.ystart = -1.1e-4;
 	// yend.
 	sp.yend = 1.1e-4;
-	sp.height = (sp.g_period / 2) / 1.0e9;
+	// The height of each grating is calculated as half the grating period (distance between gratings).
+	sp.height = sp.g_period / 2;
 	// Point at which the intensity cuts off and is treated as 0. Can also be 5e-5 like in McMorran thesis, or 0.001.
 	sp.cutoff = 1e-6;
 	// Scaled logarithmically so they can see where more of the particles go [0] = no, [1] = yes.
