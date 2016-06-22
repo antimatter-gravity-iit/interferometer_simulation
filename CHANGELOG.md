@@ -6,7 +6,60 @@ Summary of changes made since Summer 2016.
 
 - Changes are summarized across sequences of commits, with the final commit from each sequence being identified by hash number.
 
-## [2016-06-16](https://github.com/lnevesabrantes/interferometer_simulation/commit/9fede859df7ec4bcda48c86f521227b0ff8394de) (current)
+## [2016-06-21] (https://github.com/lnevesabrantes/interferometer_simulation/commit/663a437f54a43c88441e7b6c4a204903ba36610d) (current)
+Commit **663a437f54a43c88441e7b6c4a204903ba36610d**
+
+**One-line summary:** partial rewrite of function *gp2*, merge and correction of *w* and *el* functions and addition of timers.
+
+Files: **BeamParams.c**, **BeamParams.h**, **central_simulator.c**, **Gratings.c**, **Gratings.h**, **Misc.h**
+- Merged former functions *w* (that calculated the beamwidth) and *el* (that calculated the coherence width) into a single C function called *calculate_width*. 
+The formulas for these parameters (found in [McMorran 2008](http://journals.aps.org/pra/abstract/10.1103/PhysRevA.78.013601))
+are the same, except for a multiplicative factor that represents the initial value of the width being calculated.
+In the previous versions of the code, both widths were always assigned the same value (i.e., **the beam was taken 
+to be perfectly coherent**), because the coefficient in the two functions was identical.
+The new function contains an extra parameter, which is used as the coefficient in the physical formula,
+so it returns the correct value for each parameter when correctly called.
+- Updated function declarations and calls, and added explanatory comments. Notice that the formal arguments of function *gp1* weren't changed, but a comment on their nomenclature was included.
+
+Files: **central_simulator.c**, **Gratings.c**, **Misc.h**
+- Renamed variables:
+  - w0 → initial_beamwidth
+  - el0 → initial_coherence_width
+  - r0 → initial_radius_of_wavefront_curvature
+
+File: **central_simulator.c**, **Gratings.c**
+- A timer was added inside each of the functions *gp0*, *gp1* and *gp2* to compute the time spent in each function call.
+The program prints both that information and a message indicating which iteration of the various *for* loops
+it is currently in.
+
+File: **central_simulator.c**
+- Added copyright notice to central simulator source code;
+- Removed line *int col = 2* (unused variable);
+- Rewrote values in scientific notation.
+
+File: **Gratings.c**, **Gratings.h**
+- Changed *gp0*, *gp1* and *gp2* function types to void (they do not return anything).
+
+File: **Gratings.c**, **PhaseShifts.c**
+- Replaced definition of *pi* by standard *math.h* library *M_PI* constant.
+
+File: **Gratings.c**
+- The sequence of *if* statements on lines 125 - 129 was rewritten as an if-else sequence;
+- Line 269: equation rewritten to account for the case when *d1* doesn't equal *d2*, folowing [McMorran 2008](http://journals.aps.org/pra/abstract/10.1103/PhysRevA.78.013601) equation 18e;
+- Equations in *gp2* were rewritten: six new variables were created to make the code more readable and
+to be more consistent with [McMorran 2008](http://journals.aps.org/pra/abstract/10.1103/PhysRevA.78.013601).
+They are *argument_d*, *argument_f*, *argument_p*, and *argument_v*, representing the arguments of the
+exponential functions 18b, c, d, and e, respectively, according to the numbering in the article.
+The two other variables (*function_d* and *function_v*) hold the value of the exponentials
+in 18b and 18e (lines 280 and 281). The former implementation
+had typos and included some obscure terms (i.e. *G2_x*) taken from the original IGOR PRO code, the origin and meaning of
+which is unclear. **All these equations now match with the article**.
+
+Files: various
+- Standardized indentation and block comments;
+- Added variable explanations.
+ 
+## [2016-06-16](https://github.com/lnevesabrantes/interferometer_simulation/commit/9fede859df7ec4bcda48c86f521227b0ff8394de)
 Commit **9fede859df7ec4bcda48c86f521227b0ff8394de**
 
 **One-line summary:** added info files, corrected math error in GSM simulation, and allowed choice of scale.
