@@ -18,7 +18,7 @@
 void ( * gp0(double z, double Grat3x[], double Grat3I[]))
 // get intensity profile 
 {
-	time_t start, end; //starting a timer to get the time spent in function gp0
+	clock_t start, end; //starting a timer to get the time spent in function gp0
 	start = clock();
 	double diff=0;
 
@@ -37,7 +37,7 @@ void ( * gp0(double z, double Grat3x[], double Grat3I[]))
 	}
 
 	end = clock();
-	diff =((double) (end - start));
+	diff =((double) (end - start))/ CLOCKS_PER_SEC;
 	//printf("%f\n",diff); //printing the time spent in gp0.
 }
 
@@ -45,7 +45,7 @@ void ( * gp0(double z, double Grat3x[], double Grat3I[]))
 void ( * gp1(double zloc,double r1,double el1, double w1, double Grat3x[], double Grat3I[]))
 // get intensity profile after one grating
 {
-	time_t start, end; //starting a timer to get the time spent in function gp1
+	clock_t start, end; //starting a timer to get the time spent in function gp1
 	start = clock();
 	double diff=0;
 
@@ -144,14 +144,14 @@ void ( * gp1(double zloc,double r1,double el1, double w1, double Grat3x[], doubl
 	}
 
 	end = clock();
-	diff =((double) (end - start));
+	diff =((double) (end - start))/ CLOCKS_PER_SEC;
 	//printf("%f\n",diff); //printing the time spent in gp1.
 
 }
 
 void ( * gp2(double zloc, double el1x, double w1x, double r1x, double Grat3x[], double Grat3I[]))
 {	
-	time_t start, end; //starting a timer to get the time spent in function gp2
+	clock_t start, end; //starting a timer to get the time spent in function gp2
 	start = clock();
 	double diff=0;
 
@@ -288,12 +288,12 @@ void ( * gp2(double zloc, double el1x, double w1x, double r1x, double Grat3x[], 
 
 						// 0 means ignore image charge effects, 1 means include image charge effects
 						if (useimagecharge==0) {
-						    coef = sinc(eta1 * M_PI * m1) +  0 * _Complex_I;
-						    coef = coef * (sinc(eta1 * M_PI * m2)) +  0 * _Complex_I;
+							coef = sinc(eta1 * M_PI * m1) +  0 * _Complex_I;
+							coef = coef * (sinc(eta1 * M_PI * m2)) +  0 * _Complex_I;
 						}
 						else { // assumes G1 is identical to G2
-						    coef = ReT[a5]  +  ImT[a5] * _Complex_I; // 
-						    coef = coef  *  ( (ReT[b]-ImT[b] * _Complex_I) );
+							coef = ReT[a5]  +  ImT[a5] * _Complex_I; // 
+							coef = coef  *  ( (ReT[b]-ImT[b] * _Complex_I) );
 						}
 						
 						coef = coef * (ReT[c5]  +  ImT[c5] * _Complex_I);
@@ -301,11 +301,11 @@ void ( * gp2(double zloc, double el1x, double w1x, double r1x, double Grat3x[], 
 						
 						if (((__real__ coef)>=cutoff) || ((__imag__ coef)>=cutoff)) {
 						    
-                        			function_d = exp(argument_d);                      
-                        			function_v = exp(argument_v);
-                        			phiI[i] = argument_f + argument_p;
+                        				function_d = exp(argument_d);                      
+                        				function_v = exp(argument_v);
+                        				phiI[i] = argument_f + argument_p;
                         
-                        			Grat3I[i] = Grat3I[i]  +  ((__real__ coef) * cos(phiI[i]) - (__imag__ coef) * sin(phiI[i]))*function_d*function_v ;
+                        				Grat3I[i] = Grat3I[i]  +  ((__real__ coef) * cos(phiI[i]) - (__imag__ coef) * sin(phiI[i]))*function_d*function_v ;
 						}
 					}
 				}
@@ -320,6 +320,6 @@ void ( * gp2(double zloc, double el1x, double w1x, double r1x, double Grat3x[], 
 	free(phiI);
 
 	end = clock();
-	diff =((double) (end - start));
+	diff =((double) (end - start))/ CLOCKS_PER_SEC;
 	//printf("%f\n",diff); //printing the time spent in gp2.
 }
