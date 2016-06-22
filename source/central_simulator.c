@@ -1,11 +1,28 @@
 /* 
  * Central Simulator
+ * Copyright (C) 2016 Antimatter Gravity Interferometer Group, Illinois Institute of Technology (IIT). 
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ *
+ * 				*
  *
  * Code inspired by thesis by Dr. Benjamin McMorran
  * Electron Diffraction and Interferometry Using Nanostructures
  * http://gradworks.umi.com/33/52/3352633.html
  *
- * Collaborators:
+ *  Collaborators:
  *     Arthur Romero, 16 July to 24 August 2015
  *         -- Original author
  *     Adam Denchfield, 20 October 2015 to December 2015
@@ -22,23 +39,25 @@
  *     Yuri Rossi Tonin, 6 May 2016 to present
  *         -- Comments tagged with Ycomment
  *
+ * 				*
+ *
  * This central program takes user input for:
  *     electronic or atomic beam type,
  *     inclusion or exclusion of gravitational acceleration,
  *     resolution of output graph,
- *     velocity of particles, 
+ *     velocity of particles,
  *     pitch of gratings,
- *     and intensity or final simulation paths,
- * and calculates simulation parameters in order to perform the simulation with the users desired arguments.
+ *     and choice of intensity profile or final simulation paths,
+ * and calculates simulation parameters in order to perform the simulation with the user's desired arguments.
  *
  * Top-down view of gratings:
  *
  *
- *                                              ---------------------   -> at G2_z = 1,         z2
+ *                                    ---------------------   -> at G2_z = 1,         z2
  *
- *                                              ---------------------   -> at G1_z = 0.000001,  z1
+ *                                    ---------------------   -> at G1_z = 0.000001,  z1
  *
- *                                                (beam going up)
+ *                                       (beam going up)
  */ 
 
 #include <stdio.h>
@@ -73,9 +92,6 @@
 // sp is the simulation parameters structure that contains all of the simulation dependent variables. The struct is located in Misc.h.
 simparam sp;
 
-// TODO LAcomment: Understand usage and clarify need for keeping. Why remove if it could be altered in a different implementation?
-// "Number of columns of ix array. Remnant of the old code. It's an argument for the gp0, gp1, gp2 functions, but doesn't do anything."
-int col = 2;                                
 // Rows of ReT and ImT arrays; used to calculate phase shift.
 int rowsT = 41;                              
 
@@ -105,24 +121,26 @@ int main(int argc, char *argv[]){
 	sp.elecOrAtom = atoi(argv[2]);
 	// Velocity of particle.
 	sp.vel = atoi(argv[4]);
-	sp.energy = ((1.5 * pow(10,-18))/(pow(0.00000000001,2))) * (1);
+	// Why was it defined like this? This equation seems to come from DeBroglie's model.
+	sp.energy = 1.5e-18 / pow(1e-11,2) * (1);
+	// sp.energy = 1.5e4
 	sp.simchoice = atoi(argv[6]);
 	// TODO LAcomment: add comment explaining why this 'if' exists.
 	if(sp.simchoice == 1)
 	sp.logchoice = atoi(argv[7]);
 	sp.useimagecharge = 0;
-	sp.eta1 = .4;
-	sp.eta2 = .4;
+	sp.eta1 = 0.4;
+	sp.eta2 = 0.4;
 	sp.g_period = atoi(argv[5]);
-	sp.r0 = -4.04;
-	sp.el0 = 0.000001;
-	sp.w0 =	0.00003;
-	sp.G1_z = 0.000001;
-	sp.G2_z = 1;
-	sp.G2_x = 0.00000005;
-	sp.theta = 0.000001;
-	sp.thick = 0.000000014;
-	sp.Gthick = 1000;
+	sp.initial_radius_of_wavefront_curvature = -4.04;
+	sp.initial_coherence_width = 1.0e-6;
+        sp.initial_beamwidth = 3.0e-5;
+	sp.G1_z = 1.0e-6;
+	sp.G2_z = 1.0;
+	sp.G2_x = 5e-8;
+	sp.theta = 1e-6;
+	sp.thick = 1.4e-8;
+	sp.Gthick = 1.0e3;
 	// Wedge angle.
 	sp.wedgeangle =	0;
 	// Tilt.
@@ -131,15 +149,16 @@ int main(int argc, char *argv[]){
 	sp.res = atoi(argv[3]);
 	sp.zstart = -0.1;
 	sp.zend = 2.1;
-	sp.xstart = -0.00020;
+	sp.xstart = -2.0e-4;
 	// xend.
-	sp.xend = 0.00020;
+	sp.xend = 2.0e-4;
 	// ystart.
-	sp.ystart = -0.00011;
+	sp.ystart = -1.1e-4;
 	// yend.
-	sp.yend = 0.00011;
-	sp.height = (sp.g_period / 2) / 1000000000;
-	sp.cutoff = 0.000001;
+	sp.yend = 1.1e-4;
+	sp.height = (sp.g_period / 2) / 1.0e9;
+	// Point at which the intensity cuts off and is treated as 0. Can also be 5e-5 like in McMorran thesis, or 0.001.
+	sp.cutoff = 1e-6;
 	// Scaled logarithmically so they can see where more of the particles go [0] = no, [1] = yes.
 	//sp.logchoice = 0;
 	
@@ -179,10 +198,10 @@ int main(int argc, char *argv[]){
 	 *  Note that they all output a double.
 	 */
 		
-	double w1 = w(sp.G1_z, sp.r0, sp.el0, sp.w0); 		
-    	double r1 = v(sp.G1_z, sp.r0, sp.el0, sp.w0); 	
-    	double el1 = el(sp.G1_z, sp.r0, sp.el0, sp.w0); 
- 
+	double w1 = calculate_width(sp.G1_z, sp.initial_radius_of_wavefront_curvature, sp.initial_coherence_width, sp.initial_beamwidth, sp.initial_beamwidth);
+	double el1 = calculate_width(sp.G1_z, sp.initial_radius_of_wavefront_curvature, sp.initial_coherence_width, sp.initial_beamwidth, sp.initial_coherence_width);
+	double r1 = v(sp.G1_z, sp.initial_radius_of_wavefront_curvature, sp.initial_coherence_width, sp.initial_beamwidth);
+
 	// Follow this indent structure in the future.
 	if (sp.simchoice == 1) {
 		sp.logchoice = atoi(argv[7]);
@@ -231,6 +250,7 @@ int main(int argc, char *argv[]){
 		 *		 x intensity profile.
 		 */
 		if (zloc > sp.G2_z) { 
+			//printf("Entering gp2 for row equal to %d\n",i); //checking if the looping is working
 			// If the location is above G2_z [which is currently 1]:
 			gp2(zloc, el1, w1, r1, Grat3x, Grat3I); 
 			/* 
@@ -252,6 +272,7 @@ int main(int argc, char *argv[]){
 		}
 		else if (zloc > sp.G1_z) {
 			// If interacting with the first grating, calculates intensity profile.
+			//printf("Entering gp1 for row equal to %d\n",i); //checking if the looping is working
 			gp1(zloc, r1, el1, w1, Grat3x, Grat3I); 
 			// Max value of intensity calculated here.
 			max = maximumvalue(Grat3I, rows); 
@@ -260,7 +281,9 @@ int main(int argc, char *argv[]){
 		}
 		else {
 			// Simple GSM propagation until it hits the first grating.
+			//printf("Entering gp0 for row equal to %d\n",i); //checking if the looping is working
 			gp0(zloc,Grat3x, Grat3I);
+		
 			// If at the origin?
 			max = maximumvalue(Grat3I, rows); 
 			// As before.
