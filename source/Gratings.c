@@ -119,14 +119,8 @@ void ( * gp1(double zloc,double r1,double el1, double w1, double Grat3x[], doubl
 				// TODO: explain what n, m, dm, dn are. LR, Y 
 				double dm = (m + n)/2;
 
-				if (useimagecharge==0) { // if useimagecharge = 0, ignore image charge effects at G1. 
-					coef = sinc(eta1 * M_PI * n)  *  (sinc(eta1 * M_PI * m) * pow((eta1), 2));
-				}
-
-				else { // if usechargeimage = 1, don't ignore image charge effects at G1.
-					coef = ReT[x2pnts(n, (int * )pos)] * ReT[x2pnts(m,(int * )pos)] + ImT[x2pnts(n,(int * )pos)] * ImT[x2pnts(m,(int * )pos)];
-				}
-
+				coef = ReT[x2pnts(n, (int * )pos)] * ReT[x2pnts(m,(int * )pos)] + ImT[x2pnts(n,(int * )pos)] * ImT[x2pnts(m,(int * )pos)];
+				
 				// lambda is the wavelength of our particles/waves
 				coef = coef * exp(-M_PI * pow((dn * lambda * z12)/(period * el2),2));
 				// added isfinite macro in order to avoid inf values
@@ -286,16 +280,8 @@ void ( * gp2(double zloc, double el1x, double w1x, double r1x, double Grat3x[], 
                         			//argument_v corresponds to the argument of equation 18e from McMorran & Cronin 2008
                         			argument_v = -M_PI* pow(lambda*z23* (dn*cos(theta)/d2 + dm*z13/(d1*z23)),2)/pow(el3x,2) -M_PI*pow(dn*sin(theta)*lambda*z23/(d2*el3y),2);
 
-						// 0 means ignore image charge effects, 1 means include image charge effects
-						if (useimagecharge==0) {
-							coef = sinc(eta1 * M_PI * m1) +  0 * _Complex_I;
-							coef = coef * (sinc(eta1 * M_PI * m2)) +  0 * _Complex_I;
-						}
-						else { // assumes G1 is identical to G2
-							coef = ReT[a5]  +  ImT[a5] * _Complex_I; // 
-							coef = coef  *  ( (ReT[b]-ImT[b] * _Complex_I) );
-						}
-						
+						coef = ReT[a5]  +  ImT[a5] * _Complex_I; 
+						coef = coef  *  ( (ReT[b]-ImT[b] * _Complex_I) );						
 						coef = coef * (ReT[c5]  +  ImT[c5] * _Complex_I);
 						coef = coef * (ReT[d5]  -  ImT[d5] * _Complex_I);
 						
