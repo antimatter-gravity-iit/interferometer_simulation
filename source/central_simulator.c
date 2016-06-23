@@ -257,7 +257,7 @@ int main(int argc, char *argv[]){
 		 *		 x intensity profile.
 		 */
 		if (zloc > sp.G2_z) { 
-			//printf("Entering gp2 for row equal to %d\n",i); //checking if the looping is working
+			printf("Entering gp2 for row z = %d\n",i); //checking if the looping is working
 			// If the location is above G2_z [which is currently 1]:
 			gp2(zloc, el1, w1, r1, Grat3x, Grat3I); 
 			/* 
@@ -279,7 +279,7 @@ int main(int argc, char *argv[]){
 		}
 		else if (zloc > sp.G1_z) {
 			// If interacting with the first grating, calculates intensity profile.
-			//printf("Entering gp1 for row equal to %d\n",i); //checking if the looping is working
+			printf("Entering gp1 for row z = %d\n",i); //checking if the looping is working
 			gp1(zloc, r1, el1, w1, Grat3x, Grat3I); 
 			// Max value of intensity calculated here.
 			max = maximumvalue(Grat3I, rows); 
@@ -288,7 +288,7 @@ int main(int argc, char *argv[]){
 		}
 		else {
 			// Simple GSM propagation until it hits the first grating.
-			//printf("Entering gp0 for row equal to %d\n",i); //checking if the looping is working
+			printf("Entering gp0 for row z = %d\n",i); //checking if the looping is working
 			gp0(zloc,Grat3x, Grat3I);
 		
 			// If at the origin?

@@ -37,7 +37,7 @@ void ( * gp0(double z, double Grat3x[], double Grat3I[]))
 
 	end = clock();
 	diff =((double) (end - start))/ CLOCKS_PER_SEC;
-	//printf("%f\n",diff); //printing the time spent in gp0.
+	printf("Time elapsed: %f seconds\n",diff); //printing the time spent in gp0.
 }
 
 
@@ -133,7 +133,7 @@ void ( * gp1(double zloc,double r1,double el1, double w1, double Grat3x[], doubl
 
 	end = clock();
 	diff =((double) (end - start))/ CLOCKS_PER_SEC;
-	//printf("%f\n",diff); //printing the time spent in gp1.
+	printf("Time elapsed: %f seconds\n",diff); //printing the time spent in gp1.
 
 }
 
@@ -296,5 +296,5 @@ void ( * gp2(double zloc, double el1x, double w1x, double r1x, double Grat3x[], 
 
 	end = clock();
 	diff =((double) (end - start))/ CLOCKS_PER_SEC;
-	//printf("%f\n",diff); //printing the time spent in gp2.
+	printf("Time elapsed: %f seconds\n",diff); //printing the time spent in gp2.
 }
