@@ -30,7 +30,7 @@ void ( * gp0(double z, double Grat3x[], double Grat3I[]))
 	// Width of incoming beam, calculated from initial parameters.
 	w1 = calculate_width(z, sp.initial_radius_of_wavefront_curvature, sp.initial_coherence_width, sp.initial_beamwidth, sp.initial_beamwidth); 
 
-	for(int i=0; i<sp.res; i++) {
+	for(int i=0; i<sp.resolution; i++) {
 		jj = pow((Grat3x[i]/w1),2); 				// jj = (xpos/beamwidth)^2 
 		Grat3I[i]=exp(-(M_PI * jj)); 				// a[i][1] is the intensity of the beam at the xposition at step i.
 	}
@@ -50,7 +50,7 @@ void ( * gp1(double zloc,double r1,double el1, double w1, double Grat3x[], doubl
 
 	double z12 = zloc - sp.G1_z;		//z location between 1st and 2nd gratings
 	double energy = sp.energy;
-	int rows = sp.res;
+	int rows = sp.resolution;
 	double vel = sp.vel;
 	int xpnts = rows;
 	double width = rows;
@@ -149,7 +149,7 @@ void ( * gp2(double zloc, double el1x, double w1x, double r1x, double Grat3x[], 
 	double el1y = el1x;
     
 	double vel = sp.vel;
-	int rows = sp.res;
+	int rows = sp.resolution;
 	int xpnts = rows;
 	double width = sp.height;
 	double abszloc = zloc;
@@ -175,7 +175,7 @@ void ( * gp2(double zloc, double el1x, double w1x, double r1x, double Grat3x[], 
 	// G2 open fraction; how open the second grating is.
     	double eta2 = sp.eta2;
     	double lambda = sqrt((1.5 * pow(10,-18))/(energy)); // wavelength we're working with of particles/waves
-    	double res = sp.res; // This is the resolution we want this graph at.
+    	double resolution = sp.resolution; // This is the resolution we want this graph at.
     	double eta = width/period; // ratio of slit window 'height' to the period of the gratings
         double alpha = wedgeangle * M_PI/180;
     	double beta = tilt * M_PI; // 0 if beam is normal to gratings
