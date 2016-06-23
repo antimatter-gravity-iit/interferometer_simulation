@@ -51,7 +51,6 @@ void ( * gp1(double zloc,double r1,double el1, double w1, double Grat3x[], doubl
 	double z12 = zloc - sp.G1_z;		//z location between 1st and 2nd gratings
 	double energy = sp.energy;
 	int rows = sp.res;
-	int elecOrAtom = sp.elecOrAtom;
 	double vel = sp.vel;
 	int xpnts = rows;
 	double width = rows;
@@ -101,10 +100,10 @@ void ( * gp1(double zloc,double r1,double el1, double w1, double Grat3x[], doubl
 
 	double ReT[41]={0};
 	int RealorIm = 1;
-	ReTandImTgenerator(ReT,energy, elecOrAtom, RealorIm, vel, width, abszloc, accountGrav); // calculates phase shift
+	ReTandImTgenerator(ReT,energy, RealorIm, vel, width, abszloc, accountGrav); // calculates phase shift
 	RealorIm = 2;
 	double ImT[41]={0};
-	ReTandImTgenerator(ImT,energy, elecOrAtom, RealorIm, vel, width, abszloc, accountGrav); // calculates phase shift for imaginary part
+	ReTandImTgenerator(ImT,energy, RealorIm, vel, width, abszloc, accountGrav); // calculates phase shift for imaginary part
 
 	for (int i=0; i<rows; i++) { 
 		for (int n=-lim; n<=lim; n++) {
@@ -149,7 +148,6 @@ void ( * gp2(double zloc, double el1x, double w1x, double r1x, double Grat3x[], 
 	double w1y = w1x;
 	double el1y = el1x;
     
-	int elecOrAtom = sp.elecOrAtom;
 	double vel = sp.vel;
 	int rows = sp.res;
 	int xpnts = rows;
@@ -230,10 +228,10 @@ void ( * gp2(double zloc, double el1x, double w1x, double r1x, double Grat3x[], 
     	// array of 41 0's for now.
     	// array of 41 0's for now.
     	int RealorIm = 1; 
-    	ReTandImTgenerator(ReT,energy, elecOrAtom, RealorIm, vel, width, abszloc, accountGrav); 
+    	ReTandImTgenerator(ReT,energy, RealorIm, vel, width, abszloc, accountGrav); 
     	double ImT[41]={0};
     	RealorIm = 2;
-    	ReTandImTgenerator(ImT,energy, elecOrAtom, RealorIm, vel, width, abszloc, accountGrav); 
+    	ReTandImTgenerator(ImT,energy, RealorIm, vel, width, abszloc, accountGrav); 
     
     	double *phix;
     	double *phiI;

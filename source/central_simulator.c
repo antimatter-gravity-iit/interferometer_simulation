@@ -105,34 +105,36 @@ int rowsT = 41;
  *
  * List of elements of argv[x], in the format "<position>. <explanation>": 
  * 1. Account for gravity? 1 = True, 0 = False.
- * 2. Electron beam or atom beam? Electron beam = 1, Atom beam = 2. ELECTRON BEAM NOT MODELED!!!
- * 3. Resolution [300-400 recommended]. 
- * 4. Velocity of particles in m/s.
- * 5. Pitch of gratings [in nm] 
- * 6. Output the total simulation [1]? or the final interference pattern [2]?
- * 7. (if argv[6] == 1), logscale [1] or normal scale [0]?
+ * 2. Resolution [300-400 recommended]. 
+ * 3. Velocity of particles in m/s.
+ * 4. Pitch of gratings [in nm] 
+ * 5. Output the total simulation [1]? or the final interference pattern [2]?
+ * 6. (if argv[6] == 1), logscale [1] or normal scale [0]?
  */
  
 int main(int argc, char *argv[]){ 
 
 	// TODO LAcomment: rename variables and if necessary add brief comments. Verify if existing comments are needed.
 	// Initializing all simulator parameters by either default values or argument values. Variable definitions and comments are in misc.h.
+	// Account for gravity? 1 = True, 0 = False.
 	sp.accountGrav = atoi(argv[1]);
-	sp.elecOrAtom = atoi(argv[2]);
+	// Resolution.
+	sp.resolution = atoi(argv[2]);
 	// Velocity of particle.
-	sp.vel = atoi(argv[4]);
+	sp.vel = atoi(argv[3]);
+	// The period is inputted in nanometers (e.g. 100), but the program uses it in meters (e.g. 100.0e-9 == 1.0e-7).
+	sp.g_period = atof(argv[4]) / 1.0e9;
+	// Output the total simulation [1]? or the final interference pattern [2]?
+	sp.simchoice = atoi(argv[5]);
+	// TODO LAcomment: add comment explaining why this 'if' exists.
+	if(sp.simchoice == 1)
+	sp.logchoice = atoi(argv[6]);
 	// Why was it defined like this? This equation seems to come from DeBroglie's model.
 	sp.energy = 1.5e-18 / pow(1e-11,2) * (1);
 	// sp.energy = 1.5e4
-	sp.simchoice = atoi(argv[6]);
-	// TODO LAcomment: add comment explaining why this 'if' exists.
-	if(sp.simchoice == 1)
-	sp.logchoice = atoi(argv[7]);
 	sp.useimagecharge = 0;
 	sp.eta1 = 0.4;
 	sp.eta2 = 0.4;
-	// The period is inputted in nanometers (e.g. 100), but the program uses it in meters (e.g. 100.0e-9 == 1.0e-7).
-	sp.g_period = atof(argv[5]) / 1.0e9;
 	sp.initial_radius_of_wavefront_curvature = -4.04;
 	sp.initial_coherence_width = 1.0e-6;
         sp.initial_beamwidth = 3.0e-5;
@@ -146,8 +148,6 @@ int main(int argc, char *argv[]){
 	sp.wedgeangle =	0;
 	// Tilt.
 	sp.tilt = 0; 
-	// Resolution.
-	sp.res = atoi(argv[3]);
 	sp.zstart = -0.1;
 	sp.zend = 2.1;
 	sp.xstart = -2.0e-4;
@@ -172,10 +172,10 @@ int main(int argc, char *argv[]){
 	
 	double *Grat3I;							// Intensity array.
     	double *Grat3x;							// Array of x position of intensity.
-	Grat3I = (double*) calloc(sp.res, sizeof(double)); 		// Allocate dynamic memory for intensity array.
-	Grat3x = (double*) calloc(sp.res, sizeof(double)); 		// Allocate dynamic memory for horizontal position array.
+	Grat3I = (double*) calloc(sp.resolution, sizeof(double)); 		// Allocate dynamic memory for intensity array.
+	Grat3x = (double*) calloc(sp.resolution, sizeof(double)); 		// Allocate dynamic memory for horizontal position array.
 	int zlocstart;							// Where z position begins.
-	int rows = sp.res;						// Numbers of horizontal component arrays of full simulation graph.
+	int rows = sp.resolution;						// Numbers of horizontal component arrays of full simulation graph.
 	double max;							// Stores computed max value of intensity at a specific x location.
 		
     	// TODO LAcomment: make sense of these and rename variables accordingly.
@@ -183,7 +183,7 @@ int main(int argc, char *argv[]){
    	int izxnumels = rows * rows;  					// Pixels on full simulation graph.
     	double izxsize = izxnumels * sizeof(double); 			// Size of pixels array.
     	double *izx = (double*) calloc(izxnumels, sizeof(double)); 	// Allocating dynamic memory for pixel array.
-    	double zres = (sp.zend-sp.zstart)/sp.res; 			// Step resolution used in computation.
+    	double zres = (sp.zend-sp.zstart)/sp.resolution; 			// Step resolution used in computation.
      
 	/*
 	 * The following functions are used to calculate Gaussian Schell-model (GSM) values at the first grating:
@@ -210,7 +210,7 @@ int main(int argc, char *argv[]){
 		zlocstart = 0;
 	}
 	else if (sp.simchoice == 2) {
-		zlocstart = sp.res - 1;
+		zlocstart = sp.resolution - 1;
 	}
 
 	for (int i=(zlocstart); i<rows; i++) {
@@ -221,7 +221,7 @@ int main(int argc, char *argv[]){
 		// memset(Grat3x, 0, rows * sizeof(double));
 
 		for (int i=0; i<rows; i++) {
-       		Grat3x[i] = sp.xstart + (i) * ((sp.xend-sp.xstart)/(sp.res-1));
+       		Grat3x[i] = sp.xstart + (i) * ((sp.xend-sp.xstart)/(sp.resolution-1));
        		}
 
 	     	// Where you are with respect to z.
