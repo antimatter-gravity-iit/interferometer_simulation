@@ -31,7 +31,6 @@ void ( * gp0(double z, double Grat3x[], double Grat3I[]))
 	w1 = calculate_width(z, sp.initial_radius_of_wavefront_curvature, sp.initial_coherence_width, sp.initial_beamwidth, sp.initial_beamwidth); 
 
 	for(int i=0; i<sp.res; i++) {
-		Grat3x[i]= xstart + (i) * ((xend-xstart)/(sp.res-1)); 	// current x-position at step i is put into a[i][0]
 		jj = pow((Grat3x[i]/w1),2); 				// jj = (xpos/beamwidth)^2 
 		Grat3I[i]=exp(-(M_PI * jj)); 				// a[i][1] is the intensity of the beam at the xposition at step i.
 	}
@@ -107,11 +106,6 @@ void ( * gp1(double zloc,double r1,double el1, double w1, double Grat3x[], doubl
 	double ImT[41]={0};
 	ReTandImTgenerator(ImT,energy, elecOrAtom, RealorIm, vel, width, abszloc, accountGrav); // calculates phase shift for imaginary part
 
-	for (int i=0; i<rows; i++) {
-	// a[i][0] just comprises all the xpositions you are thinking of as the beam passes through a grating.
-	Grat3x[i] = xstart + (i) * ((xend-xstart)/(xpnts-1));
-	}
-    
 	for (int i=0; i<rows; i++) { 
 		for (int n=-lim; n<=lim; n++) {
 			for (int m=-lim; m<=lim; m++) {
@@ -246,11 +240,6 @@ void ( * gp2(double zloc, double el1x, double w1x, double r1x, double Grat3x[], 
     	double ImT[41]={0};
     	RealorIm = 2;
     	ReTandImTgenerator(ImT,energy, elecOrAtom, RealorIm, vel, width, abszloc, accountGrav); 
-    
-    	for (int i=0; i<rows; i++) { 
-		// these are just the x-positions; a[i][1] will have the intensities of the beam at the xpositions.
-        	Grat3x[i]= xstart + (i) * ((xend-xstart)/(xpnts-1));
-    	}
     
     	double *phix;
     	double *phiI;

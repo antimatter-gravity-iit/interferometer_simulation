@@ -215,9 +215,14 @@ int main(int argc, char *argv[]){
 
 	for (int i=(zlocstart); i<rows; i++) {
 		// TODO: LAcomment: said "i=299 is just to get last row of z." What?
-		memset(Grat3x, 0, rows * sizeof(double)); 
 		// Each time the loop repeats, you reset the array's positions and intensities to zero. 
 		memset(Grat3I, 0, rows * sizeof(double));
+		// TODO: LAcomment: ask M about these memsets.
+		// memset(Grat3x, 0, rows * sizeof(double));
+
+		for (int i=0; i<rows; i++) {
+       		Grat3x[i] = sp.xstart + (i) * ((sp.xend-sp.xstart)/(sp.res-1));
+       		}
 
 	     	// Where you are with respect to z.
 		double zloc = sp.zstart  +  i * zres;		 
@@ -298,7 +303,7 @@ int main(int argc, char *argv[]){
 		    	// The f-th element of izx is set to be the intensity of the beam at the j-th point.	
 		    	izx[f] = Grat3I[j]; 
 		}
-		}
+	}
 	
 	if (sp.simchoice == 1) {
 		// Free the memory used by this array; since the simulation is over, izx has all the data.
