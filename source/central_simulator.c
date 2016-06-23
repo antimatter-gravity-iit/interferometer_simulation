@@ -147,7 +147,7 @@ int main(int argc, char *argv[]){
 	// Tilt.
 	sp.tilt = 0; 
 	// Resolution.
-	sp.res = atoi(argv[3]);
+	sp.resolution = atoi(argv[3]);
 	sp.zstart = -0.1;
 	sp.zend = 2.1;
 	sp.xstart = -2.0e-4;
@@ -172,10 +172,10 @@ int main(int argc, char *argv[]){
 	
 	double *Grat3I;							// Intensity array.
     	double *Grat3x;							// Array of x position of intensity.
-	Grat3I = (double*) calloc(sp.res, sizeof(double)); 		// Allocate dynamic memory for intensity array.
-	Grat3x = (double*) calloc(sp.res, sizeof(double)); 		// Allocate dynamic memory for horizontal position array.
+	Grat3I = (double*) calloc(sp.resolution, sizeof(double)); 		// Allocate dynamic memory for intensity array.
+	Grat3x = (double*) calloc(sp.resolution, sizeof(double)); 		// Allocate dynamic memory for horizontal position array.
 	int zlocstart;							// Where z position begins.
-	int rows = sp.res;						// Numbers of horizontal component arrays of full simulation graph.
+	int rows = sp.resolution;						// Numbers of horizontal component arrays of full simulation graph.
 	double max;							// Stores computed max value of intensity at a specific x location.
 		
     	// TODO LAcomment: make sense of these and rename variables accordingly.
@@ -183,7 +183,7 @@ int main(int argc, char *argv[]){
    	int izxnumels = rows * rows;  					// Pixels on full simulation graph.
     	double izxsize = izxnumels * sizeof(double); 			// Size of pixels array.
     	double *izx = (double*) calloc(izxnumels, sizeof(double)); 	// Allocating dynamic memory for pixel array.
-    	double zres = (sp.zend-sp.zstart)/sp.res; 			// Step resolution used in computation.
+    	double zres = (sp.zend-sp.zstart)/sp.resolution; 			// Step resolution used in computation.
      
 	/*
 	 * The following functions are used to calculate Gaussian Schell-model (GSM) values at the first grating:
@@ -210,7 +210,7 @@ int main(int argc, char *argv[]){
 		zlocstart = 0;
 	}
 	else if (sp.simchoice == 2) {
-		zlocstart = sp.res - 1;
+		zlocstart = sp.resolution - 1;
 	}
 
 	for (int i=(zlocstart); i<rows; i++) {
@@ -221,7 +221,7 @@ int main(int argc, char *argv[]){
 		// memset(Grat3x, 0, rows * sizeof(double));
 
 		for (int i=0; i<rows; i++) {
-       		Grat3x[i] = sp.xstart + (i) * ((sp.xend-sp.xstart)/(sp.res-1));
+       		Grat3x[i] = sp.xstart + (i) * ((sp.xend-sp.xstart)/(sp.resolution-1));
        		}
 
 	     	// Where you are with respect to z.

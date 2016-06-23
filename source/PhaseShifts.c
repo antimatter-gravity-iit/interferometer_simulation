@@ -28,7 +28,7 @@ double ( * ReTandImTgenerator(double ReTorImTar[], double energy, int elecOrAtom
   	double thick = sp.thick; // 0.000000014; // 14 nanometers. Not (real) thickness of gratings, most likely. Gratings are actually 1 micrometer thick. This is used for the electron part of the code.
 	double Gthick = sp.Gthick;// 1000; // thickness of gratings; 1 micrometer = 1000 nm, this is in nm on purpose (see function ReTgenerator) Varname could be better. Right now Gthick is used for the VdW effect for atoms.
 	int rowsT = 41;// rows of ReT and ImT array
-    	double res = sp.res;//1000; // This is the resolution we want this graph at. Varname could be better. MUST BE SAME AS IN MAIN!
+    	double resolution = sp.resolution;//1000; // This is the resolution we want this graph at. Varname could be better. MUST BE SAME AS IN MAIN!
     
 	//values not included in simparam structure.  can be moved there but not entirely necessary 
 	double chargeratio =0.0; //strength of image charge (units of e, electron charge); values of 0.03, 0.05, or more can be had //not used
@@ -58,30 +58,30 @@ double ( * ReTandImTgenerator(double ReTorImTar[], double energy, int elecOrAtom
         
         
         
-      xmin= width * (1/res - cos(beta)/2); // minimum distance beam travels through slit; or maybe it's when the 1st order diffracted beams are going in diagonally, what is the min x?
+      xmin= width * (1/resolution - cos(beta)/2); // minimum distance beam travels through slit; or maybe it's when the 1st order diffracted beams are going in diagonally, what is the min x?
 
         if (beta<=alpha) { // if the beam is very orthogonal to gratings (almost 90 degrees), or wedge angle is significant
-            xmax=(width * cos(beta))/2-width/res;
+            xmax=(width * cos(beta))/2-width/resolution;
         }
         else { // if beam is not very perpendicular to gratings, then it travels through the slit diagonally, covering more distance, more image charge interaction, etc.
-            xmax= width  *  cos(beta)/2 - width/res  +  thick  *  (tan(alpha)-tan(beta));
+            xmax= width  *  cos(beta)/2 - width/resolution  +  thick  *  (tan(alpha)-tan(beta));
         }
     }
     else { // if beta < 0; this time xmin changes, xmax is the same
-        xmax = (width * cos(beta)/2)-width/res;
+        xmax = (width * cos(beta)/2)-width/resolution;
 
     	if (fabsl(beta)<=alpha) { // fabsl is for long doubles and returns a long double absolute value; once again, if the tilt isn't that bad, one bound (this time xmin) is just width * cos(beta)/2  +  width/res.
-          xmin = -((width * cos(beta))/2) + width/res; 
+          xmin = -((width * cos(beta))/2) + width/resolution; 
         }
 
     	else { // if the beam is far from perpendicular to grating slits
-            xmin = -((width * cos(beta))/2) + width/res - thick * (tan(alpha)-tan(beta));
+            xmin = -((width * cos(beta))/2) + width/resolution - thick * (tan(alpha)-tan(beta));
         }
         
     }
     
     for(int n=-((rowsT-1)/2);n<=((rowsT-1)/2);n++) {
-        for(ex=xmin; ex<xmax; ex +=width/res) { //copied from above; res = step resolution in x-axis. ex += height of window / steps = (40 nm / 1000)
+        for(ex=xmin; ex<xmax; ex +=width/resolution) { //copied from above; resolution = step resolution in x-axis. ex += height of window / steps = (40 nm / 1000)
 
           ////// THIS IS NOT IMPLEMENTED YET, ORIGINALLY IGOR PRO CODE THAT WAS IN HERE
 
@@ -157,7 +157,7 @@ double ( * ReTandImTgenerator(double ReTorImTar[], double energy, int elecOrAtom
     
     for (int i=0; i<rowsT; i++) { // must optimize all these for's that can probably be inside other for loops.
         
-      ReTorImTar[i] = ReTorImTar[i]/res; // So is this some sort of normalization?
+      ReTorImTar[i] = ReTorImTar[i]/resolution; // So is this some sort of normalization?
       
     }
     
