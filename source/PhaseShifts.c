@@ -122,54 +122,30 @@ double ( * ReTandImTgenerator(double ReTorImTar[], double energy, int elecOrAtom
           timeFreefall = (realzloc/ vel);
 
           // Both electrons and atoms will fall due to gravity. According to Dr. Daniel Kaplan's paper at arxiv.org/ftp/arxiv/papers/1308/1308.0878.pdf, the phase shift caused is 2 * pi * g * t^2 / d, where t is the time in free fall and d is the period of the gratings.
-          if (accountGrav == 1) {
-              phGrav = (2 * M_PI * gravAccel * pow(timeFreefall, 2)) / period;  // phase shift due to gravity on particles
-            }
-          else
-            phGrav = 0;
+	if (accountGrav == 1)
+		phGrav = (2 * M_PI * gravAccel * pow(timeFreefall, 2)) / period;  // phase shift due to gravity on particles
+
+	else
+		phGrav = 0;
          
-          if (elecOrAtom == 1) { // if we're dealing with an electron here
-
-// phE is a phase shift caused by electron Coulombic interaction, if we were modeling electrons
-          	phE = -width * thick * chargeratio * pow(e_charge,2) * (2 * M_PI * Coulomb/Plancks)/(vel * (.25 * pow(width,2)-pow(ex,2)));
-
-
-          	if (ReTorImT == 1) { // if it's the ReT array
-              		ReTorImTar[j]  += cos(phM + fc + phGrav); // so fc and phM are both phase shifts; angles. 
-            	}
-          	else if (ReTorImT == 2) { // if it's the ImT array
-              		ReTorImTar[j]  += sin(phM + fc + phGrav); // so fc and phM are both phase shifts; angles. 
-            	}
-          }
           
-          else if (elecOrAtom == 2) { // if we're dealing with an atom here
-              	if (exnmleft == 0 | exnmright == 0){
-
-                    phM = 0;
+          
+	if (exnmleft == 0 | exnmright == 0)
+		phM = 0;
  // phM is phase shift on Muonium/other neutral molecules due to Van der Waals effects through the gratings.
-                }
               	
-		else {
-                    phM = -C3 * Gthick / (difPlancks * nmvel * pow(exnmleft, 3)) -  -C3 * Gthick / (difPlancks * nmvel * pow(exnmright, 3));
-                }
+	else
+		phM = -C3 * Gthick / (difPlancks * nmvel * pow(exnmleft, 3)) -  -C3 * Gthick / (difPlancks * nmvel * pow(exnmright, 3));
                 
-                j=n + ((rowsT-1)/2); // j goes from 0 to 40 (right now rowsT = 41)
+	j=n + ((rowsT-1)/2); // j goes from 0 to 40 (right now rowsT = 41)
                 
                 
-                if (ReTorImT == 1) { // if it's the ReT array 
-					
-			if (elecOrAtom == 1) ReTorImTar[j] += cos(phE + fc + phGrav); // check to see if electron, if yes, populate with position with phE phase shift
-			else 													
-                    ReTorImTar[j]  += cos(phM + fc + phGrav); // so fc and phM are both phase shifts; angles.
-                }
-                else if (ReTorImT == 2) { // if it's the ImT array
-			if (elecOrAtom == 1) ReTorImTar[j] += sin(phE + fc + phGrav); // added now
-						
-			else 
-                         ReTorImTar[j]  += sin(phM + fc + phGrav); // so fc and phM are both phase shifts; angles. 
-                }
+	if (ReTorImT == 1) // if it's the ReT array										
+		ReTorImTar[j]  += cos(phM + fc + phGrav); // so fc and phM are both phase shifts; angles.
 
-          }  
+	else if (ReTorImT == 2) // if it's the ImT array
+		ReTorImTar[j]  += sin(phM + fc + phGrav); // so fc and phM are both phase shifts; angles. 
+  
           
 
             
