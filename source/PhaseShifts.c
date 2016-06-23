@@ -32,14 +32,14 @@ double ( * ReTandImTgenerator(double ReTorImTar[], double energy, int elecOrAtom
     
 	//values not included in simparam structure.  can be moved there but not entirely necessary 
 	double chargeratio =0.0; //strength of image charge (units of e, electron charge); values of 0.03, 0.05, or more can be had //not used
-    	float C3 = 0.020453; // the VdW coefficient for hydrogen (assumed to be the same for muonium) //
-    	double e_charge = 0.00000000000000000016021765; // electric charge in Coulombs of electron (abs. value)
-    	double Coulomb = 0.00000000898755179; // force; m^2/(Coulomb^-2)
-    	double difPlancks = 0.000000000000658212; // hbar in mev * s
-    	double Plancks = 0.0000000000000000000000000000000006626068; // Planck's constant
+    	float C3 = 2.0453e-2; // the VdW coefficient for hydrogen (assumed to be the same for muonium) //
+    	double e_charge = 1.6021765e-19; // electric charge in Coulombs of electron (abs. value)
+    	double Coulomb = 8.98755179e-9; // force; m^2/(Coulomb^-2)
+    	double difPlancks = 6.58212e-13; // hbar in mev * s
+    	double Plancks = 6.626068e-34; // Planck's constant
   
   	double eta = width/period; // ratio of 'height' of slit/windows in gratings to the period of the gratings
-  	double nmvel = vel * 1000000000;  // converting a m/s velocity to nm/s.
+  	double nmvel = vel * 1e9;  // converting a m/s velocity to nm/s.
     	double alpha = wedgeangle * M_PI/180; // depends on wedgeangle above, which is a relatively free parameter. Appears to be bend of 'window' (slits in grating), if they bend forward or not.
     	double beta = tilt * M_PI; // depends on tilt angle, = 0 if beam is normal to gratings
     	double exnmleft; // how many nm from the left side of each slit are we?
@@ -110,8 +110,8 @@ double ( * ReTandImTgenerator(double ReTorImTar[], double energy, int elecOrAtom
           // ex is how far you are from the grating 'wall'
     
           // exnm is how far from the wall in nanometers.
-          exnmleft = ex * 1000000000;
-          exnmright = (xmax - ex) * 1000000000; 
+          exnmleft = ex * 1.0e9;
+          exnmright = (xmax - ex) * 1.0e9; 
           // fc is another electron thing; or the diffraction pattern? 2pi*n*x/period?
           fc = 2 * M_PI * n * ex/period; // so the first fc = 2  *  pi  *  -20  *  xmin / period, last fc = 2  *  pi  *  20  *  xmax / period. Looks like fc is a quantity proportional to distance from bottom/top of each 'window'/slit
             
