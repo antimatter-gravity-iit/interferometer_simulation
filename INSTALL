@@ -69,24 +69,26 @@ two new executable files in the "source" directory called "program" and "sptest"
 program succesfully. If it doesn't work, check the build configuration section above.
 
 4. Run the "sptest" program with the terminal command "./sptest" (without the quotes). You should see a ROOT window show up
-with some test plot in it. Click "File>Quit ROOT" in this window to continue. Repeat until no more windows show up.
+with some test plot in it. Click "File>>Quit ROOT" in this window to continue. Repeat until no more windows show up.
 
 5. If the previous step ran smoothly, you're ready to go! To run the program, use the command "./program" followed by
-the values you want to input into it. For example: if you want a full simulation of 6400 m/s fast atom beam interferometry
-plotted on the usual scale, accounting for gravity, with a resolution of 300 lines (perpendicular to the z direction) and
-a grating pitch of 100 nm, you have to type "./program 1 2 300 6400 100 1 0". Yup. After the program runs (it can take several
-minutes) you should be shown a ROOT plot with the simulation, which you can save as a pdf. Done!
+the values you want to input into it.
 
 This is the list of arguments in the order you have to input them to the program: 
 
  * 1. Account for gravity? 1 = True, 0 = False.
- * 2. Electron beam or atom beam? Electron beam = 1, Atom beam = 2. ELECTRON BEAM NOT MODELED!!!
- * 3. Resolution [300-400 recommended]. 
- * 4. Velocity of particles in m/s.
- * 5. Pitch of gratings [in nm] 
- * 6. Output the total simulation [1]? or the final interference pattern [2]?
- * 7. If option 6 == 1, use a logarithmic scale [1] or a normal scale [0]?
+ * 2. Resolution [300-400 recommended]. 
+ * 3. Velocity of particles in m/s.
+ * 4. Pitch of gratings [in nm] 
+ * 5. Output the total simulation [1]? or the final interference pattern [2]?
+ * 6. (if argv[6] == 1), logscale [1] or normal scale [0]?
 
+For example: if you want a full simulation of 6400 m/s fast atom beam interferometry plotted on the usual scale,
+accounting for gravity, with a resolution of 300 pixels and a grating pitch of 100 nm, you have to type
+"./program 1 300 6400 100 1 0". Yup.
+
+After the program runs (it can take several minutes) you should be shown a ROOT plot with the simulation,
+which you can save as a pdf by clicking "File>>Save as..." in the ROOT window. Done!
 
 Other build options
 ------------------------------------------------------------
