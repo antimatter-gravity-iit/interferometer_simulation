@@ -42,13 +42,13 @@
  * 				*
  *
  * This central program takes user input for:
- *     electronic or atomic beam type,
  *     inclusion or exclusion of gravitational acceleration,
  *     resolution of output graph,
  *     velocity of particles,
  *     pitch of gratings,
- *     and choice of intensity profile or final simulation paths,
- * and calculates simulation parameters in order to perform the simulation with the user's desired arguments.
+ *     choice of intensity profile or final simulation paths,
+ *     and choice of logarithmic or linear intensity scale for the plot (only if the full simulation is requested),
+ * and calculates the necessary parameters in order to perform the simulation with the user's desired arguments.
  *
  * Top-down view of gratings:
  *
@@ -100,22 +100,22 @@ int rowsT = 41;
  * in order to simulate wave particles through a diffraction grating. It takes an integer and an array as arguments
  * and outputs a ROOT graph display.
  *
- * TODO LAcomment: Understand why this is a char array when all the elements are integers.
- * argv[x] is the argument array [vector] used for changing the inputs to the program.
+ * The main simulation parameters are initialized by argument values. This means that the user has to input
+ * these arguments on the command line when executing the program. An example would be "./program 1 300 6400 100 1 1".
  *
- * List of elements of argv[x], in the format "<position>. <explanation>": 
+ * These are the simulation parameters that the user has to provide, in the format "<position>. <explanation>":
  * 1. Account for gravity? 1 = True, 0 = False.
  * 2. Resolution [300-400 recommended]. 
  * 3. Velocity of particles in m/s.
- * 4. Pitch of gratings [in nm] 
+ * 4. Pitch of gratings in nm.
  * 5. Output the total simulation [1]? or the final interference pattern [2]?
- * 6. (if argv[6] == 1), logscale [1] or normal scale [0]?
+ * 6. If previous argument is 1, use a logarithmic scale for plotting intensities [1] or a normal scale [0]?
+ *
+ * Remember that argv[] is the standard argument vector used in C for inputting command-line arguments to the program.
+ * The "simparam" structure is defined in Misc.h.
  */
- 
-int main(int argc, char *argv[]){ 
-
-	// TODO LAcomment: rename variables and if necessary add brief comments. Verify if existing comments are needed.
-	// Initializing all simulator parameters by either default values or argument values. Variable definitions and comments are in misc.h.
+int main(int argc, char *argv[])
+{
 	// Account for gravity? 1 = True, 0 = False.
 	sp.accountGrav = atoi(argv[1]);
 	// Resolution.
@@ -126,10 +126,18 @@ int main(int argc, char *argv[]){
 	sp.g_period = atof(argv[4]) / 1.0e9;
 	// Output the total simulation [1]? or the final interference pattern [2]?
 	sp.simchoice = atoi(argv[5]);
-	// TODO LAcomment: add comment explaining why this 'if' exists.
+	/*
+	 * If the user asks for the total simulation (sp.simchoice is 1), the program needs to know
+	 * if the intensity scale of the plot is going to be linear or logarithmic (the latter helps
+	 * to see where more of the particles go). sp.logchoice == 0 means linear scale, == 1 means
+	 * logarithmic scale.
+	 */
 	if(sp.simchoice == 1)
-	sp.logchoice = atoi(argv[6]);
-	// Why was it defined like this? This equation seems to come from DeBroglie's model.
+		sp.logchoice = atoi(argv[6]);
+	else
+		sp.logchoice = 0;
+
+	// Why was the energy defined like this? This equation seems to come from DeBroglie's theory.
 	sp.energy = 1.5e-18 / pow(1e-11,2) * (1);
 	// sp.energy = 1.5e4
 	sp.useimagecharge = 0;
@@ -161,8 +169,6 @@ int main(int argc, char *argv[]){
 	sp.height = sp.g_period / 2;
 	// Point at which the intensity cuts off and is treated as 0. Can also be 5e-5 like in McMorran thesis, or 0.001.
 	sp.cutoff = 1e-6;
-	// Scaled logarithmically so they can see where more of the particles go [0] = no, [1] = yes.
-	//sp.logchoice = 0;
 	
 	/*
 	 * TODO LAcomment: make sense of this. Remember Mcomment: "I tried to fix this, but what is it actually saying?
@@ -172,10 +178,10 @@ int main(int argc, char *argv[]){
 	
 	double *Grat3I;							// Intensity array.
     	double *Grat3x;							// Array of x position of intensity.
-	Grat3I = (double*) calloc(sp.resolution, sizeof(double)); 		// Allocate dynamic memory for intensity array.
-	Grat3x = (double*) calloc(sp.resolution, sizeof(double)); 		// Allocate dynamic memory for horizontal position array.
+	Grat3I = (double*) calloc(sp.resolution, sizeof(double)); 	// Allocate dynamic memory for intensity array.
+	Grat3x = (double*) calloc(sp.resolution, sizeof(double)); 	// Allocate dynamic memory for horizontal position array.
 	int zlocstart;							// Where z position begins.
-	int rows = sp.resolution;						// Numbers of horizontal component arrays of full simulation graph.
+	int rows = sp.resolution;					// Numbers of horizontal component arrays of full simulation graph.
 	double max;							// Stores computed max value of intensity at a specific x location.
 		
     	// TODO LAcomment: make sense of these and rename variables accordingly.
@@ -183,30 +189,36 @@ int main(int argc, char *argv[]){
    	int izxnumels = rows * rows;  					// Pixels on full simulation graph.
     	double izxsize = izxnumels * sizeof(double); 			// Size of pixels array.
     	double *izx = (double*) calloc(izxnumels, sizeof(double)); 	// Allocating dynamic memory for pixel array.
-    	double zres = (sp.zend-sp.zstart)/sp.resolution; 			// Step resolution used in computation.
+	double zres = (sp.zend-sp.zstart)/sp.resolution; 		// Step resolution used in computation.
      
 	/*
 	 * The following functions are used to calculate Gaussian Schell-model (GSM) values at the first grating:
- 	 * 	'w' computes and outputs the Gaussian Schell-model (GSM) beam width in meters [m];
-         * 	'v' computes and outputs the GSM radius of wavefront curvature; and
-	 * 	'el' computes and outputs the GSM beam coherence width.	
+	 * 	1. 'calculate_width' computes and outputs either the Gaussian Schell-model (GSM) beam width (in meters),
+	 *   	or the GSM beam coherence width. Both quantities evolve according to the same formula, so the last parameter
+	 * 	with which this function is called decides which quantity is being calculated. See the function's definition
+	 *	in BeamParams.c and the program documentation for more information.
 	 *
-	 * All of them take the same arguments:
-	 * 	height of first grating [set to 1 micron],
+	 * 	2. 'v' computes and outputs the GSM radius of wavefront curvature.
+	 *
+	 * The function 'v' has the following parameters :
+	 * 	location of first grating [set to 1 micron],
 	 *	initial radius of wavefront curvature,
 	 *	initial coherence width,
 	 *	initial beam width.
 	 *
-	 *  Note that they all output a double.
+	 * The function 'calculate_width' is similar, but it has to be called with one extra parameter at the end of the parameter list
+	 * in order to calculate the correct width. If the last parameter is the initial beamwidth, then the function will calculate that
+	 * beam parameter's evolution; if it's the initial coherence width, that is the beam parameter being calculated.
+	 *
+	 * The functions 'calculate_width' and 'v' output a double.
 	 */
 		
 	double w1 = calculate_width(sp.G1_z, sp.initial_radius_of_wavefront_curvature, sp.initial_coherence_width, sp.initial_beamwidth, sp.initial_beamwidth);
 	double el1 = calculate_width(sp.G1_z, sp.initial_radius_of_wavefront_curvature, sp.initial_coherence_width, sp.initial_beamwidth, sp.initial_coherence_width);
 	double r1 = v(sp.G1_z, sp.initial_radius_of_wavefront_curvature, sp.initial_coherence_width, sp.initial_beamwidth);
 
-	// Follow this indent structure in the future.
+	// Developer: follow this indent structure.
 	if (sp.simchoice == 1) {
-		sp.logchoice = atoi(argv[7]);
 		zlocstart = 0;
 	}
 	else if (sp.simchoice == 2) {
