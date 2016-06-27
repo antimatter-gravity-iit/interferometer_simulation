@@ -13,7 +13,7 @@
 
 #include <complex.h>
 
-double ( * ReTandImTgenerator(double ReTorImTar[], double energy, int ReTorImT, double particle_velocity, double width, double abszloc, int accountGrav))
+double ( * ReTandImTgenerator(double ReTorImTar[], double energy, int ReTorImT, double width, double abszloc, int accountGrav))
 {
 	double xstart = sp.xstart; // negative 200 microns
 	double xend = sp.xend; //0.00020;      // positive 200 microns
