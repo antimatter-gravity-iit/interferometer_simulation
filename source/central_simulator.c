@@ -243,8 +243,8 @@ int main(int argc, char *argv[])
 		 * These control structures determine where you are on zloc: depending on that, you interact with different gratings.
 		 * The functions 'gpM' compute the intensity profile after the M-th grating. Thus:
 		 * 	'gp2' computes the intensity profile after the beam hits the second grating; 
-		 * 	'gp1' computes the intensity profile after the beam hits the first grating;
-		 * 	'gp0' computes the intensity profile before the beam hits any grating.
+		 * 	'intensity_after_1st_grating' computes the intensity profile after the beam hits the first grating;
+		 * 	'get_initial_intensity' computes the intensity profile before the beam hits any grating.
 		 * Note that the intensity profile is an array of positions and their respective intensities. 
 		 * Also, keep in mind these functions modify the Grat3I and Grat3x arrays, but don't return any values.
 		 * 
@@ -256,14 +256,14 @@ int main(int argc, char *argv[])
 		 *		 radius of curvature,
 		 *		 X positions,
 		 *		 x intensity profile.
-		 * 	For 'gp1':
+		 * 	For 'intensity_after_1st_grating':
 		 * 		 z position after gratings,
 		 *		 radius of curvature,
 		 * 		 beam coherence width,
 		 *		 beam width,
 		 *		 X positions,
 		 *		 x intensity profile.
-		 * 	For 'gp0':
+		 * 	For 'get_initial_intensity':
 		 * 		 z position,
 		 *		 X positions,
 		 *		 x intensity profile.
@@ -291,8 +291,8 @@ int main(int argc, char *argv[])
 		}
 		else if (zloc > sp.G1_z) {
 			// If interacting with the first grating, calculates intensity profile.
-			printf("Entering gp1 for row z = %d\n",i); //checking if the looping is working
-			gp1(zloc, r1, el1, w1, Grat3x, Grat3I); 
+			printf("Entering intensity_after_1st_grating for row z = %d\n",i); //checking if the looping is working
+			intensity_after_1st_grating(zloc, r1, el1, w1, Grat3x, Grat3I); 
 			// Max value of intensity calculated here.
 			max = maximumvalue(Grat3I, rows); 
 			// As before.		
@@ -300,8 +300,8 @@ int main(int argc, char *argv[])
 		}
 		else {
 			// Simple GSM propagation until it hits the first grating.
-			printf("Entering gp0 for row z = %d\n",i); //checking if the looping is working
-			gp0(zloc,Grat3x, Grat3I);
+			printf("Entering get_initial_intensity for row z = %d\n",i); //checking if the looping is working
+			get_initial_intensity(zloc,Grat3x, Grat3I);
 		
 			// If at the origin?
 			max = maximumvalue(Grat3I, rows); 
