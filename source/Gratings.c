@@ -15,10 +15,10 @@
 #include <complex.h>
 #include <limits.h> 		//fix for islimit
 
-void ( * gp0(double z, double Grat3x[], double Grat3I[]))
+void ( * get_initial_intensity(double z, double Grat3x[], double Grat3I[]))
 // get intensity profile 
 {
-	clock_t start, end; //starting a timer to get the time spent in function gp0
+	clock_t start, end; //starting a timer to get the time spent in function get_initial_intensity
 	start = clock();
 	double diff=0;
 
@@ -37,14 +37,14 @@ void ( * gp0(double z, double Grat3x[], double Grat3I[]))
 
 	end = clock();
 	diff =((double) (end - start))/ CLOCKS_PER_SEC;
-	printf("Time elapsed: %f seconds\n",diff); //printing the time spent in gp0.
+	printf("Time elapsed: %f seconds\n",diff); //printing the time spent in get_initial_intensity.
 }
 
 
-void ( * gp1(double zloc,double r1,double el1, double w1, double Grat3x[], double Grat3I[]))
+void ( * intensity_after_1st_grating(double zloc,double r1,double el1, double w1, double Grat3x[], double Grat3I[]))
 // get intensity profile after one grating
 {
-	clock_t start, end; //starting a timer to get the time spent in function gp1
+	clock_t start, end; //starting a timer to get the time spent in function intensity_after_1st_grating
 	start = clock();
 	double diff=0;
 
@@ -129,13 +129,13 @@ void ( * gp1(double zloc,double r1,double el1, double w1, double Grat3x[], doubl
 
 	end = clock();
 	diff =((double) (end - start))/ CLOCKS_PER_SEC;
-	printf("Time elapsed: %f seconds\n",diff); //printing the time spent in gp1.
+	printf("Time elapsed: %f seconds\n",diff); //printing the time spent in intensity_after_1st_grating.
 
 }
 
-void ( * gp2(double zloc, double el1x, double w1x, double r1x, double Grat3x[], double Grat3I[]))
+void ( * intensity_after_2nd_grating(double zloc, double el1x, double w1x, double r1x, double Grat3x[], double Grat3I[]))
 {	
-	clock_t start, end; //starting a timer to get the time spent in function gp2
+	clock_t start, end; //starting a timer to get the time spent in function intensity_after_2nd_grating
 	start = clock();
 	double diff=0;
 
@@ -288,5 +288,5 @@ void ( * gp2(double zloc, double el1x, double w1x, double r1x, double Grat3x[], 
 
 	end = clock();
 	diff =((double) (end - start))/ CLOCKS_PER_SEC;
-	printf("Time elapsed: %f seconds\n",diff); //printing the time spent in gp2.
+	printf("Time elapsed: %f seconds\n",diff); //printing the time spent in intensity_after_2nd_grating.
 }
