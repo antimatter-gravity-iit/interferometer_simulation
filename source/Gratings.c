@@ -50,8 +50,7 @@ void ( * intensity_after_1st_grating(double current_z_position,double el1, doubl
 	double z12 = current_z_position - sp.z_position_1st_grating;		//z location between 1st and 2nd gratings
 	double energy = sp.energy;
 	double width = sp.height;
-
-	double abszloc = sp.height; 		//z position
+	double abszloc = current_z_position;
 	int rowsT =41;				// rows of ReT and ImT array
     	//double period = sp.grating_period;
 	double period = 0.000000100;		// period of grating - 100 nanometers.
@@ -195,7 +194,7 @@ void ( * intensity_after_2nd_grating(double current_z_position, double el1x, dou
 	 * r3 = radius of GSM wavefront curvature after the second grating
 	 * el3 = GSM beam coherence width after the second grating.
     	 */
-    	double el3x = calculate_width(z13, r1x, el1x, w1x, el1x);	// z13 == G2z - G1z + zstart + 0 * zres; GSM coherence width in x-axis
+    	double el3x = calculate_width(z13, r1x, el1x, w1x, el1x);	// z13 == G2z - G1z + z_start + 0 * zres; GSM coherence width in x-axis
     	double w3x = calculate_width(z13, r1x, el1x, w1x, w1x); 	// Beam width in x-axis
     	double v3x = v(z13,r1x,el1x,w1x); 				// Gaussian-Schell Model (GSM) radius of wavefront curvature in x-axis
     	double el3y = calculate_width(z13, r1y, el1y, w1y, el1y); 	// Coherence width in y-axis

@@ -220,7 +220,7 @@ int main(int argc, char *argv[])
 	memset(Grat3x, 0, sp.resolution * sizeof(double));
 
 	for (int i=0; i<sp.resolution; i++)
-		Grat3x[i] = sp.xstart + (i) * ((sp.xend-sp.xstart)/(sp.resolution-1));
+		Grat3x[i] = sp.x_start + (i) * ((sp.x_end-sp.x_start)/(sp.resolution-1));
 	
 	for (int i=(zlocstart); i<sp.resolution; i++) {
 		// TODO: LAcomment: said "i=299 is just to get last row of z." What?
@@ -228,7 +228,7 @@ int main(int argc, char *argv[])
 		memset(Grat3I, 0, sp.resolution * sizeof(double));
 		
 		// Where you are with respect to z.
-		double current_z_position = sp.zstart  +  i * z_resolution;		 
+		double current_z_position = sp.z_start  +  i * z_resolution;		 
 
 		/*
 		 * These control structures determine where you are on zloc: depending on that, you interact with different gratings.
