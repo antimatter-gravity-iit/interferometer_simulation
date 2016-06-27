@@ -53,7 +53,7 @@
  * Top-down view of gratings:
  *
  *
- *                                    ---------------------   -> at G2_z = 1,         z2
+ *                                    ---------------------   -> at z_position_2nd_grating = 1,         z2
  *
  *                                    ---------------------   -> at z_position_1st_grating = 0.000001,  z1
  *
@@ -147,7 +147,7 @@ int main(int argc, char *argv[])
 	sp.initial_coherence_width = 1.0e-6;
         sp.initial_beamwidth = 3.0e-5;
 	sp.z_position_1st_grating = 1.0e-6;
-	sp.G2_z = 1.0;
+	sp.z_position_2nd_grating = 1.0;
 	sp.G2_x = 5e-8;
 	sp.theta = 1e-6;
 	sp.thick = 1.4e-8;
@@ -267,9 +267,9 @@ int main(int argc, char *argv[])
 		 *		 X positions,
 		 *		 x intensity profile.
 		 */
-		if (current_z_position > sp.G2_z) { 
+		if (current_z_position > sp.z_position_2nd_grating) { 
 			printf("Entering intensity_after_2nd_grating for row z = %d\n",i); //checking if the looping is working
-			// If the location is above G2_z [which is currently 1]:
+			// If the location is above z_position_2nd_grating [which is currently 1]:
 			intensity_after_2nd_grating(current_z_position, el1, w1, r1, Grat3x, Grat3I); 
 			/* 
 			 * The function 'maximumvalue' outputs the maximum value in a given array.
