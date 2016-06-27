@@ -13,7 +13,7 @@
 
 #include <complex.h>
 
-double ( * ReTandImTgenerator(double ReTorImTar[], double energy, int ReTorImT, double width, double abszloc, int sp.account_gravity))
+double ( * ReTandImTgenerator(double ReTorImTar[], double energy, int ReTorImT, double width, double abszloc))
 {
 
   	double period = sp.grating_period; //0.0000001;// period of grating - 100 nanometers.

@@ -92,10 +92,10 @@ void ( * intensity_after_1st_grating(double current_z_position,double el1, doubl
 
 	double ReT[41]={0};
 	int RealorIm = 1;
-	ReTandImTgenerator(ReT,energy, RealorIm, width, abszloc, sp.account_gravity); // calculates phase shift
+	ReTandImTgenerator(ReT,energy, RealorIm, width, abszloc); // calculates phase shift
 	RealorIm = 2;
 	double ImT[41]={0};
-	ReTandImTgenerator(ImT,energy, RealorIm, width, abszloc, sp.account_gravity); // calculates phase shift for imaginary part
+	ReTandImTgenerator(ImT,energy, RealorIm, width, abszloc); // calculates phase shift for imaginary part
 
 	for (int i=0; i<sp.resolution; i++) { 
 		for (int n=-lim; n<=lim; n++) {
@@ -213,10 +213,10 @@ void ( * intensity_after_2nd_grating(double current_z_position, double el1x, dou
     	// array of 41 0's for now.
     	// array of 41 0's for now.
     	int RealorIm = 1; 
-    	ReTandImTgenerator(ReT,energy, RealorIm, width, abszloc, sp.account_gravity); 
+    	ReTandImTgenerator(ReT,energy, RealorIm, width, abszloc); 
     	double ImT[41]={0};
     	RealorIm = 2;
-    	ReTandImTgenerator(ImT,energy, RealorIm, width, abszloc, sp.account_gravity); 
+    	ReTandImTgenerator(ImT,energy, RealorIm, width, abszloc); 
     
     	double *phix;
     	double *phiI;
