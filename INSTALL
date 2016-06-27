@@ -83,8 +83,8 @@ This is the list of arguments in the order you have to input them to the program
  * 5. Output the total simulation [1]? or the final interference pattern [2]?
  * 6. (if argv[6] == 1), logscale [1] or normal scale [0]?
 
-For example: if you want a full simulation of 6400 m/s fast atom beam interferometry plotted on the usual scale,
-accounting for gravity, with a resolution of 300 pixels and a grating pitch of 100 nm, you have to type
+For example: if you want a full simulation of 6400 m/s fast atom beam interferometry, plotted with a logarithmic intensity
+scale, accounting for gravity, with a resolution of 300 pixels and a grating pitch of 100 nm, you have to type
 "./program 1 300 6400 100 1 0". Yup.
 
 After the program runs (it can take several minutes) you should be shown a ROOT plot with the simulation,
