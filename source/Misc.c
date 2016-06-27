@@ -37,12 +37,11 @@ double sinc(double x){
  * to cutoff value, then determines which value to input to the array of x intensitites. Its arguments are:
  * 	intensity at the time of calculation (an initially empty array);
  * 	zlocation;
- * 	choice of scale for the plot; and
- * 	number of rows.
+ * 	choice of scale for the plot.
  * The function only modifies the array fed to it; it doesn't return any value. 
  */
 
-double *ixgenerator(double a[], double zloc, int logchoice, int sp.resolution) 
+double *ixgenerator(double a[], double zloc, int logchoice) 
 {
     double cutoff = 0.000001; 
     // at what point does the intensity cut off and be treated as 0. Can also be 5e-5 like in McMorran thesis. Or 0.001.cutoff = 0.000001;

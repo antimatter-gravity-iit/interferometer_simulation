@@ -282,11 +282,10 @@ int main(int argc, char *argv[])
 			 * to cutoff value, then determines which value to input to the array of x intensitites. Its arguments are:
 			 * 	intensity at the time of calculation (an initially empty array);
 			 * 	zlocation;
-			 * 	choice of scale for the plot; and
-			 * 	number of rows.
+			 * 	choice of scale for the plot.
 			 * The function only modifies the array fed to it; it doesn't return any value. 
 			 */  
-		    	ixgenerator(Grat3I, zloc, sp.logchoice, sp.resolution); 
+		    	ixgenerator(Grat3I, zloc, sp.logchoice); 
 		}
 		else if (zloc > sp.G1_z) {
 			// If interacting with the first grating, calculates intensity profile.
@@ -295,7 +294,7 @@ int main(int argc, char *argv[])
 			// Max value of intensity calculated here.
 			max = maximumvalue(Grat3I, sp.resolution); 
 			// As before.		
-			ixgenerator(Grat3I, zloc, sp.logchoice, sp.resolution); 
+			ixgenerator(Grat3I, zloc, sp.logchoice); 
 		}
 		else {
 			// Simple GSM propagation until it hits the first grating.
@@ -305,7 +304,7 @@ int main(int argc, char *argv[])
 			// If at the origin?
 			max = maximumvalue(Grat3I, sp.resolution); 
 			// As before.
-			ixgenerator(Grat3I, zloc, sp.logchoice, sp.resolution); 
+			ixgenerator(Grat3I, zloc, sp.logchoice); 
 		}   
 
 		for (int j=0; j<sp.resolution; j++ ) {
