@@ -48,7 +48,7 @@ double maximumvalue(double arr[], int array_size);
 double sinc(double x); 
 // returns sin(x)/x
 
-double ( *ixgenerator(double a[], double zloc, int logchoice)); 
+double ( *ixgenerator(double a[], double current_z_position, int logchoice)); 
 // accounts for decay (if applicable) and normalizing the intensity scale
 
 int x2pnts(int value, int *arr); 

@@ -41,14 +41,14 @@ void ( * get_initial_intensity(double z, double Grat3x[], double Grat3I[]))
 }
 
 
-void ( * intensity_after_1st_grating(double zloc,double r1,double el1, double w1, double Grat3x[], double Grat3I[]))
+void ( * intensity_after_1st_grating(double current_z_position,double r1,double el1, double w1, double Grat3x[], double Grat3I[]))
 // get intensity profile after one grating
 {
 	clock_t start, end; //starting a timer to get the time spent in function intensity_after_1st_grating
 	start = clock();
 	double diff=0;
 
-	double z12 = zloc - sp.z_position_1st_grating;		//z location between 1st and 2nd gratings
+	double z12 = current_z_position - sp.z_position_1st_grating;		//z location between 1st and 2nd gratings
 	double energy = sp.energy;
 	double width = sp.height;
 	double abszloc = sp.height; 		//z position
@@ -133,7 +133,7 @@ void ( * intensity_after_1st_grating(double zloc,double r1,double el1, double w1
 
 }
 
-void ( * intensity_after_2nd_grating(double zloc, double el1x, double w1x, double r1x, double Grat3x[], double Grat3I[]))
+void ( * intensity_after_2nd_grating(double current_z_position, double el1x, double w1x, double r1x, double Grat3x[], double Grat3I[]))
 {	
 	clock_t start, end; //starting a timer to get the time spent in function intensity_after_2nd_grating
 	start = clock();
@@ -146,10 +146,10 @@ void ( * intensity_after_2nd_grating(double zloc, double el1x, double w1x, doubl
 	double el1y = el1x;
     
 	double width = sp.height;
-	double abszloc = zloc;
+	double abszloc = current_z_position;
 	int accountGrav = sp.accountGrav;
 	double z12 = ((sp.G2_z) - (sp.z_position_1st_grating));
-	double z23 = (zloc -(sp.G2_z));
+	double z23 = (current_z_position -(sp.G2_z));
 	double mytheta = sp.theta;
 	double energy = sp.energy;
     	int rowsT =41;// rows of ReT and ImT array

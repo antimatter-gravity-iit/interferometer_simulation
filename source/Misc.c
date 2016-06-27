@@ -41,7 +41,7 @@ double sinc(double x){
  * The function only modifies the array fed to it; it doesn't return any value. 
  */
 
-double *ixgenerator(double a[], double zloc, int logchoice) 
+double *ixgenerator(double a[], double current_z_position, int logchoice) 
 {
     double cutoff = 0.000001; 
     // at what point does the intensity cut off and be treated as 0. Can also be 5e-5 like in McMorran thesis. Or 0.001.cutoff = 0.000001;
@@ -56,7 +56,7 @@ double *ixgenerator(double a[], double zloc, int logchoice)
     double min = cutoff;
     // the minimum value the intensity can be at before being set to 0; cutoff is a global variable
     // right now gratings are treated as being 0.5m apart. Divide zloc by 36.075 to get the proper distances, 1.4cm, between gratings.
-    double realzloc = zloc / 36.075;
+    double realzloc = current_z_position / 36.075;
 
     for (int i=0; i<sp.resolution; i++) {
         /*

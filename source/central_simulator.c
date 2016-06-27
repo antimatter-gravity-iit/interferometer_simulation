@@ -236,7 +236,7 @@ int main(int argc, char *argv[])
        		}
 
 	     	// Where you are with respect to z.
-		double zloc = sp.zstart  +  i * zres;		 
+		double current_z_position = sp.zstart  +  i * zres;		 
 
 		/*
 		 * These control structures determine where you are on zloc: depending on that, you interact with different gratings.
@@ -267,10 +267,10 @@ int main(int argc, char *argv[])
 		 *		 X positions,
 		 *		 x intensity profile.
 		 */
-		if (zloc > sp.G2_z) { 
+		if (current_z_position > sp.G2_z) { 
 			printf("Entering intensity_after_2nd_grating for row z = %d\n",i); //checking if the looping is working
 			// If the location is above G2_z [which is currently 1]:
-			intensity_after_2nd_grating(zloc, el1, w1, r1, Grat3x, Grat3I); 
+			intensity_after_2nd_grating(current_z_position, el1, w1, r1, Grat3x, Grat3I); 
 			/* 
 			 * The function 'maximumvalue' outputs the maximum value in a given array.
 			 * Its arguments are an array and the length of that array [integer].
@@ -285,26 +285,26 @@ int main(int argc, char *argv[])
 			 * 	choice of scale for the plot.
 			 * The function only modifies the array fed to it; it doesn't return any value. 
 			 */  
-		    	ixgenerator(Grat3I, zloc, sp.logchoice); 
+		    	ixgenerator(Grat3I, current_z_position, sp.logchoice); 
 		}
-		else if (zloc > sp.z_position_1st_grating) {
+		else if (current_z_position > sp.z_position_1st_grating) {
 			// If interacting with the first grating, calculates intensity profile.
 			printf("Entering intensity_after_1st_grating for row z = %d\n",i); //checking if the looping is working
-			intensity_after_1st_grating(zloc, r1, el1, w1, Grat3x, Grat3I); 
+			intensity_after_1st_grating(current_z_position, r1, el1, w1, Grat3x, Grat3I); 
 			// Max value of intensity calculated here.
 			max = maximumvalue(Grat3I, sp.resolution); 
 			// As before.		
-			ixgenerator(Grat3I, zloc, sp.logchoice); 
+			ixgenerator(Grat3I, current_z_position, sp.logchoice); 
 		}
 		else {
 			// Simple GSM propagation until it hits the first grating.
 			printf("Entering get_initial_intensity for row z = %d\n",i); //checking if the looping is working
-			get_initial_intensity(zloc,Grat3x, Grat3I);
+			get_initial_intensity(current_z_position,Grat3x, Grat3I);
 		
 			// If at the origin?
 			max = maximumvalue(Grat3I, sp.resolution); 
 			// As before.
-			ixgenerator(Grat3I, zloc, sp.logchoice); 
+			ixgenerator(Grat3I, current_z_position, sp.logchoice); 
 		}   
 
 		for (int j=0; j<sp.resolution; j++ ) {
