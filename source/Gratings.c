@@ -50,7 +50,7 @@ void ( * intensity_after_1st_grating(double zloc,double r1,double el1, double w1
 
 	double z12 = zloc - sp.G1_z;		//z location between 1st and 2nd gratings
 	double energy = sp.energy;
-	double width = sp.resolution;
+	double width = sp.height;
 	double abszloc = sp.height; 		//z position
 	int accountGrav = sp.accountGrav;
 	int rowsT =41;				// rows of ReT and ImT array
