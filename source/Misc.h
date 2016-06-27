@@ -42,13 +42,13 @@ double cutoff;					// =.000001  Intensity values below cutoff value are truncate
 
 extern simparam sp;
 
-double maximumvalue(double arr[], int rows); 
+double maximumvalue(double arr[], int sp.resolution); 
 // obtains the max value in an array
 
 double sinc(double x); 
 // returns sin(x)/x
 
-double ( *ixgenerator(double a[], double zloc, int logchoice, int rows)); 
+double ( *ixgenerator(double a[], double zloc, int logchoice, int sp.resolution)); 
 // accounts for decay (if applicable) and normalizing the intensity scale
 
 int x2pnts(int value, int *arr); 
