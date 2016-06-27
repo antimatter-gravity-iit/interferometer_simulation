@@ -30,8 +30,8 @@ double Gthick;		                      	// thickness of gratings; 1 micrometer = 
 double wedgeangle;	                     	// Grating wedge angle. The variable alpha below depends on this. This is a free parameter. Appears to be related to beam splitting.
 double tilt;                            	// A free parameter. Beta variable below depends on this. If beam is perp. to grating, then tilt (and thus Beta) are 0. This is the twist about the x-axis.
 double resolution;	                         	// Resolution of the interaction in the gratings. Better varname?
-double zstart;		                      	// defining bounds of the grating structure? This definitely corresponds to a location, probably the bottom of the grating.
-double zend;	                          	// probably the end of the grating.
+double z_start;		                      	// defining bounds of the grating structure? This definitely corresponds to a location, probably the bottom of the grating.
+double z_end;	                          	// probably the end of the grating.
 double x_start;		                   	// x position start, -200 microns
 double x_end;					// x position ends, 200 microns
 // double y_start;		                   	// y position start, 110 microns
