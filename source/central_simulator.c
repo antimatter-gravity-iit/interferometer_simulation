@@ -55,7 +55,7 @@
  *
  *                                    ---------------------   -> at G2_z = 1,         z2
  *
- *                                    ---------------------   -> at G1_z = 0.000001,  z1
+ *                                    ---------------------   -> at z_position_1st_grating = 0.000001,  z1
  *
  *                                       (beam going up)
  */ 
@@ -146,7 +146,7 @@ int main(int argc, char *argv[])
 	sp.initial_radius_of_wavefront_curvature = -4.04;
 	sp.initial_coherence_width = 1.0e-6;
         sp.initial_beamwidth = 3.0e-5;
-	sp.G1_z = 1.0e-6;
+	sp.z_position_1st_grating = 1.0e-6;
 	sp.G2_z = 1.0;
 	sp.G2_x = 5e-8;
 	sp.theta = 1e-6;
@@ -212,9 +212,9 @@ int main(int argc, char *argv[])
 	 * The functions 'calculate_width' and 'v' output a double.
 	 */
 		
-	double w1 = calculate_width(sp.G1_z, sp.initial_radius_of_wavefront_curvature, sp.initial_coherence_width, sp.initial_beamwidth, sp.initial_beamwidth);
-	double el1 = calculate_width(sp.G1_z, sp.initial_radius_of_wavefront_curvature, sp.initial_coherence_width, sp.initial_beamwidth, sp.initial_coherence_width);
-	double r1 = v(sp.G1_z, sp.initial_radius_of_wavefront_curvature, sp.initial_coherence_width, sp.initial_beamwidth);
+	double w1 = calculate_width(sp.z_position_1st_grating, sp.initial_radius_of_wavefront_curvature, sp.initial_coherence_width, sp.initial_beamwidth, sp.initial_beamwidth);
+	double el1 = calculate_width(sp.z_position_1st_grating, sp.initial_radius_of_wavefront_curvature, sp.initial_coherence_width, sp.initial_beamwidth, sp.initial_coherence_width);
+	double r1 = v(sp.z_position_1st_grating, sp.initial_radius_of_wavefront_curvature, sp.initial_coherence_width, sp.initial_beamwidth);
 
 	// Developer: follow this indent structure.
 	if (sp.simulation_option == 1) {
@@ -287,7 +287,7 @@ int main(int argc, char *argv[])
 			 */  
 		    	ixgenerator(Grat3I, current_z_position, sp.logchoice); 
 		}
-		else if (current_z_position > sp.G1_z) {
+		else if (current_z_position > sp.z_position_1st_grating) {
 			// If interacting with the first grating, calculates intensity profile.
 			printf("Entering intensity_after_1st_grating for row z = %d\n",i); //checking if the looping is working
 			intensity_after_1st_grating(current_z_position, el1, w1, r1, Grat3x, Grat3I); 
