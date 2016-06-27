@@ -43,8 +43,6 @@ double sinc(double x){
 
 double *ixgenerator(double a[], double current_z_position, int logchoice) 
 {
-    double cutoff = 0.000001; 
-    // at what point does the intensity cut off and be treated as 0. Can also be 5e-5 like in McMorran thesis. Or 0.001.cutoff = 0.000001;
     double const_e = 2.71828182845905; 
     // the irrational constant e.
     double mu_lifetime = 0.0000022; 
@@ -53,7 +51,7 @@ double *ixgenerator(double a[], double current_z_position, int logchoice)
     // rows of ReT and ImT arrays
     double max = maximumvalue(a, sp.resolution); 
     // maximum intensity value for a slice in z
-    double min = cutoff;
+    double min = sp.intensity_cutoff;
     // the minimum value the intensity can be at before being set to 0; cutoff is a global variable
     // right now gratings are treated as being 0.5m apart. Divide zloc by 36.075 to get the proper distances, 1.4cm, between gratings.
     double realzloc = current_z_position / 36.075;

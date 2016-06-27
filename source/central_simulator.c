@@ -168,7 +168,7 @@ int main(int argc, char *argv[])
 	// The height of each grating is calculated as half the grating period (distance between gratings).
 	sp.height = sp.grating_period / 2;
 	// Point at which the intensity cuts off and is treated as 0. Can also be 5e-5 like in McMorran thesis, or 0.001.
-	sp.cutoff = 1e-6;
+	sp.intensity_cutoff = 1e-6;
 	
 	/*
 	 * TODO LAcomment: make sense of this. Remember Mcomment: "I tried to fix this, but what is it actually saying?

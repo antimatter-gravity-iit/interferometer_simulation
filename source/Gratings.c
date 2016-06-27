@@ -66,7 +66,6 @@ void ( * intensity_after_1st_grating(double current_z_position,double el1, doubl
 	 * This is the twist about the x-axis.
 	 */
     	double tilt =sp.tilt; 
-    	double cutoff = sp.cutoff; 		// The point at which the intensity cuts off and is treated as 0.
 	// G1 open fraction; how open the first grating is. With 0.4 open, a little over than half the muonium should pass through.
 	double eta1 = sp.eta1; 
 	// G2 open fraction; how open the second grating is.
@@ -115,7 +114,7 @@ void ( * intensity_after_1st_grating(double current_z_position,double el1, doubl
 				coef = coef * exp(-M_PI * pow((dn * lambda * z12)/(period * el2),2));
 				// added isfinite macro in order to avoid inf values
 
-				if (std::isfinite(coef)==0 || coef < cutoff) { // if coef is infinite, then:
+				if (std::isfinite(coef)==0 || coef < sp.intensity_cutoff) { // if coef is infinite, then:
 					coef=0;
 				}
 			      	else { // if coef ends up larger than cutoff value, add the values to the current a[i][1]'s intensities.
@@ -163,7 +162,6 @@ void ( * intensity_after_2nd_grating(double current_z_position, double el1x, dou
 	 * This is the twist about the x-axis.
 	 */
     	double tilt =sp.tilt; 
-    	double cutoff = sp.cutoff; 		// The point at which the intensity cuts off and is treated as 0.
 	// G1 open fraction; how open the first grating is. With 0.4 open, a little over than half the muonium should pass through.
 	double eta1 = sp.eta1; 
 	// G2 open fraction; how open the second grating is.
@@ -266,7 +264,7 @@ void ( * intensity_after_2nd_grating(double current_z_position, double el1x, dou
 						coef = coef * (ReT[c5]  +  ImT[c5] * _Complex_I);
 						coef = coef * (ReT[d5]  -  ImT[d5] * _Complex_I);
 						
-						if (((__real__ coef)>=cutoff) || ((__imag__ coef)>=cutoff)) {
+						if (((__real__ coef) >= sp.intensity_cutoff) || ((__imag__ coef) >= sp.intensity_cutoff)) {
 						    
                         				function_d = exp(argument_d);                      
                         				function_v = exp(argument_v);
