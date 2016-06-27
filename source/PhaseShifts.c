@@ -19,13 +19,10 @@ double ( * ReTandImTgenerator(double ReTorImTar[], double energy, int ReTorImT, 
   	double period = sp.grating_period; //0.0000001;// period of grating - 100 nanometers.
 	double gravAccel = -9.8;    // acceleration due to gravity. 
   	double wedgeangle = sp.wedgeangle; //0; //Grating wedge angle. The variable alpha below depends on this. This is a free parameter. Appears to be related to beam splitting.
-  	int useimagecharge = sp.useimagecharge; //0; // whether or not to consider image charge effects. 0 for False.
   	double tilt = sp.tilt;  //0; // A free parameter. Beta variable below depends on this. If beam is perp. to grating, then tilt (and thus Beta) are 0. This is the twist about the x-axis.
   	double eta1 = sp.eta1; //.4; //G1 open fraction; how open the first grating is. With .4 open, a little over than half the muonium should pass through it. Varname could be changed to better represent it.
   	double eta2 = sp.eta2; //.4; //G2 open fraction; how open the second grating is.
   	double thick = sp.thick; // 0.000000014; // 14 nanometers. Not (real) thickness of gratings, most likely. Gratings are actually 1 micrometer thick. This is used for the electron part of the code.
-	double Gthick = sp.Gthick;// 1000; // thickness of gratings; 1 micrometer = 1000 nm, this is in nm on purpose (see function ReTgenerator) Varname could be better. Right now Gthick is used for the VdW effect for atoms.
-	int rowsT = 41;// rows of ReT and ImT array
     
 	//values not included in simparam structure.  can be moved there but not entirely necessary 
 	double chargeratio =0.0; //strength of image charge (units of e, electron charge); values of 0.03, 0.05, or more can be had //not used
@@ -77,7 +74,7 @@ double ( * ReTandImTgenerator(double ReTorImTar[], double energy, int ReTorImT, 
         
     }
     
-    for(int n=-((rowsT-1)/2);n<=((rowsT-1)/2);n++) {
+    for(int n=-((sp.rowsT-1)/2);n<=((sp.rowsT-1)/2);n++) {
         for(ex=xmin; ex<xmax; ex +=width/sp.resolution) { //copied from above; resolution = step resolution in x-axis. ex += height of window / steps = (40 nm / 1000)
 
           ////// THIS IS NOT IMPLEMENTED YET, ORIGINALLY IGOR PRO CODE THAT WAS IN HERE
@@ -132,9 +129,9 @@ double ( * ReTandImTgenerator(double ReTorImTar[], double energy, int ReTorImT, 
  // phM is phase shift on Muonium/other neutral molecules due to Van der Waals effects through the gratings.
               	
 	else
-		phM = -C3 * Gthick / (difPlancks * nmvel * pow(exnmleft, 3)) -  -C3 * Gthick / (difPlancks * nmvel * pow(exnmright, 3));
+		phM = -C3 * sp.grating_thickness / (difPlancks * nmvel * pow(exnmleft, 3)) -  -C3 * sp.grating_thickness / (difPlancks * nmvel * pow(exnmright, 3));
                 
-	j=n + ((rowsT-1)/2); // j goes from 0 to 40 (right now rowsT = 41)
+	j=n + ((sp.rowsT-1)/2); // j goes from 0 to 40 (right now sp.rowsT = 41)
                 
                 
 	if (ReTorImT == 1) // if it's the ReT array										
@@ -152,7 +149,7 @@ double ( * ReTandImTgenerator(double ReTorImTar[], double energy, int ReTorImT, 
         
     }
     
-    for (int i=0; i<rowsT; i++) { // must optimize all these for's that can probably be inside other for loops.
+    for (int i=0; i<sp.rowsT; i++) { // must optimize all these for's that can probably be inside other for loops.
         
       ReTorImTar[i] = ReTorImTar[i]/sp.resolution; // So is this some sort of normalization?
       

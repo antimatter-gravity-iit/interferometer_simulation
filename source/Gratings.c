@@ -51,12 +51,10 @@ void ( * intensity_after_1st_grating(double current_z_position,double el1, doubl
 	double energy = sp.energy;
 	double width = sp.height;
 	double abszloc = current_z_position;
-	int rowsT =41;				// rows of ReT and ImT array
     	//double period = sp.grating_period;
 	double period = 0.000000100;		// period of grating - 100 nanometers.
 	// Grating wedge angle. Variable alpha below depends on this. This is a free parameter. Appears to be related to beam splitting.
     	double wedgeangle = sp.wedgeangle;
-    	int useimagecharge = sp.useimagecharge;	// whether or not to consider image charge effects. 0 for False.
 	/* 
 	 * A free parameter. Beta variable below depends on this. If beam is perpendicular to gratings, then tilt (and thus Beta) is 0.
 	 * This is the twist about the x-axis.
@@ -85,9 +83,9 @@ void ( * intensity_after_1st_grating(double current_z_position,double el1, doubl
 	double el2 = calculate_width(z12, r1, el1, w1, el1); // beam coherence width
     	int pos[41]={0};
 
-	for (int i=0; i<rowsT; i++) // since rowsT is currently 41, pos[i] = -20 to 20.
+	for (int i=0; i<sp.rowsT; i++) // since sp.rowsT is currently 41, pos[i] = -20 to 20.
 	{
-	pos[i]=i-((rowsT-1)/2);
+	pos[i]=i-((sp.rowsT-1)/2);
 	}
 
 	double ReT[41]={0};
@@ -146,10 +144,8 @@ void ( * intensity_after_2nd_grating(double current_z_position, double el1x, dou
 	double z23 = current_z_position - sp.z_position_2nd_grating;
 	double mytheta = sp.theta;
 	double energy = sp.energy;
-    	int rowsT =41;// rows of ReT and ImT array
 	double period = 0.0000001;// period of grating - 100 nanometers.
     	double wedgeangle = sp.wedgeangle;
-    	int useimagecharge = sp.useimagecharge;	// whether or not to consider image charge effects. 0 for False.
 	/* 
 	 * A free parameter. Beta variable below depends on this. If beam is perpendicular to gratings, then tilt (and thus Beta) is 0.
 	 * This is the twist about the x-axis.
@@ -205,8 +201,8 @@ void ( * intensity_after_2nd_grating(double current_z_position, double el1x, dou
     
     	int pos[41]={0}; // array of 41 elements
 
-    	for (int i=0; i<rowsT; i++){ // rowsT = rows of ReT and ImT arrays = 41 for now
-    		pos[i]=i-((rowsT-1)/2); // so this goes from -20 to 20
+    	for (int i=0; i<sp.rowsT; i++){ // sp.rowsT = rows of ReT and ImT arrays = 41 for now
+    		pos[i]=i-((sp.rowsT-1)/2); // so this goes from -20 to 20
     	}
     
     	double ReT[41]={0}; 

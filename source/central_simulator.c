@@ -92,8 +92,7 @@
 // sp is the simulation parameters structure that contains all of the simulation dependent variables. The struct is located in Misc.h.
 simparam sp;
 
-// Rows of ReT and ImT arrays; used to calculate phase shift.
-int rowsT = 41;                              
+                       
 
 /*
  * The function 'main' is the main program that contains all of the global data and function calls to other functions
@@ -138,7 +137,7 @@ int main(int argc, char *argv[])
 		sp.logchoice = 0;
 
 	sp.energy = 1.5e-18 / pow(1e-11,2) * (1);  // Why was the energy defined like this? This equation seems to come from DeBroglie's theory.
-	sp.useimagecharge = 0;
+	sp.account_image_charge = 0;
 	sp.eta1 = 0.4;
 	sp.eta2 = 0.4;
 	sp.initial_radius_of_wavefront_curvature = -4.04;
@@ -149,18 +148,19 @@ int main(int argc, char *argv[])
 	sp.G2_x   = 5e-8;
 	sp.theta  = 1e-6;
 	sp.thick  = 1.4e-8;
-	sp.Gthick = 1.0e3;
+	sp.grating_thickness = 1.0e3; // 1000; // thickness of gratings; 1 micrometer = 1000 nm, this is in nm on purpose (see function ReTgenerator) Varname could be better. Right now grating_thickness is used for the VdW effect for atoms.
 	sp.wedgeangle =	0;	 // Wedge angle.
 	sp.tilt = 0; 		 // Tilt.
 	sp.z_start  = -0.1;	 //z start position
 	sp.z_end    = 2.1;	 //z end position
  	sp.x_start  = -2.0e-4;   //x start position
 	sp.x_end    = 2.0e-4;    //x end position
-	/* y_start and y_end are not being used in the code. We didn't delete it for now in case the value they assume help us understand something later */
+	/* TODO Ycomment: y_start and y_end are not being used in the code. We didn't delete it for now in case the value they assume help us understand something later */
 	//sp.y_start  = -1.1e-4;   //y start position
 	//sp.y_end    = 1.1e-4;    //y end position
 	sp.height = sp.grating_period / 2;  // The height of each grating is calculated as half the grating period (distance between gratings).
 	sp.intensity_cutoff = 1e-6;	    // Point at which the intensity cuts off and is treated as 0. Can also be 5e-5 like in McMorran thesis, or 0.001.
+	sp.rowsT = 41;    		    // Rows of ReT and ImT arrays; used to calculate phase shift.
 
 	printf("Interferometer Simulation 1.0\n");
 	printf("Copyright (C) 2016 Antimatter Gravity Interferometer Group, Illinois Institute of Technology (IIT).\n");
@@ -206,10 +206,10 @@ int main(int argc, char *argv[])
 		
     	// TODO LAcomment: make sense of these and rename variables accordingly.
 
-   	int izxnumels = sp.resolution * sp.resolution;  					// Pixels on full simulation graph.
-    	double izxsize = izxnumels * sizeof(double); 			// Size of pixels array.
-    	double *izx = (double*) calloc(izxnumels, sizeof(double)); 	// Allocating dynamic memory for pixel array.
+   	int total_number_of_pixels = sp.resolution * sp.resolution;  	// Pixels on full simulation graph.
+    	double *pixel_array_memory = (double*) calloc(total_number_of_pixels, sizeof(double)); 	// Allocating dynamic memory for pixel array.
 	double z_resolution = (sp.z_end-sp.z_start)/sp.resolution; 	// Step resolution used in computation.
+
      
 	/*
 	 * The following functions are used to calculate Gaussian Schell-model (GSM) values at the first grating:
@@ -278,9 +278,9 @@ int main(int argc, char *argv[])
 		 *		 x intensity profile.
 		 * 	For 'intensity_after_1st_grating':
 		 * 		 z position after gratings,
-		 *		 radius of curvature,
 		 * 		 beam coherence width,
 		 *		 beam width,
+		 *		 radius of curvature,
 		 *		 X positions,
 		 *		 x intensity profile.
 		 * 	For 'get_initial_intensity':
@@ -331,18 +331,18 @@ int main(int argc, char *argv[])
 		for (int j=0; j<sp.resolution; j++ ) {
 			// TODO LAcomment: update? "Resolution * i + j; still keeping track of location."
 			int f = sp.resolution * i + j; 
-		    	// The f-th element of izx is set to be the intensity of the beam at the j-th point.	
-		    	izx[f] = Grat3I[j]; 
+		    	// The f-th element of pixel_array_memory is set to be the intensity of the beam at the j-th point.	
+		    	pixel_array_memory[f] = Grat3I[j]; 
 		}
 	}
 	
 	if (sp.simulation_option == 1) {
-		// Free the memory used by this array; since the simulation is over, izx has all the data.
+		// Free the memory used by this array; since the simulation is over, pixel_array_memory has all the data.
 		free(Grat3x); 
 		// Same as above.
 		free(Grat3I); 
-		// Using ROOT to plot izx.
-		SimplePlot::twoD("Intensity graph as particles diffract through gratings",izx,-200,200,0.0,220,sp.resolution,sp.resolution); 
+		// Using ROOT to plot pixel_array_memory.
+		SimplePlot::twoD("Intensity graph as particles diffract through gratings",pixel_array_memory,-200,200,0.0,220,sp.resolution,sp.resolution); 
 	}
 	else if (sp.simulation_option == 2) {
 		// Using ROOT to plot intensity vs. position at end of interferometer.
@@ -353,6 +353,6 @@ int main(int argc, char *argv[])
 		free(Grat3I); 
 	}
 
-	// Free up the space used by the izx array.
-	free(izx);
+	// Free up the space used by the pixel_array_memory array.
+	free(pixel_array_memory);
 }
