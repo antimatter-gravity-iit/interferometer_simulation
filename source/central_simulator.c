@@ -156,7 +156,7 @@ int main(int argc, char *argv[])
 	sp.z_end    = 2.1;	 //z end position
  	sp.x_start  = -2.0e-4;   //x start position
 	sp.x_end    = 2.0e-4;    //x end position
-	/* y_start and y_end are not being used in the code. We didn't delete it for now in case the value they assume help us understand something later */
+	/* TODO Ycomment: y_start and y_end are not being used in the code. We didn't delete it for now in case the value they assume help us understand something later */
 	//sp.y_start  = -1.1e-4;   //y start position
 	//sp.y_end    = 1.1e-4;    //y end position
 	sp.height = sp.grating_period / 2;  // The height of each grating is calculated as half the grating period (distance between gratings).
@@ -249,9 +249,9 @@ int main(int argc, char *argv[])
 		 *		 x intensity profile.
 		 * 	For 'intensity_after_1st_grating':
 		 * 		 z position after gratings,
-		 *		 radius of curvature,
 		 * 		 beam coherence width,
 		 *		 beam width,
+		 *		 radius of curvature,
 		 *		 X positions,
 		 *		 x intensity profile.
 		 * 	For 'get_initial_intensity':
