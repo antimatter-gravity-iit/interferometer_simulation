@@ -12,7 +12,7 @@ typedef struct {
 int accountGrav;				// account for gravitational forces [1] yes, [0] no.
 double vel;					// velocity of particle
 double energy;					// energy of electron
-int simchoice;					// choose whether or not to have a full simulation, or a final simulation interference pattern  
+int simulation_option;				// choose whether or not to have a full simulation, or a final simulation interference pattern  
 int logchoice;					// whether or not to scale interferance pattern with a log base in order to see smaller intensities
 int useimagecharge;                     	// whether or not to consider image charge effects. 0 for False. //not used in program.
 double eta1;	                           	// G1 open fraction; how open the first grating is. With .4 open, a little over than half the muonium should pass through it.

@@ -125,14 +125,14 @@ int main(int argc, char *argv[])
 	// The period is inputted in nanometers (e.g. 100), but the program uses it in meters (e.g. 100.0e-9 == 1.0e-7).
 	sp.grating_period = atof(argv[4]) / 1.0e9;
 	// Output the total simulation [1]? or the final interference pattern [2]?
-	sp.simchoice = atoi(argv[5]);
+	sp.simulation_option = atoi(argv[5]);
 	/*
-	 * If the user asks for the total simulation (sp.simchoice is 1), the program needs to know
+	 * If the user asks for the total simulation (sp.simulation_option is 1), the program needs to know
 	 * if the intensity scale of the plot is going to be linear or logarithmic (the latter helps
 	 * to see where more of the particles go). sp.logchoice == 0 means linear scale, == 1 means
 	 * logarithmic scale.
 	 */
-	if(sp.simchoice == 1)
+	if(sp.simulation_option == 1)
 		sp.logchoice = atoi(argv[6]);
 	else
 		sp.logchoice = 0;
@@ -218,10 +218,10 @@ int main(int argc, char *argv[])
 	double r1 = v(sp.G1_z, sp.initial_radius_of_wavefront_curvature, sp.initial_coherence_width, sp.initial_beamwidth);
 
 	// Developer: follow this indent structure.
-	if (sp.simchoice == 1) {
+	if (sp.simulation_option == 1) {
 		zlocstart = 0;
 	}
-	else if (sp.simchoice == 2) {
+	else if (sp.simulation_option == 2) {
 		zlocstart = sp.resolution - 1;
 	}
 
@@ -317,7 +317,7 @@ int main(int argc, char *argv[])
 		}
 	}
 	
-	if (sp.simchoice == 1) {
+	if (sp.simulation_option == 1) {
 		// Free the memory used by this array; since the simulation is over, izx has all the data.
 		free(Grat3x); 
 		// Same as above.
@@ -325,7 +325,7 @@ int main(int argc, char *argv[])
 		// Using ROOT to plot izx.
 		SimplePlot::twoD("Intensity graph as particles diffract through gratings",izx,-200,200,0.0,220,rows,rows); 
 	}
-	else if (sp.simchoice == 2) {
+	else if (sp.simulation_option == 2) {
 		// Using ROOT to plot intensity vs. position at end of interferometer.
 		SimplePlot::graph("Relative Intensity Along Final Grating", Grat3x, Grat3I, rows);  
 		// Free the memory used by this array, since the simulation is over.
