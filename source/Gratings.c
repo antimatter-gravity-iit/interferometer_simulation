@@ -22,8 +22,7 @@ void ( * get_initial_intensity(double z, double Grat3x[], double Grat3I[]))
 	start = clock();
 	double diff=0;
 
-	double xstart = sp.xstart;
-	double xend = sp.xend;
+
 	double w1;
 	double jj;
 
@@ -54,8 +53,6 @@ void ( * intensity_after_1st_grating(double current_z_position,double el1, doubl
 	double abszloc = sp.height; 		//z position
 	int accountGrav = sp.accountGrav;
 	int rowsT =41;				// rows of ReT and ImT array
-	double xstart = sp.xstart; 
-    	double xend = sp.xend;
     	//double period = sp.grating_period;
 	double period = 0.000000100;		// period of grating - 100 nanometers.
 	// Grating wedge angle. Variable alpha below depends on this. This is a free parameter. Appears to be related to beam splitting.
@@ -152,8 +149,6 @@ void ( * intensity_after_2nd_grating(double current_z_position, double el1x, dou
 	double mytheta = sp.theta;
 	double energy = sp.energy;
     	int rowsT =41;// rows of ReT and ImT array
-    	double xstart = sp.xstart; // what is this? It's negative 200 microns.
-    	double xend = sp.xend;
 	double period = 0.0000001;// period of grating - 100 nanometers.
     	double wedgeangle = sp.wedgeangle;
     	int useimagecharge = sp.useimagecharge;	// whether or not to consider image charge effects. 0 for False.
@@ -231,7 +226,7 @@ void ( * intensity_after_2nd_grating(double current_z_position, double el1x, dou
     	phiI = (double*) calloc(sp.resolution, sizeof(double)); // it will affect Grat3I array
     
 	for (int i=0; i<sp.resolution; i++) {
-	phix[i]= xstart + (i) * ((xend-xstart)/(sp.resolution-1));
+	phix[i]= sp.x_start + (i) * ((sp.x_end-sp.x_start)/(sp.resolution-1));
 	}
     	
 	
