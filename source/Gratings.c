@@ -136,9 +136,9 @@ void ( * intensity_after_1st_grating(double zloc,double r1,double el1, double w1
 
 }
 
-void ( * gp2(double zloc, double el1x, double w1x, double r1x, double Grat3x[], double Grat3I[]))
+void ( * intensity_after_2nd_grating(double zloc, double el1x, double w1x, double r1x, double Grat3x[], double Grat3I[]))
 {	
-	clock_t start, end; //starting a timer to get the time spent in function gp2
+	clock_t start, end; //starting a timer to get the time spent in function intensity_after_2nd_grating
 	start = clock();
 	double diff=0;
 
@@ -294,5 +294,5 @@ void ( * gp2(double zloc, double el1x, double w1x, double r1x, double Grat3x[], 
 
 	end = clock();
 	diff =((double) (end - start))/ CLOCKS_PER_SEC;
-	printf("Time elapsed: %f seconds\n",diff); //printing the time spent in gp2.
+	printf("Time elapsed: %f seconds\n",diff); //printing the time spent in intensity_after_2nd_grating.
 }

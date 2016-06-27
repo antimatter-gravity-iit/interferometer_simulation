@@ -242,14 +242,14 @@ int main(int argc, char *argv[])
 		/*
 		 * These control structures determine where you are on zloc: depending on that, you interact with different gratings.
 		 * The functions 'gpM' compute the intensity profile after the M-th grating. Thus:
-		 * 	'gp2' computes the intensity profile after the beam hits the second grating; 
+		 * 	'intensity_after_2nd_grating' computes the intensity profile after the beam hits the second grating; 
 		 * 	'intensity_after_1st_grating' computes the intensity profile after the beam hits the first grating;
 		 * 	'get_initial_intensity' computes the intensity profile before the beam hits any grating.
 		 * Note that the intensity profile is an array of positions and their respective intensities. 
 		 * Also, keep in mind these functions modify the Grat3I and Grat3x arrays, but don't return any values.
 		 * 
 		 * Their arguments are:
-		 * 	For 'gp2':
+		 * 	For 'intensity_after_2nd_grating':
 		 *		 z position after gratings,
 		 *		 beam coherence width,
 		 *		 beam width,
@@ -269,9 +269,9 @@ int main(int argc, char *argv[])
 		 *		 x intensity profile.
 		 */
 		if (zloc > sp.G2_z) { 
-			printf("Entering gp2 for row z = %d\n",i); //checking if the looping is working
+			printf("Entering intensity_after_2nd_grating for row z = %d\n",i); //checking if the looping is working
 			// If the location is above G2_z [which is currently 1]:
-			gp2(zloc, el1, w1, r1, Grat3x, Grat3I); 
+			intensity_after_2nd_grating(zloc, el1, w1, r1, Grat3x, Grat3I); 
 			/* 
 			 * The function 'maximumvalue' outputs the maximum value in a given array.
 			 * Its arguments are an array and the length of that array [integer].
