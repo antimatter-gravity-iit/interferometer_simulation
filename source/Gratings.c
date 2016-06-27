@@ -51,7 +51,6 @@ void ( * gp1(double zloc,double r1,double el1, double w1, double Grat3x[], doubl
 	double z12 = zloc - sp.G1_z;		//z location between 1st and 2nd gratings
 	double energy = sp.energy;
 	double vel = sp.vel;
-	int xpnts = sp.resolution;
 	double width = sp.resolution;
 	double abszloc = sp.height; 		//z position
 	int accountGrav = sp.accountGrav;
@@ -148,7 +147,6 @@ void ( * gp2(double zloc, double el1x, double w1x, double r1x, double Grat3x[], 
 	double el1y = el1x;
     
 	double vel = sp.vel;
-	int xpnts = sp.resolution;
 	double width = sp.height;
 	double abszloc = zloc;
 	int accountGrav = sp.accountGrav;
@@ -237,7 +235,7 @@ void ( * gp2(double zloc, double el1x, double w1x, double r1x, double Grat3x[], 
     	phiI = (double*) calloc(sp.resolution, sizeof(double)); // it will affect Grat3I array
     
 	for (int i=0; i<sp.resolution; i++) {
-	phix[i]= xstart + (i) * ((xend-xstart)/(xpnts-1));
+	phix[i]= xstart + (i) * ((xend-xstart)/(sp.resolution-1));
 	}
     	
 	
