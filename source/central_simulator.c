@@ -117,7 +117,7 @@ int rowsT = 41;
 int main(int argc, char *argv[])
 {
 	// Account for gravity? 1 = True, 0 = False.
-	sp.accountGrav = atoi(argv[1]);
+	sp.account_gravity = atoi(argv[1]);
 	// Resolution.
 	sp.resolution = atoi(argv[2]);
 	// Velocity of particle.

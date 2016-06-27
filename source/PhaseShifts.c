@@ -13,7 +13,7 @@
 
 #include <complex.h>
 
-double ( * ReTandImTgenerator(double ReTorImTar[], double energy, int ReTorImT, double width, double abszloc, int accountGrav))
+double ( * ReTandImTgenerator(double ReTorImTar[], double energy, int ReTorImT, double width, double abszloc, int sp.account_gravity))
 {
 
   	double period = sp.grating_period; //0.0000001;// period of grating - 100 nanometers.
@@ -119,7 +119,7 @@ double ( * ReTandImTgenerator(double ReTorImTar[], double energy, int ReTorImT, 
           timeFreefall = (realzloc/ sp.particle_velocity);
 
           // Both electrons and atoms will fall due to gravity. According to Dr. Daniel Kaplan's paper at arxiv.org/ftp/arxiv/papers/1308/1308.0878.pdf, the phase shift caused is 2 * pi * g * t^2 / d, where t is the time in free fall and d is the period of the gratings.
-	if (accountGrav == 1)
+	if (sp.account_gravity == 1)
 		phGrav = (2 * M_PI * gravAccel * pow(timeFreefall, 2)) / period;  // phase shift due to gravity on particles
 
 	else
