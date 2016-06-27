@@ -177,8 +177,8 @@ int main(int argc, char *argv[])
 		
     	// TODO LAcomment: make sense of these and rename variables accordingly.
 
-   	int izxnumels = sp.resolution * sp.resolution;  					// Pixels on full simulation graph.
-    	double izxsize = izxnumels * sizeof(double); 			// Size of pixels array.
+   	int izxnumels = sp.resolution * sp.resolution;  		// Pixels on full simulation graph.
+
     	double *izx = (double*) calloc(izxnumels, sizeof(double)); 	// Allocating dynamic memory for pixel array.
 	double z_resolution = (sp.z_end-sp.z_start)/sp.resolution; 	// Step resolution used in computation.
      
