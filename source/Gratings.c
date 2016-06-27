@@ -51,8 +51,6 @@ void ( * intensity_after_1st_grating(double current_z_position,double el1, doubl
 	double energy = sp.energy;
 	double width = sp.height;
 	double abszloc = current_z_position;
-    	//double period = sp.grating_period;
-	double period = 0.000000100;		// period of grating - 100 nanometers.
 	// Grating wedge angle. Variable alpha below depends on this. This is a free parameter. Appears to be related to beam splitting.
     	double wedgeangle = sp.wedgeangle;
 	/* 
@@ -68,7 +66,7 @@ void ( * intensity_after_1st_grating(double current_z_position,double el1, doubl
     	double lim=5;
     	double lambda = sqrt((1.5 * pow(10,-18))/(energy)); 
 	// wavelength of what particles/waves we're working with; 
-	double eta = width/period; 		// ratio of window 'height' to period of grating
+	double eta = width/sp.grating_period; 		// ratio of window 'height' to period of grating
 	//double particle_velocity = pow(2 * energy * e_charge/e_mass,1/2); electron velocity
     	double alpha = wedgeangle * M_PI/180; 	// alpha and beta have been defined in almost every other function. Global variables? 
     	double beta = tilt * M_PI; 		// defined in other functions too, same purpose.
@@ -105,14 +103,14 @@ void ( * intensity_after_1st_grating(double current_z_position,double el1, doubl
 				coef = ReT[x2pnts(n, (int * )pos)] * ReT[x2pnts(m,(int * )pos)] + ImT[x2pnts(n,(int * )pos)] * ImT[x2pnts(m,(int * )pos)];
 				
 				// lambda is the wavelength of our particles/waves
-				coef = coef * exp(-M_PI * pow((dn * lambda * z12)/(period * el2),2));
+				coef = coef * exp(-M_PI * pow((dn * lambda * z12)/(sp.grating_period * el2),2));
 				// added isfinite macro in order to avoid inf values
 
 				if (std::isfinite(coef)==0 || coef < sp.intensity_cutoff) { // if coef is infinite, then:
 					coef=0;
 				}
 			      	else { // if coef ends up larger than cutoff value, add the values to the current a[i][1]'s intensities.
-					intensity_array[i] +=   coef * exp(-M_PI * pow(((Grat3x[i]-dm * lambda * z12/period)/w2),2)) * cos(2 * M_PI * (dn/period) * (Grat3x[i]-dm * lambda * z12/period) * (1-z12/r2));
+					intensity_array[i] +=   coef * exp(-M_PI * pow(((Grat3x[i]-dm * lambda * z12/sp.grating_period)/w2),2)) * cos(2 * M_PI * (dn/sp.grating_period) * (Grat3x[i]-dm * lambda * z12/sp.grating_period) * (1-z12/r2));
 				    // Since a[i][1] etc. is actually the ix array, and arrays essentially get passed by reference, this is modifying the ix array.
 				    continue;
 				}
@@ -144,7 +142,6 @@ void ( * intensity_after_2nd_grating(double current_z_position, double el1x, dou
 	double z23 = current_z_position - sp.z_position_2nd_grating;
 	double mytheta = sp.theta;
 	double energy = sp.energy;
-	double period = 0.0000001;// period of grating - 100 nanometers.
     	double wedgeangle = sp.wedgeangle;
 	/* 
 	 * A free parameter. Beta variable below depends on this. If beam is perpendicular to gratings, then tilt (and thus Beta) is 0.
@@ -157,12 +154,12 @@ void ( * intensity_after_2nd_grating(double current_z_position, double el1x, dou
     	double eta2 = sp.eta2;
     	double lambda = sqrt((1.5 * pow(10,-18))/(energy)); // wavelength we're working with of particles/waves
     	double resolution = sp.resolution; // This is the resolution we want this graph at.
-    	double eta = width/period; // ratio of slit window 'height' to the period of the gratings
+    	double eta = width/sp.grating_period; // ratio of slit window 'height' to the period of the gratings
         double alpha = wedgeangle * M_PI/180;
     	double beta = tilt * M_PI; // 0 if beam is normal to gratings
     	double theta = M_PI * mytheta/180;
-    	double d1=period; // period = period of gratings
-    	double d2=period;
+    	double d1=sp.grating_period; // period = period of gratings
+    	double d2=sp.grating_period;
     	double z13 = z12  +  z23; // z distance between grating 1 and 3
     	double phi = 0;
     	double lim =5;

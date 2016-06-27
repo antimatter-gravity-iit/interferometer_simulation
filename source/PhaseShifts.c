@@ -15,8 +15,6 @@
 
 double ( * ReTandImTgenerator(double ReTorImTar[], double energy, int ReTorImT, double width, double abszloc))
 {
-
-  	double period = sp.grating_period; //0.0000001;// period of grating - 100 nanometers.
 	double gravAccel = -9.8;    // acceleration due to gravity. 
   	double wedgeangle = sp.wedgeangle; //0; //Grating wedge angle. The variable alpha below depends on this. This is a free parameter. Appears to be related to beam splitting.
   	double tilt = sp.tilt;  //0; // A free parameter. Beta variable below depends on this. If beam is perp. to grating, then tilt (and thus Beta) are 0. This is the twist about the x-axis.
@@ -32,7 +30,7 @@ double ( * ReTandImTgenerator(double ReTorImTar[], double energy, int ReTorImT, 
     	double difPlancks = 6.58212e-13; // hbar in mev * s
     	double Plancks = 6.626068e-34; // Planck's constant
   
-  	double eta = width/period; // ratio of 'height' of slit/windows in gratings to the period of the gratings
+  	double eta = width/sp.grating_period; // ratio of 'height' of slit/windows in gratings to the period of the gratings
   	double nmvel = sp.particle_velocity * 1e9;  // converting a m/s velocity to nm/s.
     	double alpha = wedgeangle * M_PI/180; // depends on wedgeangle above, which is a relatively free parameter. Appears to be bend of 'window' (slits in grating), if they bend forward or not.
     	double beta = tilt * M_PI; // depends on tilt angle, = 0 if beam is normal to gratings
@@ -107,7 +105,7 @@ double ( * ReTandImTgenerator(double ReTorImTar[], double energy, int ReTorImT, 
           exnmleft = ex * 1.0e9;
           exnmright = (xmax - ex) * 1.0e9; 
           // fc is another electron thing; or the diffraction pattern? 2pi*n*x/period?
-          fc = 2 * M_PI * n * ex/period; // so the first fc = 2  *  pi  *  -20  *  xmin / period, last fc = 2  *  pi  *  20  *  xmax / period. Looks like fc is a quantity proportional to distance from bottom/top of each 'window'/slit
+          fc = 2 * M_PI * n * ex/sp.grating_period; // so the first fc = 2  *  pi  *  -20  *  xmin / period, last fc = 2  *  pi  *  20  *  xmax / period. Looks like fc is a quantity proportional to distance from bottom/top of each 'window'/slit
             
           // abszloc is actually wrong; the code thinks the total z is 1m. It's actually closer to 2.8cm. Divide abszloc by 36.075 to get real value.
           double realzloc = abszloc / 36.075;
@@ -117,7 +115,7 @@ double ( * ReTandImTgenerator(double ReTorImTar[], double energy, int ReTorImT, 
 
           // Both electrons and atoms will fall due to gravity. According to Dr. Daniel Kaplan's paper at arxiv.org/ftp/arxiv/papers/1308/1308.0878.pdf, the phase shift caused is 2 * pi * g * t^2 / d, where t is the time in free fall and d is the period of the gratings.
 	if (sp.account_gravity == 1)
-		phGrav = (2 * M_PI * gravAccel * pow(timeFreefall, 2)) / period;  // phase shift due to gravity on particles
+		phGrav = (2 * M_PI * gravAccel * pow(timeFreefall, 2)) / sp.grating_period;  // phase shift due to gravity on particles
 
 	else
 		phGrav = 0;
