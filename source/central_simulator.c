@@ -156,15 +156,12 @@ int main(int argc, char *argv[])
 	sp.wedgeangle =	0;
 	// Tilt.
 	sp.tilt = 0; 
-	sp.zstart = -0.1;
-	sp.zend = 2.1;
-	sp.xstart = -2.0e-4;
-	// xend.
-	sp.xend = 2.0e-4;
-	// ystart.
-	sp.ystart = -1.1e-4;
-	// yend.
-	sp.yend = 1.1e-4;
+	sp.zstart = -0.1;	//zstart
+	sp.zend   = 2.1;	//zend
+	sp.x_start = -2.0e-4;    //x start position
+	sp.x_end   = 2.0e-4;     //x end position
+	sp.ystart = -1.1e-4;    //ystart
+	sp.yend   = 1.1e-4;     //yend
 	// The height of each grating is calculated as half the grating period (distance between gratings).
 	sp.height = sp.grating_period / 2;
 	// Point at which the intensity cuts off and is treated as 0. Can also be 5e-5 like in McMorran thesis, or 0.001.

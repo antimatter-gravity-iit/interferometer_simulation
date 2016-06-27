@@ -32,8 +32,8 @@ double tilt;                            	// A free parameter. Beta variable belo
 double resolution;	                         	// Resolution of the interaction in the gratings. Better varname?
 double zstart;		                      	// defining bounds of the grating structure? This definitely corresponds to a location, probably the bottom of the grating.
 double zend;	                          	// probably the end of the grating.
-double xstart;		                   	// x position start, -200 microns
-double xend;					// x position ends, 200 microns
+double x_start;		                   	// x position start, -200 microns
+double x_end;					// x position ends, 200 microns
 double ystart;		                   	// y position start, 110 microns
 double yend;					// y position ends, 110 microns
 double height;					// maximum z height
