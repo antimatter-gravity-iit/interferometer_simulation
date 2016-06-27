@@ -23,7 +23,6 @@ double ( * ReTandImTgenerator(double ReTorImTar[], double energy, int ReTorImT, 
   	double eta1 = sp.eta1; //.4; //G1 open fraction; how open the first grating is. With .4 open, a little over than half the muonium should pass through it. Varname could be changed to better represent it.
   	double eta2 = sp.eta2; //.4; //G2 open fraction; how open the second grating is.
   	double thick = sp.thick; // 0.000000014; // 14 nanometers. Not (real) thickness of gratings, most likely. Gratings are actually 1 micrometer thick. This is used for the electron part of the code.
-	double Gthick = sp.Gthick;// 1000; // thickness of gratings; 1 micrometer = 1000 nm, this is in nm on purpose (see function ReTgenerator) Varname could be better. Right now Gthick is used for the VdW effect for atoms.
 	int rowsT = 41;// rows of ReT and ImT array
     
 	//values not included in simparam structure.  can be moved there but not entirely necessary 
@@ -131,7 +130,7 @@ double ( * ReTandImTgenerator(double ReTorImTar[], double energy, int ReTorImT, 
  // phM is phase shift on Muonium/other neutral molecules due to Van der Waals effects through the gratings.
               	
 	else
-		phM = -C3 * Gthick / (difPlancks * nmvel * pow(exnmleft, 3)) -  -C3 * Gthick / (difPlancks * nmvel * pow(exnmright, 3));
+		phM = -C3 * sp.grating_thickness / (difPlancks * nmvel * pow(exnmleft, 3)) -  -C3 * sp.grating_thickness / (difPlancks * nmvel * pow(exnmright, 3));
                 
 	j=n + ((rowsT-1)/2); // j goes from 0 to 40 (right now rowsT = 41)
                 

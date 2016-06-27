@@ -26,7 +26,7 @@ double z_position_2nd_grating;                  // assumed to be 1 meter away on
 double G2_x;		                   	// 50 nm. Initial lateral offset of G2.
 double theta;		                   	// could be 0.05 or more. This is the twist between 1st and second gratings, in degrees. 2nd and 3rd grating are fixed to same rotational twist.
 double thick;		                	// 14 nanometers. Not (real) thickness of gratings, most likely. Gratings are 1 micrometer thick.
-double Gthick;		                      	// thickness of gratings; 1 micrometer = 1000 nm, this is in nm on purpose (see function ReTgenerator)
+double grating_thickness;		        // thickness of gratings; 1 micrometer = 1000 nm, this is in nm on purpose (see function ReTgenerator)
 double wedgeangle;	                     	// Grating wedge angle. The variable alpha below depends on this. This is a free parameter. Appears to be related to beam splitting.
 double tilt;                            	// A free parameter. Beta variable below depends on this. If beam is perp. to grating, then tilt (and thus Beta) are 0. This is the twist about the x-axis.
 double resolution;	                         	// Resolution of the interaction in the gratings. Better varname?
