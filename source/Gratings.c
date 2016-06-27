@@ -48,7 +48,7 @@ void ( * intensity_after_1st_grating(double zloc,double r1,double el1, double w1
 	start = clock();
 	double diff=0;
 
-	double z12 = zloc - sp.G1_z;		//z location between 1st and 2nd gratings
+	double z12 = zloc - sp.z_position_1st_grating;		//z location between 1st and 2nd gratings
 	double energy = sp.energy;
 	double width = sp.height;
 	double abszloc = sp.height; 		//z position
@@ -148,7 +148,7 @@ void ( * intensity_after_2nd_grating(double zloc, double el1x, double w1x, doubl
 	double width = sp.height;
 	double abszloc = zloc;
 	int accountGrav = sp.accountGrav;
-	double z12 = ((sp.G2_z) - (sp.G1_z));
+	double z12 = ((sp.G2_z) - (sp.z_position_1st_grating));
 	double z23 = (zloc -(sp.G2_z));
 	double mytheta = sp.theta;
 	double energy = sp.energy;
