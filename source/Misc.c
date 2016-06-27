@@ -10,10 +10,10 @@
 //#include "Gratings.h"
 //#include "BeamParams.h"
 
-double maximumvalue(double arr[], int sp.resolution){    
+double maximumvalue(double arr[], int array_size){    
     // finds the max value of the array
     double m =0;
-    for (int i = 0; i < sp.resolution; i++ ){
+    for (int i = 0; i < array_size; i++ ){
         if (m<arr[i]){
             m = arr[i];// finds the maximum value of the array
         }

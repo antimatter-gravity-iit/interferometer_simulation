@@ -42,7 +42,7 @@ double cutoff;					// =.000001  Intensity values below cutoff value are truncate
 
 extern simparam sp;
 
-double maximumvalue(double arr[], int sp.resolution); 
+double maximumvalue(double arr[], int array_size); 
 // obtains the max value in an array
 
 double sinc(double x); 
