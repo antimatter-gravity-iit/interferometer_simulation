@@ -342,7 +342,7 @@ int main(int argc, char *argv[])
 		// Same as above.
 		free(intensity_array); 
 		// Using ROOT to plot pixel_array_memory.
-		SimplePlot::twoD("Intensity graph as particles diffract through gratings",pixel_array_memory,-200,200,0.0,220,sp.resolution,sp.resolution); 
+		SimplePlot::twoD("Intensity graph as particles diffract through gratings",pixel_array_memory,x_start,x_end,z_start,z_end,sp.resolution,sp.resolution); 
 	}
 	else if (sp.simulation_option == 2) {
 		// Using ROOT to plot intensity vs. position at end of interferometer.
