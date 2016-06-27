@@ -147,8 +147,8 @@ void ( * intensity_after_2nd_grating(double current_z_position, double el1x, dou
 	double width = sp.height;
 	double abszloc = current_z_position;
 	int accountGrav = sp.accountGrav;
-	double z12 = ((sp.G2_z) - (sp.z_position_1st_grating));
-	double z23 = (current_z_position -(sp.G2_z));
+	double z12 = sp.z_position_2nd_grating - sp.z_position_1st_grating;
+	double z23 = current_z_position - sp.z_position_2nd_grating;
 	double mytheta = sp.theta;
 	double energy = sp.energy;
     	int rowsT =41;// rows of ReT and ImT array
