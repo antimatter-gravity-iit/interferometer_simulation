@@ -224,18 +224,18 @@ int main(int argc, char *argv[])
 		zlocstart = sp.resolution - 1;
 	}
 
+	// TODO: LAcomment: ask M about these memsets.
+	memset(Grat3x, 0, sp.resolution * sizeof(double));
+
+	for (int i=0; i<sp.resolution; i++)
+		Grat3x[i] = sp.xstart + (i) * ((sp.xend-sp.xstart)/(sp.resolution-1));
+	
 	for (int i=(zlocstart); i<sp.resolution; i++) {
 		// TODO: LAcomment: said "i=299 is just to get last row of z." What?
 		// Each time the loop repeats, you reset the array's positions and intensities to zero. 
 		memset(Grat3I, 0, sp.resolution * sizeof(double));
-		// TODO: LAcomment: ask M about these memsets.
-		// memset(Grat3x, 0, rows * sizeof(double));
-
-		for (int i=0; i<sp.resolution; i++) {
-       		Grat3x[i] = sp.xstart + (i) * ((sp.xend-sp.xstart)/(sp.resolution-1));
-       		}
-
-	     	// Where you are with respect to z.
+		
+		// Where you are with respect to z.
 		double current_z_position = sp.zstart  +  i * z_resolution;		 
 
 		/*
