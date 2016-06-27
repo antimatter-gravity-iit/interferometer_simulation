@@ -121,7 +121,7 @@ int main(int argc, char *argv[])
 	// Resolution.
 	sp.resolution = atoi(argv[2]);
 	// Velocity of particle.
-	sp.particle_velocity = atoi(argv[3]);
+	sp.particle_velocity = atof(argv[3]);
 	// The period is inputted in nanometers (e.g. 100), but the program uses it in meters (e.g. 100.0e-9 == 1.0e-7).
 	sp.grating_period = atof(argv[4]) / 1.0e9;
 	// Output the total simulation [1]? or the final interference pattern [2]?
@@ -161,7 +161,36 @@ int main(int argc, char *argv[])
 	//sp.y_end    = 1.1e-4;    //y end position
 	sp.height = sp.grating_period / 2;  // The height of each grating is calculated as half the grating period (distance between gratings).
 	sp.intensity_cutoff = 1e-6;	    // Point at which the intensity cuts off and is treated as 0. Can also be 5e-5 like in McMorran thesis, or 0.001.
-	
+
+	printf("Interferometer Simulation 1.0\n");
+	printf("Copyright (C) 2016 Antimatter Gravity Interferometer Group, Illinois Institute of Technology (IIT).\n");
+	printf("License: GNU GPL version 2\n----------\n");
+	//printf("Interferometer Simulation comes with ABSOLUTELY NO WARRANTY; for details type 'show warranty'.\n");
+	//printf("This is free software, and you are welcome to redistribute it under certain conditions; type 'show copying' for details.\n\n");
+	printf("The simulation will run as follows.\n");
+	printf("Is gravity being considered? ");
+	if (sp.account_gravity == 1)
+		printf("yes\n");
+	else
+		printf("no\n");
+	printf("Resolution of simulation plot: %3.0f pixels\n", sp.resolution);
+	printf("Velocity of particles: %4.1f m/s\n", sp.particle_velocity);
+	printf("'Period' of gratings (distance between two successive slits in one grating): %3.1f nm\n", sp.grating_period);
+	printf("Computing the full simulation or just the final interference pattern (using relative intensities)? ");
+	if (sp.simulation_option == 1) {
+		printf("full simulation\n");
+		printf("Is the intensity being plotted in a logarthmic scale? ");
+		if (sp.logchoice == 1)
+			printf("yes\n");
+		else
+			printf("no\n");
+	}
+	else
+		printf("final interference pattern\n");
+	printf("Press 'Enter' to continue.");
+	while (getchar() != '\n')
+		;
+
 	/*
 	 * TODO LAcomment: make sense of this. Remember Mcomment: "I tried to fix this, but what is it actually saying?
 	 * It's the intensities of the x-positions and the intensities?  That doesn't make sense to me."
