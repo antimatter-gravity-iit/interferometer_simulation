@@ -188,7 +188,7 @@ int main(int argc, char *argv[])
    	int izxnumels = sp.resolution * sp.resolution;  					// Pixels on full simulation graph.
     	double izxsize = izxnumels * sizeof(double); 			// Size of pixels array.
     	double *izx = (double*) calloc(izxnumels, sizeof(double)); 	// Allocating dynamic memory for pixel array.
-	double zres = (sp.zend-sp.zstart)/sp.resolution; 		// Step resolution used in computation.
+	double z_resolution = (sp.zend-sp.zstart)/sp.resolution; 	// Step resolution used in computation.
      
 	/*
 	 * The following functions are used to calculate Gaussian Schell-model (GSM) values at the first grating:
@@ -236,7 +236,7 @@ int main(int argc, char *argv[])
        		}
 
 	     	// Where you are with respect to z.
-		double current_z_position = sp.zstart  +  i * zres;		 
+		double current_z_position = sp.zstart  +  i * z_resolution;		 
 
 		/*
 		 * These control structures determine where you are on zloc: depending on that, you interact with different gratings.
