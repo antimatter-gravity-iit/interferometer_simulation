@@ -41,7 +41,7 @@ void ( * get_initial_intensity(double z, double Grat3x[], double Grat3I[]))
 }
 
 
-void ( * intensity_after_1st_grating(double current_z_position,double r1,double el1, double w1, double Grat3x[], double Grat3I[]))
+void ( * intensity_after_1st_grating(double current_z_position,double el1, double w1, double r1, double Grat3x[], double Grat3I[]))
 // get intensity profile after one grating
 {
 	clock_t start, end; //starting a timer to get the time spent in function intensity_after_1st_grating

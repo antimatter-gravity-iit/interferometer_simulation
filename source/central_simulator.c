@@ -290,7 +290,7 @@ int main(int argc, char *argv[])
 		else if (current_z_position > sp.z_position_1st_grating) {
 			// If interacting with the first grating, calculates intensity profile.
 			printf("Entering intensity_after_1st_grating for row z = %d\n",i); //checking if the looping is working
-			intensity_after_1st_grating(current_z_position, r1, el1, w1, Grat3x, Grat3I); 
+			intensity_after_1st_grating(current_z_position, el1, w1, r1, Grat3x, Grat3I); 
 			// Max value of intensity calculated here.
 			max = maximumvalue(Grat3I, sp.resolution); 
 			// As before.		
