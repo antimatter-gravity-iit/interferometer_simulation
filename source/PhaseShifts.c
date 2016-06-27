@@ -17,7 +17,7 @@ double ( * ReTandImTgenerator(double ReTorImTar[], double energy, int ReTorImT, 
 {
 	double xstart = sp.xstart; // negative 200 microns
 	double xend = sp.xend; //0.00020;      // positive 200 microns
-  	double period = sp.g_period; //0.0000001;// period of grating - 100 nanometers.
+  	double period = sp.grating_period; //0.0000001;// period of grating - 100 nanometers.
 	double gravAccel = -9.8;    // acceleration due to gravity. 
   	double wedgeangle = sp.wedgeangle; //0; //Grating wedge angle. The variable alpha below depends on this. This is a free parameter. Appears to be related to beam splitting.
   	int useimagecharge = sp.useimagecharge; //0; // whether or not to consider image charge effects. 0 for False.

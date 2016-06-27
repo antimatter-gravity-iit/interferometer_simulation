@@ -59,7 +59,7 @@ void ( * gp1(double zloc,double r1,double el1, double w1, double Grat3x[], doubl
 	int rowsT =41;				// rows of ReT and ImT array
 	double xstart = sp.xstart; 
     	double xend = sp.xend;
-    	//double period = sp.g_period;
+    	//double period = sp.grating_period;
 	double period = 0.000000100;		// period of grating - 100 nanometers.
 	// Grating wedge angle. Variable alpha below depends on this. This is a free parameter. Appears to be related to beam splitting.
     	double wedgeangle = sp.wedgeangle;

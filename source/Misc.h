@@ -17,7 +17,7 @@ int logchoice;					// whether or not to scale interferance pattern with a log ba
 int useimagecharge;                     	// whether or not to consider image charge effects. 0 for False. //not used in program.
 double eta1;	                           	// G1 open fraction; how open the first grating is. With .4 open, a little over than half the muonium should pass through it.
 double eta2;	                           	// G2 open fraction; how open the second grating is.
-double g_period;                  		// period of grating - 100 nanometers.
+double grating_period;                  		// period of grating - 100 nanometers.
 double initial_radius_of_wavefront_curvature;   // Corresponds to r0 in older versions.
 double initial_coherence_width;                 // Corresponds to el0 in older versions. 50e-9 can also be used.
 double initial_beamwidth;                      	// Corresponds to w0 in older versions. Muonium beam width. Can also be: 2e-6, 1e-6.

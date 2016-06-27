@@ -123,7 +123,7 @@ int main(int argc, char *argv[])
 	// Velocity of particle.
 	sp.vel = atoi(argv[3]);
 	// The period is inputted in nanometers (e.g. 100), but the program uses it in meters (e.g. 100.0e-9 == 1.0e-7).
-	sp.g_period = atof(argv[4]) / 1.0e9;
+	sp.grating_period = atof(argv[4]) / 1.0e9;
 	// Output the total simulation [1]? or the final interference pattern [2]?
 	sp.simchoice = atoi(argv[5]);
 	/*
@@ -166,7 +166,7 @@ int main(int argc, char *argv[])
 	// yend.
 	sp.yend = 1.1e-4;
 	// The height of each grating is calculated as half the grating period (distance between gratings).
-	sp.height = sp.g_period / 2;
+	sp.height = sp.grating_period / 2;
 	// Point at which the intensity cuts off and is treated as 0. Can also be 5e-5 like in McMorran thesis, or 0.001.
 	sp.cutoff = 1e-6;
 	
