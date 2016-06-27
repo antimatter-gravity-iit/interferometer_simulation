@@ -10,10 +10,10 @@
 //#include "Gratings.h"
 //#include "BeamParams.h"
 
-double maximumvalue(double arr[], int rows){    
+double maximumvalue(double arr[], int sp.resolution){    
     // finds the max value of the array
     double m =0;
-    for (int i = 0; i < rows; i++ ){
+    for (int i = 0; i < sp.resolution; i++ ){
         if (m<arr[i]){
             m = arr[i];// finds the maximum value of the array
         }
@@ -42,7 +42,7 @@ double sinc(double x){
  * The function only modifies the array fed to it; it doesn't return any value. 
  */
 
-double *ixgenerator(double a[], double zloc, int logchoice, int rows) 
+double *ixgenerator(double a[], double zloc, int logchoice, int sp.resolution) 
 {
     double cutoff = 0.000001; 
     // at what point does the intensity cut off and be treated as 0. Can also be 5e-5 like in McMorran thesis. Or 0.001.cutoff = 0.000001;
@@ -52,14 +52,14 @@ double *ixgenerator(double a[], double zloc, int logchoice, int rows)
     // half life average decay time of a muon, in seconds
     int rowsT =41;
     // rows of ReT and ImT arrays
-    double max = maximumvalue(a, rows); 
+    double max = maximumvalue(a, sp.resolution); 
     // maximum intensity value for a slice in z
     double min = cutoff;
     // the minimum value the intensity can be at before being set to 0; cutoff is a global variable
     // right now gratings are treated as being 0.5m apart. Divide zloc by 36.075 to get the proper distances, 1.4cm, between gratings.
     double realzloc = zloc / 36.075;
 
-    for (int i=0; i<rows; i++) {
+    for (int i=0; i<sp.resolution; i++) {
         /*
 	 * HALF-LIFE DECAY - means normalizing the intensity at the point i to what the intensity should be after a certain time t.
 	 * This will be approximated by substituting distance, zloc, for t; x = vt, v = 6300, so t = x/6300.

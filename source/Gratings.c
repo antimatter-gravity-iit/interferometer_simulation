@@ -50,10 +50,8 @@ void ( * intensity_after_1st_grating(double zloc,double r1,double el1, double w1
 
 	double z12 = zloc - sp.G1_z;		//z location between 1st and 2nd gratings
 	double energy = sp.energy;
-	int rows = sp.resolution;
 	double vel = sp.vel;
-	int xpnts = rows;
-	double width = rows;
+	double width = sp.resolution;
 	double abszloc = sp.height; 		//z position
 	int accountGrav = sp.accountGrav;
 	int rowsT =41;				// rows of ReT and ImT array
@@ -105,7 +103,7 @@ void ( * intensity_after_1st_grating(double zloc,double r1,double el1, double w1
 	double ImT[41]={0};
 	ReTandImTgenerator(ImT,energy, RealorIm, vel, width, abszloc, accountGrav); // calculates phase shift for imaginary part
 
-	for (int i=0; i<rows; i++) { 
+	for (int i=0; i<sp.resolution; i++) { 
 		for (int n=-lim; n<=lim; n++) {
 			for (int m=-lim; m<=lim; m++) {
 				double dn =n-m; 
@@ -149,8 +147,6 @@ void ( * intensity_after_2nd_grating(double zloc, double el1x, double w1x, doubl
 	double el1y = el1x;
     
 	double vel = sp.vel;
-	int rows = sp.resolution;
-	int xpnts = rows;
 	double width = sp.height;
 	double abszloc = zloc;
 	int accountGrav = sp.accountGrav;
@@ -235,16 +231,16 @@ void ( * intensity_after_2nd_grating(double zloc, double el1x, double w1x, doubl
     
     	double *phix;
     	double *phiI;
-    	phix = (double*) calloc(rows, sizeof(double)); // it has same x-positions as Grat3x as shown below
-    	phiI = (double*) calloc(rows, sizeof(double)); // it will affect Grat3I array
+    	phix = (double*) calloc(sp.resolution, sizeof(double)); // it has same x-positions as Grat3x as shown below
+    	phiI = (double*) calloc(sp.resolution, sizeof(double)); // it will affect Grat3I array
     
-	for (int i=0; i<rows; i++) {
-	phix[i]= xstart + (i) * ((xend-xstart)/(xpnts-1));
+	for (int i=0; i<sp.resolution; i++) {
+	phix[i]= xstart + (i) * ((xend-xstart)/(sp.resolution-1));
 	}
     	
 	
 
-	for (int i=0; i<rows; i++) {
+	for (int i=0; i<sp.resolution; i++) {
 		for (int m1=-lim; m1<=lim; m1++) {
 			for (int m2=-lim; m2<=lim; m2++) {
 				for (int n1=-lim; n1<=lim; n1++) {
