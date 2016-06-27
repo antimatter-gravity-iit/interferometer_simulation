@@ -10,7 +10,7 @@
 // global sp structure, contains all of the simulation parameters that can be modified. 
 typedef struct {
 int accountGrav;				// account for gravitational forces [1] yes, [0] no.
-double vel;					// velocity of particle
+double particle_velocity;					// velocity of particle
 double energy;					// energy of electron
 int simulation_option;				// choose whether or not to have a full simulation, or a final simulation interference pattern  
 int logchoice;					// whether or not to scale interferance pattern with a log base in order to see smaller intensities

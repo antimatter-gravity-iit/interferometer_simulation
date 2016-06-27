@@ -51,7 +51,7 @@ void ( * gp1(double zloc,double r1,double el1, double w1, double Grat3x[], doubl
 	double z12 = zloc - sp.G1_z;		//z location between 1st and 2nd gratings
 	double energy = sp.energy;
 	int rows = sp.resolution;
-	double vel = sp.vel;
+	double particle_velocity = sp.particle_velocity;
 	int xpnts = rows;
 	double width = rows;
 	double abszloc = sp.height; 		//z position
@@ -79,7 +79,7 @@ void ( * gp1(double zloc,double r1,double el1, double w1, double Grat3x[], doubl
     	double lambda = sqrt((1.5 * pow(10,-18))/(energy)); 
 	// wavelength of what particles/waves we're working with; 
 	double eta = width/period; 		// ratio of window 'height' to period of grating
-	//double vel = pow(2 * energy * e_charge/e_mass,1/2); electron velocity
+	//double sp.particle_velocity = pow(2 * energy * e_charge/e_mass,1/2); electron velocity
     	double alpha = wedgeangle * M_PI/180; 	// alpha and beta have been defined in almost every other function. Global variables? 
     	double beta = tilt * M_PI; 		// defined in other functions too, same purpose.
     	/*
@@ -100,10 +100,10 @@ void ( * gp1(double zloc,double r1,double el1, double w1, double Grat3x[], doubl
 
 	double ReT[41]={0};
 	int RealorIm = 1;
-	ReTandImTgenerator(ReT,energy, RealorIm, vel, width, abszloc, accountGrav); // calculates phase shift
+	ReTandImTgenerator(ReT,energy, RealorIm, sp.particle_velocity, width, abszloc, accountGrav); // calculates phase shift
 	RealorIm = 2;
 	double ImT[41]={0};
-	ReTandImTgenerator(ImT,energy, RealorIm, vel, width, abszloc, accountGrav); // calculates phase shift for imaginary part
+	ReTandImTgenerator(ImT,energy, RealorIm, sp.particle_velocity, width, abszloc, accountGrav); // calculates phase shift for imaginary part
 
 	for (int i=0; i<rows; i++) { 
 		for (int n=-lim; n<=lim; n++) {
@@ -148,7 +148,7 @@ void ( * gp2(double zloc, double el1x, double w1x, double r1x, double Grat3x[], 
 	double w1y = w1x;
 	double el1y = el1x;
     
-	double vel = sp.vel;
+	double particle_velocity = sp.particle_velocity;
 	int rows = sp.resolution;
 	int xpnts = rows;
 	double width = sp.height;
@@ -228,10 +228,10 @@ void ( * gp2(double zloc, double el1x, double w1x, double r1x, double Grat3x[], 
     	// array of 41 0's for now.
     	// array of 41 0's for now.
     	int RealorIm = 1; 
-    	ReTandImTgenerator(ReT,energy, RealorIm, vel, width, abszloc, accountGrav); 
+    	ReTandImTgenerator(ReT,energy, RealorIm, sp.particle_velocity, width, abszloc, accountGrav); 
     	double ImT[41]={0};
     	RealorIm = 2;
-    	ReTandImTgenerator(ImT,energy, RealorIm, vel, width, abszloc, accountGrav); 
+    	ReTandImTgenerator(ImT,energy, RealorIm, sp.particle_velocity, width, abszloc, accountGrav); 
     
     	double *phix;
     	double *phiI;

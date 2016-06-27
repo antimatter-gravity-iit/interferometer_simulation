@@ -121,7 +121,7 @@ int main(int argc, char *argv[])
 	// Resolution.
 	sp.resolution = atoi(argv[2]);
 	// Velocity of particle.
-	sp.vel = atoi(argv[3]);
+	sp.particle_velocity = atoi(argv[3]);
 	// The period is inputted in nanometers (e.g. 100), but the program uses it in meters (e.g. 100.0e-9 == 1.0e-7).
 	sp.grating_period = atof(argv[4]) / 1.0e9;
 	// Output the total simulation [1]? or the final interference pattern [2]?

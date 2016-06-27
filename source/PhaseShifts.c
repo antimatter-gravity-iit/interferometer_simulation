@@ -13,7 +13,7 @@
 
 #include <complex.h>
 
-double ( * ReTandImTgenerator(double ReTorImTar[], double energy, int ReTorImT, double vel, double width, double abszloc, int accountGrav))
+double ( * ReTandImTgenerator(double ReTorImTar[], double energy, int ReTorImT, double particle_velocity, double width, double abszloc, int accountGrav))
 {
 	double xstart = sp.xstart; // negative 200 microns
 	double xend = sp.xend; //0.00020;      // positive 200 microns
@@ -39,7 +39,7 @@ double ( * ReTandImTgenerator(double ReTorImTar[], double energy, int ReTorImT, 
     	double Plancks = 6.626068e-34; // Planck's constant
   
   	double eta = width/period; // ratio of 'height' of slit/windows in gratings to the period of the gratings
-  	double nmvel = vel * 1e9;  // converting a m/s velocity to nm/s.
+  	double nmvel = sp.particle_velocity * 1e9;  // converting a m/s velocity to nm/s.
     	double alpha = wedgeangle * M_PI/180; // depends on wedgeangle above, which is a relatively free parameter. Appears to be bend of 'window' (slits in grating), if they bend forward or not.
     	double beta = tilt * M_PI; // depends on tilt angle, = 0 if beam is normal to gratings
     	double exnmleft; // how many nm from the left side of each slit are we?
@@ -119,7 +119,7 @@ double ( * ReTandImTgenerator(double ReTorImTar[], double energy, int ReTorImT, 
           double realzloc = abszloc / 36.075;
 
           // How much time has passed for a point in this system? x = vt, so t = x/v. x in this case is approximated by the z-location. We know v = vel.
-          timeFreefall = (realzloc/ vel);
+          timeFreefall = (realzloc/ sp.particle_velocity);
 
           // Both electrons and atoms will fall due to gravity. According to Dr. Daniel Kaplan's paper at arxiv.org/ftp/arxiv/papers/1308/1308.0878.pdf, the phase shift caused is 2 * pi * g * t^2 / d, where t is the time in free fall and d is the period of the gratings.
 	if (accountGrav == 1)
