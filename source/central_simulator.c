@@ -138,7 +138,7 @@ int main(int argc, char *argv[])
 		sp.logchoice = 0;
 
 	sp.energy = 1.5e-18 / pow(1e-11,2) * (1);  // Why was the energy defined like this? This equation seems to come from DeBroglie's theory.
-	sp.useimagecharge = 0;
+	sp.account_image_charge = 0;
 	sp.eta1 = 0.4;
 	sp.eta2 = 0.4;
 	sp.initial_radius_of_wavefront_curvature = -4.04;

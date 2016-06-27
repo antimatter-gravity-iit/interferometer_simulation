@@ -50,13 +50,13 @@ void ( * intensity_after_1st_grating(double current_z_position,double el1, doubl
 	double z12 = current_z_position - sp.z_position_1st_grating;		//z location between 1st and 2nd gratings
 	double energy = sp.energy;
 	double width = sp.height;
+
 	double abszloc = sp.height; 		//z position
 	int rowsT =41;				// rows of ReT and ImT array
     	//double period = sp.grating_period;
 	double period = 0.000000100;		// period of grating - 100 nanometers.
 	// Grating wedge angle. Variable alpha below depends on this. This is a free parameter. Appears to be related to beam splitting.
     	double wedgeangle = sp.wedgeangle;
-    	int useimagecharge = sp.useimagecharge;	// whether or not to consider image charge effects. 0 for False.
 	/* 
 	 * A free parameter. Beta variable below depends on this. If beam is perpendicular to gratings, then tilt (and thus Beta) is 0.
 	 * This is the twist about the x-axis.
@@ -149,7 +149,6 @@ void ( * intensity_after_2nd_grating(double current_z_position, double el1x, dou
     	int rowsT =41;// rows of ReT and ImT array
 	double period = 0.0000001;// period of grating - 100 nanometers.
     	double wedgeangle = sp.wedgeangle;
-    	int useimagecharge = sp.useimagecharge;	// whether or not to consider image charge effects. 0 for False.
 	/* 
 	 * A free parameter. Beta variable below depends on this. If beam is perpendicular to gratings, then tilt (and thus Beta) is 0.
 	 * This is the twist about the x-axis.

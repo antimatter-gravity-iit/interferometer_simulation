@@ -19,7 +19,6 @@ double ( * ReTandImTgenerator(double ReTorImTar[], double energy, int ReTorImT, 
   	double period = sp.grating_period; //0.0000001;// period of grating - 100 nanometers.
 	double gravAccel = -9.8;    // acceleration due to gravity. 
   	double wedgeangle = sp.wedgeangle; //0; //Grating wedge angle. The variable alpha below depends on this. This is a free parameter. Appears to be related to beam splitting.
-  	int useimagecharge = sp.useimagecharge; //0; // whether or not to consider image charge effects. 0 for False.
   	double tilt = sp.tilt;  //0; // A free parameter. Beta variable below depends on this. If beam is perp. to grating, then tilt (and thus Beta) are 0. This is the twist about the x-axis.
   	double eta1 = sp.eta1; //.4; //G1 open fraction; how open the first grating is. With .4 open, a little over than half the muonium should pass through it. Varname could be changed to better represent it.
   	double eta2 = sp.eta2; //.4; //G2 open fraction; how open the second grating is.
