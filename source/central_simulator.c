@@ -175,7 +175,7 @@ int main(int argc, char *argv[])
 		printf("no\n");
 	printf("Resolution of simulation plot: %3.0f pixels\n", sp.resolution);
 	printf("Velocity of particles: %4.1f m/s\n", sp.particle_velocity);
-	printf("'Period' of gratings (distance between two successive slits in one grating): %3.1f nm\n", sp.grating_period);
+	printf("'Period' of gratings (distance between two successive slits in one grating): %3.1f nm\n", sp.grating_period * 1.0e9);
 	printf("Computing the full simulation or just the final interference pattern (using relative intensities)? ");
 	if (sp.simulation_option == 1) {
 		printf("full simulation\n");
@@ -201,7 +201,7 @@ int main(int argc, char *argv[])
     	double *Grat3x;							// Array of x position of intensity.
 	Grat3I = (double*) calloc(sp.resolution, sizeof(double)); 	// Allocate dynamic memory for intensity array.
 	Grat3x = (double*) calloc(sp.resolution, sizeof(double)); 	// Allocate dynamic memory for horizontal position array.
-	int zlocstart;							// Where z position begins.
+	int initial_z_position;							// Where z position begins.
 	double max;							// Stores computed max value of intensity at a specific x location.
 		
     	// TODO LAcomment: make sense of these and rename variables accordingly.
@@ -239,10 +239,10 @@ int main(int argc, char *argv[])
 
 	// Developer: follow this indent structure.
 	if (sp.simulation_option == 1) {
-		zlocstart = 0;
+		initial_z_position = 0;
 	}
 	else if (sp.simulation_option == 2) {
-		zlocstart = sp.resolution - 1;
+		initial_z_position = sp.resolution - 1;
 	}
 
 	// TODO: LAcomment: ask M about these memsets.
@@ -251,7 +251,7 @@ int main(int argc, char *argv[])
 	for (int i=0; i<sp.resolution; i++)
 		Grat3x[i] = sp.x_start + (i) * ((sp.x_end-sp.x_start)/(sp.resolution-1));
 	
-	for (int i=(zlocstart); i<sp.resolution; i++) {
+	for (int i=(initial_z_position); i<sp.resolution; i++) {
 		// TODO: LAcomment: said "i=299 is just to get last row of z." What?
 		// Each time the loop repeats, you reset the array's positions and intensities to zero. 
 		memset(Grat3I, 0, sp.resolution * sizeof(double));
