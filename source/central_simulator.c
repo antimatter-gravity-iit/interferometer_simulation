@@ -92,8 +92,7 @@
 // sp is the simulation parameters structure that contains all of the simulation dependent variables. The struct is located in Misc.h.
 simparam sp;
 
-// Rows of ReT and ImT arrays; used to calculate phase shift.
-int rowsT = 41;                              
+                       
 
 /*
  * The function 'main' is the main program that contains all of the global data and function calls to other functions
@@ -161,7 +160,7 @@ int main(int argc, char *argv[])
 	//sp.y_end    = 1.1e-4;    //y end position
 	sp.height = sp.grating_period / 2;  // The height of each grating is calculated as half the grating period (distance between gratings).
 	sp.intensity_cutoff = 1e-6;	    // Point at which the intensity cuts off and is treated as 0. Can also be 5e-5 like in McMorran thesis, or 0.001.
-	
+	sp.rowsT = 41;    		    // Rows of ReT and ImT arrays; used to calculate phase shift.   
 	/*
 	 * TODO LAcomment: make sense of this. Remember Mcomment: "I tried to fix this, but what is it actually saying?
 	 * It's the intensities of the x-positions and the intensities?  That doesn't make sense to me."

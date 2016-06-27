@@ -47,8 +47,6 @@ double *ixgenerator(double a[], double current_z_position, int logchoice)
     // the irrational constant e.
     double mu_lifetime = 0.0000022; 
     // half life average decay time of a muon, in seconds
-    int rowsT =41;
-    // rows of ReT and ImT arrays
     double max = maximumvalue(a, sp.resolution); 
     // maximum intensity value for a slice in z
     double min = sp.intensity_cutoff;
@@ -84,9 +82,7 @@ double *ixgenerator(double a[], double current_z_position, int logchoice)
 
 int x2pnts(int value, int  * arr)
 {
-    int rowsT =41;
-    // rows of ReT and ImT arrays
-    for (int i = 0; i < rowsT; i++)
+    for (int i = 0; i < sp.rowsT; i++)
     {
         if (value ==  * (arr + i))
         {
