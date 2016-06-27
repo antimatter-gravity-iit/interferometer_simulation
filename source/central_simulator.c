@@ -175,7 +175,7 @@ int main(int argc, char *argv[])
 		printf("no\n");
 	printf("Resolution of simulation plot: %3.0f pixels\n", sp.resolution);
 	printf("Velocity of particles: %4.1f m/s\n", sp.particle_velocity);
-	printf("'Period' of gratings (distance between two successive slits in one grating): %3.1f nm\n", sp.grating_period);
+	printf("'Period' of gratings (distance between two successive slits in one grating): %3.1f nm\n", sp.grating_period * 1.0e9);
 	printf("Computing the full simulation or just the final interference pattern (using relative intensities)? ");
 	if (sp.simulation_option == 1) {
 		printf("full simulation\n");
