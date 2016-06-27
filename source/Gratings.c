@@ -50,9 +50,7 @@ void ( * gp1(double zloc,double r1,double el1, double w1, double Grat3x[], doubl
 
 	double z12 = zloc - sp.G1_z;		//z location between 1st and 2nd gratings
 	double energy = sp.energy;
-	int rows = sp.resolution;
-	int xpnts = rows;
-	double width = rows;
+	double width = sp.resolution;
 	double abszloc = sp.height; 		//z position
 	int accountGrav = sp.accountGrav;
 	int rowsT =41;				// rows of ReT and ImT array
@@ -104,7 +102,7 @@ void ( * gp1(double zloc,double r1,double el1, double w1, double Grat3x[], doubl
 	double ImT[41]={0};
 	ReTandImTgenerator(ImT,energy, RealorIm, width, abszloc, accountGrav); // calculates phase shift for imaginary part
 
-	for (int i=0; i<rows; i++) { 
+	for (int i=0; i<sp.resolution; i++) { 
 		for (int n=-lim; n<=lim; n++) {
 			for (int m=-lim; m<=lim; m++) {
 				double dn =n-m; 
@@ -147,8 +145,6 @@ void ( * gp2(double zloc, double el1x, double w1x, double r1x, double Grat3x[], 
 	double w1y = w1x;
 	double el1y = el1x;
     
-	int rows = sp.resolution;
-	int xpnts = rows;
 	double width = sp.height;
 	double abszloc = zloc;
 	int accountGrav = sp.accountGrav;
@@ -233,16 +229,16 @@ void ( * gp2(double zloc, double el1x, double w1x, double r1x, double Grat3x[], 
     
     	double *phix;
     	double *phiI;
-    	phix = (double*) calloc(rows, sizeof(double)); // it has same x-positions as Grat3x as shown below
-    	phiI = (double*) calloc(rows, sizeof(double)); // it will affect Grat3I array
+    	phix = (double*) calloc(sp.resolution, sizeof(double)); // it has same x-positions as Grat3x as shown below
+    	phiI = (double*) calloc(sp.resolution, sizeof(double)); // it will affect Grat3I array
     
-	for (int i=0; i<rows; i++) {
-	phix[i]= xstart + (i) * ((xend-xstart)/(xpnts-1));
+	for (int i=0; i<sp.resolution; i++) {
+	phix[i]= xstart + (i) * ((xend-xstart)/(sp.resolution-1));
 	}
     	
 	
 
-	for (int i=0; i<rows; i++) {
+	for (int i=0; i<sp.resolution; i++) {
 		for (int m1=-lim; m1<=lim; m1++) {
 			for (int m2=-lim; m2<=lim; m2++) {
 				for (int n1=-lim; n1<=lim; n1++) {

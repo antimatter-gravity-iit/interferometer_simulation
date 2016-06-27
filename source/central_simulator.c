@@ -181,12 +181,11 @@ int main(int argc, char *argv[])
 	Grat3I = (double*) calloc(sp.resolution, sizeof(double)); 	// Allocate dynamic memory for intensity array.
 	Grat3x = (double*) calloc(sp.resolution, sizeof(double)); 	// Allocate dynamic memory for horizontal position array.
 	int zlocstart;							// Where z position begins.
-	int rows = sp.resolution;					// Numbers of horizontal component arrays of full simulation graph.
 	double max;							// Stores computed max value of intensity at a specific x location.
 		
     	// TODO LAcomment: make sense of these and rename variables accordingly.
 
-   	int izxnumels = rows * rows;  					// Pixels on full simulation graph.
+   	int izxnumels = sp.resolution * sp.resolution;  					// Pixels on full simulation graph.
     	double izxsize = izxnumels * sizeof(double); 			// Size of pixels array.
     	double *izx = (double*) calloc(izxnumels, sizeof(double)); 	// Allocating dynamic memory for pixel array.
 	double zres = (sp.zend-sp.zstart)/sp.resolution; 		// Step resolution used in computation.
@@ -225,14 +224,14 @@ int main(int argc, char *argv[])
 		zlocstart = sp.resolution - 1;
 	}
 
-	for (int i=(zlocstart); i<rows; i++) {
+	for (int i=(zlocstart); i<sp.resolution; i++) {
 		// TODO: LAcomment: said "i=299 is just to get last row of z." What?
 		// Each time the loop repeats, you reset the array's positions and intensities to zero. 
-		memset(Grat3I, 0, rows * sizeof(double));
+		memset(Grat3I, 0, sp.resolution * sizeof(double));
 		// TODO: LAcomment: ask M about these memsets.
 		// memset(Grat3x, 0, rows * sizeof(double));
 
-		for (int i=0; i<rows; i++) {
+		for (int i=0; i<sp.resolution; i++) {
        		Grat3x[i] = sp.xstart + (i) * ((sp.xend-sp.xstart)/(sp.resolution-1));
        		}
 
@@ -277,7 +276,7 @@ int main(int argc, char *argv[])
 			 * Its arguments are an array and the length of that array [integer].
 			 * Here it gives the largest intensity value.
 		     	 */
-			max = maximumvalue(Grat3I, rows);
+			max = maximumvalue(Grat3I, sp.resolution);
 			/* 
 			 * The function 'ixgenerator' is the x direction intensity calculator. It normalizes and compares intensities
 			 * to cutoff value, then determines which value to input to the array of x intensitites. Its arguments are:
@@ -287,16 +286,16 @@ int main(int argc, char *argv[])
 			 * 	number of rows.
 			 * The function only modifies the array fed to it; it doesn't return any value. 
 			 */  
-		    	ixgenerator(Grat3I, zloc, sp.logchoice, rows); 
+		    	ixgenerator(Grat3I, zloc, sp.logchoice, sp.resolution); 
 		}
 		else if (zloc > sp.G1_z) {
 			// If interacting with the first grating, calculates intensity profile.
 			printf("Entering gp1 for row z = %d\n",i); //checking if the looping is working
 			gp1(zloc, r1, el1, w1, Grat3x, Grat3I); 
 			// Max value of intensity calculated here.
-			max = maximumvalue(Grat3I, rows); 
+			max = maximumvalue(Grat3I, sp.resolution); 
 			// As before.		
-			ixgenerator(Grat3I, zloc, sp.logchoice, rows); 
+			ixgenerator(Grat3I, zloc, sp.logchoice, sp.resolution); 
 		}
 		else {
 			// Simple GSM propagation until it hits the first grating.
@@ -304,14 +303,14 @@ int main(int argc, char *argv[])
 			gp0(zloc,Grat3x, Grat3I);
 		
 			// If at the origin?
-			max = maximumvalue(Grat3I, rows); 
+			max = maximumvalue(Grat3I, sp.resolution); 
 			// As before.
-			ixgenerator(Grat3I, zloc, sp.logchoice, rows); 
+			ixgenerator(Grat3I, zloc, sp.logchoice, sp.resolution); 
 		}   
 
-		for (int j=0; j<rows; j++ ) {
+		for (int j=0; j<sp.resolution; j++ ) {
 			// TODO LAcomment: update? "Resolution * i + j; still keeping track of location."
-			int f = rows * i + j; 
+			int f = sp.resolution * i + j; 
 		    	// The f-th element of izx is set to be the intensity of the beam at the j-th point.	
 		    	izx[f] = Grat3I[j]; 
 		}
@@ -323,11 +322,11 @@ int main(int argc, char *argv[])
 		// Same as above.
 		free(Grat3I); 
 		// Using ROOT to plot izx.
-		SimplePlot::twoD("Intensity graph as particles diffract through gratings",izx,-200,200,0.0,220,rows,rows); 
+		SimplePlot::twoD("Intensity graph as particles diffract through gratings",izx,-200,200,0.0,220,sp.resolution,sp.resolution); 
 	}
 	else if (sp.simulation_option == 2) {
 		// Using ROOT to plot intensity vs. position at end of interferometer.
-		SimplePlot::graph("Relative Intensity Along Final Grating", Grat3x, Grat3I, rows);  
+		SimplePlot::graph("Relative Intensity Along Final Grating", Grat3x, Grat3I, sp.resolution);  
 		// Free the memory used by this array, since the simulation is over.
 		free(Grat3x); 
 		// Same as above.
