@@ -10,9 +10,9 @@ void ( * get_initial_intensity(double z, double Grat3x[], double Grat3I[]));
  * el0 = sp.initial_coherence_width
  * w0 = sp.initial_beamwidth
  */
-void ( * intensity_after_1st_grating(double zloc,double r0,double el0, double w0, double Grat3x[], double Grat3I[]));
+void ( * intensity_after_1st_grating(double current_z_position,double r0,double el0, double w0, double Grat3x[], double Grat3I[]));
 
-void ( * intensity_after_2nd_grating(double zloc, double el1x, double w1x, double r1x, double Grat3x[], double Grat3I[]));
+void ( * intensity_after_2nd_grating(double current_z_position, double el1x, double w1x, double r1x, double Grat3x[], double Grat3I[]));
 
 
 #endif // end Gratings.h
