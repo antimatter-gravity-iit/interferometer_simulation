@@ -177,9 +177,9 @@ int main(int argc, char *argv[])
 		
     	// TODO LAcomment: make sense of these and rename variables accordingly.
 
-   	int total_number_of_pixels = sp.resolution * sp.resolution;  	// Pixels on full simulation graph.
-    	double *izx = (double*) calloc(total_number_of_pixels, sizeof(double)); 	// Allocating dynamic memory for pixel array.
-	double z_resolution = (sp.z_end-sp.z_start)/sp.resolution; 	// Step resolution used in computation.
+   	int total_number_of_pixels = sp.resolution * sp.resolution;  		// Pixels on full simulation graph.
+    	double *izx = (double*) calloc(total_number_of_pixels, sizeof(double)); // Allocating dynamic memory for pixel array.
+	double z_resolution = (sp.z_end-sp.z_start)/sp.resolution; 		// Step resolution used in computation.
      
 	/*
 	 * The following functions are used to calculate Gaussian Schell-model (GSM) values at the first grating:
