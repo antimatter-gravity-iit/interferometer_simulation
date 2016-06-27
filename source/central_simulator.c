@@ -137,37 +137,30 @@ int main(int argc, char *argv[])
 	else
 		sp.logchoice = 0;
 
-	// Why was the energy defined like this? This equation seems to come from DeBroglie's theory.
-	sp.energy = 1.5e-18 / pow(1e-11,2) * (1);
-	// sp.energy = 1.5e4
+	sp.energy = 1.5e-18 / pow(1e-11,2) * (1);  // Why was the energy defined like this? This equation seems to come from DeBroglie's theory.
 	sp.useimagecharge = 0;
 	sp.eta1 = 0.4;
 	sp.eta2 = 0.4;
 	sp.initial_radius_of_wavefront_curvature = -4.04;
 	sp.initial_coherence_width = 1.0e-6;
-        sp.initial_beamwidth = 3.0e-5;
-	sp.z_position_1st_grating = 1.0e-6;
-	sp.z_position_2nd_grating = 1.0;
-	sp.G2_x = 5e-8;
-	sp.theta = 1e-6;
-	sp.thick = 1.4e-8;
+        sp.initial_beamwidth       = 3.0e-5;
+	sp.z_position_1st_grating  = 1.0e-6;
+	sp.z_position_2nd_grating  = 1.0;
+	sp.G2_x   = 5e-8;
+	sp.theta  = 1e-6;
+	sp.thick  = 1.4e-8;
 	sp.Gthick = 1.0e3;
-	// Wedge angle.
-	sp.wedgeangle =	0;
-	// Tilt.
-	sp.tilt = 0; 
-	sp.z_start  = -0.1;	//zstart
-	sp.z_end    = 2.1;	//zend
-	sp.x_start = -2.0e-4;   //x start position
-	sp.x_end   = 2.0e-4;    //x end position
-	/* y_start and y_end are not being used in the code. We didn't delete it
-	   for now in case the value they assume help us understand something later */
-	//sp.y_start  = -1.1e-4;   //ystart
-	//sp.y_end    = 1.1e-4;    //yend
-	// The height of each grating is calculated as half the grating period (distance between gratings).
-	sp.height = sp.grating_period / 2;
-	// Point at which the intensity cuts off and is treated as 0. Can also be 5e-5 like in McMorran thesis, or 0.001.
-	sp.intensity_cutoff = 1e-6;
+	sp.wedgeangle =	0;	 // Wedge angle.
+	sp.tilt = 0; 		 // Tilt.
+	sp.z_start  = -0.1;	 //z start position
+	sp.z_end    = 2.1;	 //z end position
+ 	sp.x_start  = -2.0e-4;   //x start position
+	sp.x_end    = 2.0e-4;    //x end position
+	/* y_start and y_end are not being used in the code. We didn't delete it for now in case the value they assume help us understand something later */
+	//sp.y_start  = -1.1e-4;   //y start position
+	//sp.y_end    = 1.1e-4;    //y end position
+	sp.height = sp.grating_period / 2;  // The height of each grating is calculated as half the grating period (distance between gratings).
+	sp.intensity_cutoff = 1e-6;	    // Point at which the intensity cuts off and is treated as 0. Can also be 5e-5 like in McMorran thesis, or 0.001.
 	
 	/*
 	 * TODO LAcomment: make sense of this. Remember Mcomment: "I tried to fix this, but what is it actually saying?
