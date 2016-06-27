@@ -85,7 +85,7 @@ This is the list of arguments in the order you have to input them to the program
 
 For example: if you want a full simulation of 6400 m/s fast atom beam interferometry, plotted with a logarithmic intensity
 scale, accounting for gravity, with a resolution of 300 pixels and a grating pitch of 100 nm, you have to type
-"./program 1 300 6400 100 1 0". Yup.
+"./program 1 300 6400 100 1 1". Yup.
 
 After the program runs (it can take several minutes) you should be shown a ROOT plot with the simulation,
 which you can save as a pdf by clicking "File>>Save as..." in the ROOT window. Done!
