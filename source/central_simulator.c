@@ -197,9 +197,9 @@ int main(int argc, char *argv[])
 	 * Original description: "Initializing two arrays to contain the intensities and xpositions of each intensity."	
 	 */
 	
-	double *Grat3I;							// Intensity array.
+	double *intensity_array;							// Intensity array.
     	double *Grat3x;							// Array of x position of intensity.
-	Grat3I = (double*) calloc(sp.resolution, sizeof(double)); 	// Allocate dynamic memory for intensity array.
+	intensity_array = (double*) calloc(sp.resolution, sizeof(double)); 	// Allocate dynamic memory for intensity array.
 	Grat3x = (double*) calloc(sp.resolution, sizeof(double)); 	// Allocate dynamic memory for horizontal position array.
 	int initial_z_position;							// Where z position begins.
 	double max;							// Stores computed max value of intensity at a specific x location.
@@ -254,7 +254,7 @@ int main(int argc, char *argv[])
 	for (int i=(initial_z_position); i<sp.resolution; i++) {
 		// TODO: LAcomment: said "i=299 is just to get last row of z." What?
 		// Each time the loop repeats, you reset the array's positions and intensities to zero. 
-		memset(Grat3I, 0, sp.resolution * sizeof(double));
+		memset(intensity_array, 0, sp.resolution * sizeof(double));
 		
 		// Where you are with respect to z.
 		double current_z_position = sp.z_start  +  i * z_resolution;		 
@@ -266,7 +266,7 @@ int main(int argc, char *argv[])
 		 * 	'intensity_after_1st_grating' computes the intensity profile after the beam hits the first grating;
 		 * 	'get_initial_intensity' computes the intensity profile before the beam hits any grating.
 		 * Note that the intensity profile is an array of positions and their respective intensities. 
-		 * Also, keep in mind these functions modify the Grat3I and Grat3x arrays, but don't return any values.
+		 * Also, keep in mind these functions modify the intensity and Grat3x arrays, but don't return any values.
 		 * 
 		 * Their arguments are:
 		 * 	For 'intensity_after_2nd_grating':
@@ -291,13 +291,13 @@ int main(int argc, char *argv[])
 		if (current_z_position > sp.z_position_2nd_grating) { 
 			printf("Entering intensity_after_2nd_grating for row z = %d\n",i); //checking if the looping is working
 			// If the location is above z_position_2nd_grating [which is currently 1]:
-			intensity_after_2nd_grating(current_z_position, el1, w1, r1, Grat3x, Grat3I); 
+			intensity_after_2nd_grating(current_z_position, el1, w1, r1, Grat3x, intensity_array); 
 			/* 
 			 * The function 'maximumvalue' outputs the maximum value in a given array.
 			 * Its arguments are an array and the length of that array [integer].
 			 * Here it gives the largest intensity value.
 		     	 */
-			max = maximumvalue(Grat3I, sp.resolution);
+			max = maximumvalue(intensity_array, sp.resolution);
 			/* 
 			 * The function 'ixgenerator' is the x direction intensity calculator. It normalizes and compares intensities
 			 * to cutoff value, then determines which value to input to the array of x intensitites. Its arguments are:
@@ -306,33 +306,33 @@ int main(int argc, char *argv[])
 			 * 	choice of scale for the plot.
 			 * The function only modifies the array fed to it; it doesn't return any value. 
 			 */  
-		    	ixgenerator(Grat3I, current_z_position, sp.logchoice); 
+		    	ixgenerator(intensity_array, current_z_position, sp.logchoice); 
 		}
 		else if (current_z_position > sp.z_position_1st_grating) {
 			// If interacting with the first grating, calculates intensity profile.
 			printf("Entering intensity_after_1st_grating for row z = %d\n",i); //checking if the looping is working
-			intensity_after_1st_grating(current_z_position, el1, w1, r1, Grat3x, Grat3I); 
+			intensity_after_1st_grating(current_z_position, el1, w1, r1, Grat3x, intensity_array); 
 			// Max value of intensity calculated here.
-			max = maximumvalue(Grat3I, sp.resolution); 
+			max = maximumvalue(intensity_array, sp.resolution); 
 			// As before.		
-			ixgenerator(Grat3I, current_z_position, sp.logchoice); 
+			ixgenerator(intensity_array, current_z_position, sp.logchoice); 
 		}
 		else {
 			// Simple GSM propagation until it hits the first grating.
 			printf("Entering get_initial_intensity for row z = %d\n",i); //checking if the looping is working
-			get_initial_intensity(current_z_position,Grat3x, Grat3I);
+			get_initial_intensity(current_z_position,Grat3x, intensity_array);
 		
 			// If at the origin?
-			max = maximumvalue(Grat3I, sp.resolution); 
+			max = maximumvalue(intensity_array, sp.resolution); 
 			// As before.
-			ixgenerator(Grat3I, current_z_position, sp.logchoice); 
+			ixgenerator(intensity_array, current_z_position, sp.logchoice); 
 		}   
 
 		for (int j=0; j<sp.resolution; j++ ) {
 			// TODO LAcomment: update? "Resolution * i + j; still keeping track of location."
 			int f = sp.resolution * i + j; 
 		    	// The f-th element of pixel_array_memory is set to be the intensity of the beam at the j-th point.	
-		    	pixel_array_memory[f] = Grat3I[j]; 
+		    	pixel_array_memory[f] = intensity_array[j]; 
 		}
 	}
 	
@@ -340,17 +340,17 @@ int main(int argc, char *argv[])
 		// Free the memory used by this array; since the simulation is over, pixel_array_memory has all the data.
 		free(Grat3x); 
 		// Same as above.
-		free(Grat3I); 
+		free(intensity_array); 
 		// Using ROOT to plot pixel_array_memory.
 		SimplePlot::twoD("Intensity graph as particles diffract through gratings",pixel_array_memory,-200,200,0.0,220,sp.resolution,sp.resolution); 
 	}
 	else if (sp.simulation_option == 2) {
 		// Using ROOT to plot intensity vs. position at end of interferometer.
-		SimplePlot::graph("Relative Intensity Along Final Grating", Grat3x, Grat3I, sp.resolution);  
+		SimplePlot::graph("Relative Intensity Along Final Grating", Grat3x, intensity_array, sp.resolution);  
 		// Free the memory used by this array, since the simulation is over.
 		free(Grat3x); 
 		// Same as above.
-		free(Grat3I); 
+		free(intensity_array); 
 	}
 
 	// Free up the space used by the pixel_array_memory array.

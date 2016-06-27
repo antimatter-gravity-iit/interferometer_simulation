@@ -15,7 +15,7 @@
 #include <complex.h>
 #include <limits.h> 		//fix for islimit
 
-void ( * get_initial_intensity(double z, double Grat3x[], double Grat3I[]))
+void ( * get_initial_intensity(double z, double Grat3x[], double intensity_array[]))
 // get intensity profile 
 {
 	clock_t start, end; //starting a timer to get the time spent in function get_initial_intensity
@@ -31,7 +31,7 @@ void ( * get_initial_intensity(double z, double Grat3x[], double Grat3I[]))
 
 	for(int i=0; i<sp.resolution; i++) {
 		jj = pow((Grat3x[i]/w1),2); 				// jj = (xpos/beamwidth)^2 
-		Grat3I[i]=exp(-(M_PI * jj)); 				// a[i][1] is the intensity of the beam at the xposition at step i.
+		intensity_array[i]=exp(-(M_PI * jj)); 				// a[i][1] is the intensity of the beam at the xposition at step i.
 	}
 
 	end = clock();
@@ -40,7 +40,7 @@ void ( * get_initial_intensity(double z, double Grat3x[], double Grat3I[]))
 }
 
 
-void ( * intensity_after_1st_grating(double current_z_position,double el1, double w1, double r1, double Grat3x[], double Grat3I[]))
+void ( * intensity_after_1st_grating(double current_z_position,double el1, double w1, double r1, double Grat3x[], double intensity_array[]))
 // get intensity profile after one grating
 {
 	clock_t start, end; //starting a timer to get the time spent in function intensity_after_1st_grating
@@ -112,7 +112,7 @@ void ( * intensity_after_1st_grating(double current_z_position,double el1, doubl
 					coef=0;
 				}
 			      	else { // if coef ends up larger than cutoff value, add the values to the current a[i][1]'s intensities.
-					Grat3I[i] = Grat3I[i]  +   coef * exp(-M_PI * pow(((Grat3x[i]-dm * lambda * z12/period)/w2),2)) * cos(2 * M_PI * (dn/period) * (Grat3x[i]-dm * lambda * z12/period) * (1-z12/r2));
+					intensity_array[i] +=   coef * exp(-M_PI * pow(((Grat3x[i]-dm * lambda * z12/period)/w2),2)) * cos(2 * M_PI * (dn/period) * (Grat3x[i]-dm * lambda * z12/period) * (1-z12/r2));
 				    // Since a[i][1] etc. is actually the ix array, and arrays essentially get passed by reference, this is modifying the ix array.
 				    continue;
 				}
@@ -126,7 +126,7 @@ void ( * intensity_after_1st_grating(double current_z_position,double el1, doubl
 
 }
 
-void ( * intensity_after_2nd_grating(double current_z_position, double el1x, double w1x, double r1x, double Grat3x[], double Grat3I[]))
+void ( * intensity_after_2nd_grating(double current_z_position, double el1x, double w1x, double r1x, double Grat3x[], double intensity_array[]))
 {	
 	clock_t start, end; //starting a timer to get the time spent in function intensity_after_2nd_grating
 	start = clock();
@@ -217,7 +217,7 @@ void ( * intensity_after_2nd_grating(double current_z_position, double el1x, dou
     	double *phix;
     	double *phiI;
     	phix = (double*) calloc(sp.resolution, sizeof(double)); // it has same x-positions as Grat3x as shown below
-    	phiI = (double*) calloc(sp.resolution, sizeof(double)); // it will affect Grat3I array
+    	phiI = (double*) calloc(sp.resolution, sizeof(double)); // it will affect intensity array
     
 	for (int i=0; i<sp.resolution; i++) {
 	phix[i]= sp.x_start + (i) * ((sp.x_end-sp.x_start)/(sp.resolution-1));
@@ -259,7 +259,7 @@ void ( * intensity_after_2nd_grating(double current_z_position, double el1x, dou
                         				function_v = exp(argument_v);
                         				phiI[i] = argument_f + argument_p;
                         
-                        				Grat3I[i] = Grat3I[i]  +  ((__real__ coef) * cos(phiI[i]) - (__imag__ coef) * sin(phiI[i]))*function_d*function_v ;
+                        				intensity_array[i] +=  ((__real__ coef) * cos(phiI[i]) - (__imag__ coef) * sin(phiI[i]))*function_d*function_v ;
 						}
 					}
 				}
