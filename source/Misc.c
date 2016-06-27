@@ -61,16 +61,16 @@ double *ixgenerator(double a[], double zloc, int logchoice)
     for (int i=0; i<sp.resolution; i++) {
         /*
 	 * HALF-LIFE DECAY - means normalizing the intensity at the point i to what the intensity should be after a certain time t.
-	 * This will be approximated by substituting distance, zloc, for t; x = vt, v = 6300, so t = x/6300.
+	 * This will be approximated by substituting distance, zloc, for t; x = vt, v = sp.particle_velocity, so t = x/sp.particle_velocity.
 	 * In this case it's z instead of x. Since the electrons should become more and more as the antimuons decay, we actually want
 	 * the electron presence to start out small, then go up.
 	 */
 
         // Modeling electrons:
-        // a[i][1] = a[i][1] * (1 - pow(const_e, (-1 * realzloc / 6300)/mu_lifetime)); // why is mu_lifetime included for an electron modeling array?
+        // a[i][1] = a[i][1] * (1 - pow(const_e, (-1 * realzloc / sp.particle_velocity)/mu_lifetime)); // why is mu_lifetime included for an electron modeling array?
 
         // Modeling muonium: 
-        a[i] = a[i] * (pow(const_e, (-1 * realzloc / 6300)/mu_lifetime));
+        a[i] = a[i] * (pow(const_e, (-1 * realzloc / sp.particle_velocity)/mu_lifetime));
         
         if (a[i]<min){ // could also have min = 0
             a[i]=0;
