@@ -47,23 +47,24 @@ void ( * intensity_after_1st_grating(double current_z_position,double el1, doubl
 	start = clock();
 	double diff=0;
 
-	double z12 = current_z_position - sp.z_position_1st_grating;		//z location between 1st and 2nd gratings
+	double z12    = current_z_position - sp.z_position_1st_grating;	//z location between 1st and 2nd gratings
 	double energy = sp.energy;
 	/* 
 	 * A free parameter. Beta variable below depends on this. If beam is perpendicular to gratings, then tilt (and thus Beta) is 0.
 	 * This is the twist about the x-axis.
 	 */
-    	double tilt =sp.tilt; 
-	double eta1 = sp.eta1; 	// G1 open fraction; how open the first grating is. With 0.4 open, a little over than half the muonium should pass through.
-    	double eta2 = sp.eta2; 	// G2 open fraction; how open the second grating is.		
+
     	double coef; 
-    	double lim=5;
+    	double lim    = 5;
+    	double tilt   = sp.tilt; 
+	double eta1   = sp.eta1; 				// G1 open fraction; how open the first grating is. With 0.4 open, a little over than half the muonium should pass through.
+    	double eta2   = sp.eta2; 				// G2 open fraction; how open the second grating is.		
     	double lambda = sqrt((1.5 * pow(10,-18))/(energy)); 	// wavelength of what particles/waves we're working with; 
-	double eta = sp.slit_height/sp.grating_period; 		// ratio of window 'height' to period of grating
-	//double particle_velocity = pow(2 * energy * e_charge/e_mass,1/2); electron velocity
-    	double alpha = sp.wedgeangle * M_PI/180; 	// alpha and beta have been defined in almost every other function. Global variables? 
-    	double beta = tilt * M_PI; 		// defined in other functions too, same purpose.
-    	/*
+	double eta    = sp.slit_height/sp.grating_period; 	// ratio of window 'height' to period of grating
+    	double alpha  = sp.wedgeangle * M_PI/180; 		// alpha and beta have been defined in almost every other function. Global variables? 
+    	double beta   = tilt * M_PI; 				// defined in other functions too, same purpose.
+	//double particle_velocity = pow(2 * energy * e_charge/e_mass,1/2); electron velocity    	
+	/*
 	 * Explanation of variables:
 	 * w2 = GSM width of beam after the first grating.
 	 * r2 = radius of GSM wavefront curvature after the first grating
@@ -83,8 +84,9 @@ void ( * intensity_after_1st_grating(double current_z_position,double el1, doubl
 	double ReT[41]={0};
 	int RealorIm = 1;
 	ReTandImTgenerator(ReT,energy, RealorIm, current_z_position); // calculates phase shift
-	RealorIm = 2;
+		
 	double ImT[41]={0};
+	RealorIm = 2;
 	ReTandImTgenerator(ImT,energy, RealorIm, current_z_position); // calculates phase shift for imaginary part
 
 	for (int i=0; i<sp.resolution; i++) { 
@@ -125,12 +127,12 @@ void ( * intensity_after_2nd_grating(double current_z_position, double el1x, dou
 	double diff=0;
 
 	// get intensity profile after two grating
-	double G2_x = sp.G2_x; //x position after second grating
-	double r1y  = r1x;
-	double w1y  = w1x;
-	double el1y = el1x;
-	double z12  = sp.z_position_2nd_grating - sp.z_position_1st_grating;
-	double z23  = current_z_position - sp.z_position_2nd_grating;
+	double G2_x    = sp.G2_x; //x position after second grating
+	double r1y     = r1x;
+	double w1y     = w1x;
+	double el1y    = el1x;
+	double z12     = sp.z_position_2nd_grating - sp.z_position_1st_grating;
+	double z23     = current_z_position - sp.z_position_2nd_grating;
 	double mytheta = sp.theta;
 	double energy  = sp.energy;
 	/* 
@@ -194,7 +196,8 @@ void ( * intensity_after_2nd_grating(double current_z_position, double el1x, dou
     	double ReT[41]={0};     	// array of 41 0's for now.
     	int RealorIm = 1; 
     	ReTandImTgenerator(ReT,energy, RealorIm, current_z_position); 
-    	double ImT[41]={0};
+    	
+	double ImT[41]={0};
     	RealorIm = 2;
     	ReTandImTgenerator(ImT,energy, RealorIm, current_z_position); 
 	
@@ -222,15 +225,15 @@ void ( * intensity_after_2nd_grating(double current_z_position, double el1x, dou
                         			//argument_v corresponds to the argument of equation 18e from McMorran & Cronin 2008
                         			argument_v = -M_PI* pow(lambda*z23* (dn*cos(theta)/d2 + dm*z13/(d1*z23)),2)/pow(el3x,2) -M_PI*pow(dn*sin(theta)*lambda*z23/(d2*el3y),2);
 
-						coef = ReT[a5]  +  ImT[a5] * _Complex_I; 
-						coef = coef  *  ( (ReT[b]-ImT[b] * _Complex_I) );						
+						coef = ReT[a5] + ImT[a5] * _Complex_I; 
+						coef = coef * (ReT[b]-ImT[b] * _Complex_I);						
 						coef = coef * (ReT[c5]  +  ImT[c5] * _Complex_I);
 						coef = coef * (ReT[d5]  -  ImT[d5] * _Complex_I);
 						
 						if (((__real__ coef) >= sp.intensity_cutoff) || ((__imag__ coef) >= sp.intensity_cutoff)) {
 						    
-                        				function_d = exp(argument_d);                      
-                        				function_v = exp(argument_v);
+                        				function_d   = exp(argument_d);                      
+                        				function_v   = exp(argument_v);
                         				argument_f_p = argument_f + argument_p;
                         
                         				intensity_array[i] +=  ((__real__ coef) * cos(argument_f_p) - (__imag__ coef) * sin(argument_f_p))*function_d*function_v ;
