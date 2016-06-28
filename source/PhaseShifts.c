@@ -22,7 +22,7 @@ double ( * ReTandImTgenerator(double ReTorImTar[], int ReTorImT, double current_
     
 	//values not included in simparam structure.  can be moved there but not entirely necessary 
 	double chargeratio =0.0; //strength of image charge (units of e, electron charge); values of 0.03, 0.05, or more can be had //not used
-    	float C3 = 2.0453e-2; 			// the VdW coefficient for hydrogen (assumed to be the same for muonium) //
+    	float C3 = 2.0453e-2; 			// the VdW coefficient for hydrogen (assumed to be the same for muonium). In meV * nm^3.
     	double e_charge = 1.6021765e-19;	// electric charge in Coulombs of electron (abs. value)
     	double Coulomb = 8.98755179e-9; 	// force; m^2/(Coulomb^-2)
     	double hbar = 6.58212e-13; 		// Planck's reduced constant in meV * s.
