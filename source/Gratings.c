@@ -62,7 +62,7 @@ void ( * intensity_after_1st_grating(double current_z_position,double el1, doubl
     	double lim=5;
     	double lambda = sqrt((1.5 * pow(10,-18))/(energy)); 
 	// wavelength of what particles/waves we're working with; 
-	double eta = sp.slit_heigth/sp.grating_period; 		// ratio of window 'height' to period of grating
+	double eta = sp.slit_height/sp.grating_period; 		// ratio of window 'height' to period of grating
 	//double particle_velocity = pow(2 * energy * e_charge/e_mass,1/2); electron velocity
     	double alpha = sp.wedgeangle * M_PI/180; 	// alpha and beta have been defined in almost every other function. Global variables? 
     	double beta = tilt * M_PI; 		// defined in other functions too, same purpose.
