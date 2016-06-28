@@ -58,8 +58,7 @@ void ( * intensity_after_1st_grating(double current_z_position,double el1, doubl
     	double lim    = 5;
     	double tilt   = sp.tilt; 
 	double eta1   = sp.eta1; 				// G1 open fraction; how open the first grating is. With 0.4 open, a little over than half the muonium should pass through.
-    	double eta2   = sp.eta2; 				// G2 open fraction; how open the second grating is.		
-    	double lambda = sqrt((1.5 * pow(10,-18))/(energy)); 	// wavelength of what particles/waves we're working with; 
+    	double eta2   = sp.eta2; 				// G2 open fraction; how open the second grating is.		 
 	double eta    = sp.slit_height/sp.grating_period; 	// ratio of window 'height' to period of grating
     	double alpha  = sp.wedgeangle * M_PI/180; 		// alpha and beta have been defined in almost every other function. Global variables? 
     	double beta   = tilt * M_PI; 				// defined in other functions too, same purpose.
@@ -98,15 +97,14 @@ void ( * intensity_after_1st_grating(double current_z_position,double el1, doubl
 
 				coef = ReT[x2pnts(n, (int * )pos)] * ReT[x2pnts(m,(int * )pos)] + ImT[x2pnts(n,(int * )pos)] * ImT[x2pnts(m,(int * )pos)];
 				
-				// lambda is the wavelength of our particles/waves
-				coef = coef * exp(-M_PI * pow((dn * lambda * z12)/(sp.grating_period * el2),2));
+				coef = coef * exp(-M_PI * pow((dn * sp.wavelength * z12)/(sp.grating_period * el2),2));
 				// added isfinite macro in order to avoid inf values
 
 				if (std::isfinite(coef)==0 || coef < sp.intensity_cutoff) { // if coef is infinite, then:
 					coef=0;
 				}
 			      	else { // if coef ends up larger than cutoff value, add the values to the current a[i][1]'s intensities.
-					intensity_array[i] +=   coef * exp(-M_PI * pow(((x_positions_array[i]-dm * lambda * z12/sp.grating_period)/w2),2)) * cos(2 * M_PI * (dn/sp.grating_period) * (x_positions_array[i]-dm * lambda * z12/sp.grating_period) * (1-z12/r2));
+					intensity_array[i] +=   coef * exp(-M_PI * pow(((x_positions_array[i]-dm * sp.wavelength * z12/sp.grating_period)/w2),2)) * cos(2 * M_PI * (dn/sp.grating_period) * (x_positions_array[i]-dm * sp.wavelength * z12/sp.grating_period) * (1-z12/r2));
 				    // Since a[i][1] etc. is actually the ix array, and arrays essentially get passed by reference, this is modifying the ix array.
 				    continue;
 				}
@@ -142,7 +140,6 @@ void ( * intensity_after_2nd_grating(double current_z_position, double el1x, dou
     	double tilt   = sp.tilt; 
 	double eta1   = sp.eta1;				// G1 open fraction; how open the first grating is. With 0.4 open, a little over than half the muonium should pass through. 
     	double eta2   = sp.eta2;				// G2 open fraction; how open the second grating is.
-    	double lambda = sqrt((1.5 * pow(10,-18))/(energy));     // wavelength we're working with of particles/waves
     	double eta    = sp.slit_height/sp.grating_period; 	// ratio of slit window 'height' to the period of the gratings
         double alpha  = sp.wedgeangle * M_PI/180;
     	double beta   = tilt * M_PI; 				// 0 if beam is normal to gratings
@@ -218,13 +215,13 @@ void ( * intensity_after_2nd_grating(double current_z_position, double el1x, dou
 						d5 = ( x2pnts( n2, (int *)pos ) );
 
 						//argument_d corresponds to the argument of equation 18b from McMorran & Cronin 2008. Note that y=0
-                        			argument_d = -M_PI*(pow( x_positions_array[i]-lambda*z23*(n*cos(theta)/d2 + m*z13/(d1*z23) ),2 )/pow(w3x,2) + pow((n*sin(theta)*lambda)/(d2*w3y),2));
+                        			argument_d = -M_PI*(pow( x_positions_array[i]-sp.wavelength*z23*(n*cos(theta)/d2 + m*z13/(d1*z23) ),2 )/pow(w3x,2) + pow((n*sin(theta)*sp.wavelength)/(d2*w3y),2));
                         			//argument_f corresponds to the argument of equation 18c from McMorran & Cronin 2008. Note that y=0
                         			argument_f = -2*M_PI * x_positions_array[i] * ((dn*cos(theta)/d2)*(1-z23/v3x) + (dm/d1)*(1-z13/v3x));
                         			//argument_p corresponds to the argument of equation 18d from McMorran & Cronin 2008
-                        			argument_p = (2*M_PI*lambda*z13*dm/d1)*(n*cos(theta)/d2 + m/d1)*(1-z13/v3x) +     (2*M_PI*lambda*z23*dn/d2)*( (m*cos(theta)/d1) * (1-z13/v3x) - (n*z23/d2)*(pow(cos(theta),2)/v3x)+pow(sin(theta),2)/v3y ) ;
+                        			argument_p = (2*M_PI*sp.wavelength*z13*dm/d1)*(n*cos(theta)/d2 + m/d1)*(1-z13/v3x) +     (2*M_PI*sp.wavelength*z23*dn/d2)*( (m*cos(theta)/d1) * (1-z13/v3x) - (n*z23/d2)*(pow(cos(theta),2)/v3x)+pow(sin(theta),2)/v3y ) ;
                         			//argument_v corresponds to the argument of equation 18e from McMorran & Cronin 2008
-                        			argument_v = -M_PI* pow(lambda*z23* (dn*cos(theta)/d2 + dm*z13/(d1*z23)),2)/pow(el3x,2) -M_PI*pow(dn*sin(theta)*lambda*z23/(d2*el3y),2);
+                        			argument_v = -M_PI* pow(sp.wavelength*z23* (dn*cos(theta)/d2 + dm*z13/(d1*z23)),2)/pow(el3x,2) -M_PI*pow(dn*sin(theta)*sp.wavelength*z23/(d2*el3y),2);
 
 						coef =        (ReT[a5] + ImT[a5] * _Complex_I); 
 						coef = coef * (ReT[b5] - ImT[b5] * _Complex_I);						

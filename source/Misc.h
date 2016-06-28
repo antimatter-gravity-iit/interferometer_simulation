@@ -36,7 +36,8 @@ double x_start;		                   	// x position start, -200 microns
 double x_end;					// x position ends, 200 microns
 // double y_start;		                // y position start, 110 microns
 // double y_end;				// y position ends, 110 microns
-double slit_height;					// maximum z height
+double slit_height;				// maximum z height
+double wavelength;				// beam's wavelength
 double intensity_cutoff;			// =.000001  Intensity values below cutoff value are truncated or neglected (treated as 0). Can also be 5e-5 like in McMorran thesis. Or 0.001.
 int rowsT ; 			        // Rows of ReT and ImT arrays; used to calculate phase shift.    
 }simparam;

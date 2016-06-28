@@ -25,17 +25,14 @@ double zp(double z, double v) {
  */
 double calculate_width(double z, double r0, double el0, double w0, double which_width) {
     // Computes GSM beam width and beam coherence width (GSM = Gaussian-Schell Model of gratings)
-    double lambda = sqrt(1.5e-18 / sp.energy);
     double width;
-    width = which_width * fabs(z / zp(z,r0)) * sqrt(1 + pow(((lambda * zp(z,r0))/(el0 * w0)),2)); 
+    width = which_width * fabs(z / zp(z,r0)) * sqrt(1 + pow(((sp.wavelength * zp(z,r0))/(el0 * w0)),2)); 
     return(width);
 }
 
 double calculate_wavefront_radius(double z,double r0, double el0, double w0) {
     // compute GSM radius of wavefront curvature
-    double lambda = sqrt((1.5 * pow(10,-18))/(sp.energy)); 
-    // value containing wavelength; this is approx. wavelength of xrays.
     double v;
-    v=(z)/(1-zp(z,r0)/(z * (1 + pow(((lambda * zp(z,r0)/(el0 * w0))),2)))); 
+    v=(z)/(1-zp(z,r0)/(z * (1 + pow(((sp.wavelength * zp(z,r0)/(el0 * w0))),2)))); 
     return(v);
 }
