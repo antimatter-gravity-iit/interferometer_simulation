@@ -49,8 +49,6 @@ void ( * intensity_after_1st_grating(double current_z_position,double el1, doubl
 
 	double z12 = current_z_position - sp.z_position_1st_grating;		//z location between 1st and 2nd gratings
 	double energy = sp.energy;
-	// Grating wedge angle. Variable alpha below depends on this. This is a free parameter. Appears to be related to beam splitting.
-    	double wedgeangle = sp.wedgeangle;
 	/* 
 	 * A free parameter. Beta variable below depends on this. If beam is perpendicular to gratings, then tilt (and thus Beta) is 0.
 	 * This is the twist about the x-axis.
@@ -66,7 +64,7 @@ void ( * intensity_after_1st_grating(double current_z_position,double el1, doubl
 	// wavelength of what particles/waves we're working with; 
 	double eta = sp.slit_heigth/sp.grating_period; 		// ratio of window 'height' to period of grating
 	//double particle_velocity = pow(2 * energy * e_charge/e_mass,1/2); electron velocity
-    	double alpha = wedgeangle * M_PI/180; 	// alpha and beta have been defined in almost every other function. Global variables? 
+    	double alpha = sp.wedgeangle * M_PI/180; 	// alpha and beta have been defined in almost every other function. Global variables? 
     	double beta = tilt * M_PI; 		// defined in other functions too, same purpose.
     	/*
 	 * Explanation of variables:
@@ -137,7 +135,6 @@ void ( * intensity_after_2nd_grating(double current_z_position, double el1x, dou
 	double z23 = current_z_position - sp.z_position_2nd_grating;
 	double mytheta = sp.theta;
 	double energy = sp.energy;
-    	double wedgeangle = sp.wedgeangle;
 	/* 
 	 * A free parameter. Beta variable below depends on this. If beam is perpendicular to gratings, then tilt (and thus Beta) is 0.
 	 * This is the twist about the x-axis.
@@ -150,7 +147,7 @@ void ( * intensity_after_2nd_grating(double current_z_position, double el1x, dou
     	double lambda = sqrt((1.5 * pow(10,-18))/(energy)); // wavelength we're working with of particles/waves
     	double resolution = sp.resolution; // This is the resolution we want this graph at.
     	double eta = sp.slit_height/sp.grating_period; // ratio of slit window 'height' to the period of the gratings
-        double alpha = wedgeangle * M_PI/180;
+        double alpha = sp.wedgeangle * M_PI/180;
     	double beta = tilt * M_PI; // 0 if beam is normal to gratings
     	double theta = M_PI * mytheta/180;
     	double d1=sp.grating_period; // period = period of gratings
