@@ -196,9 +196,10 @@ int main(int argc, char *argv[])
 		;
 
 	/*
-	 * TODO LAcomment: make sense of this. Remember Mcomment: "I tried to fix this, but what is it actually saying?
-	 * It's the intensities of the x-positions and the intensities?  That doesn't make sense to me."
-	 * Original description: "Initializing two arrays to contain the intensities and xpositions of each intensity."	
+	 * The intensity_array will be used in the calculation of the intensity of each row of pixels along the z direction.
+	 * The x_positions_array contains the positions (in meters) of the pixels along the x direction and does not change as the code runs,
+	 * given that the beam propagates in the z direction. That is, with each step in z the intensity_array holds the intensity
+	 * values associated with each position in x.
 	 */
 	
 	double *intensity_array;						// Intensity array.
