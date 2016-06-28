@@ -19,7 +19,6 @@ double ( * ReTandImTgenerator(double ReTorImTar[], double energy, int ReTorImT, 
   	double tilt = sp.tilt;  //0; // A free parameter. Beta variable below depends on this. If beam is perp. to grating, then tilt (and thus Beta) are 0. This is the twist about the x-axis.
   	double eta1 = sp.eta1; //.4; //G1 open fraction; how open the first grating is. With .4 open, a little over than half the muonium should pass through it. Varname could be changed to better represent it.
   	double eta2 = sp.eta2; //.4; //G2 open fraction; how open the second grating is.
-  	double thick = sp.thick; // 0.000000014; // 14 nanometers. Not (real) thickness of gratings, most likely. Gratings are actually 1 micrometer thick. This is used for the electron part of the code.
     
 	//values not included in simparam structure.  can be moved there but not entirely necessary 
 	double chargeratio =0.0; //strength of image charge (units of e, electron charge); values of 0.03, 0.05, or more can be had //not used
@@ -55,7 +54,7 @@ double ( * ReTandImTgenerator(double ReTorImTar[], double energy, int ReTorImT, 
             xmax=(sp.slit_height * cos(beta))/2-sp.slit_height/sp.resolution;
         }
         else { // if beam is not very perpendicular to gratings, then it travels through the slit diagonally, covering more distance, more image charge interaction, etc.
-            xmax= sp.slit_height  *  cos(beta)/2 - sp.slit_height/sp.resolution  +  thick  *  (tan(alpha)-tan(beta));
+            xmax= sp.slit_height  *  cos(beta)/2 - sp.slit_height/sp.resolution  +  sp.thick  *  (tan(alpha)-tan(beta));
         }
     }
     else { // if beta < 0; this time xmin changes, xmax is the same
@@ -66,7 +65,7 @@ double ( * ReTandImTgenerator(double ReTorImTar[], double energy, int ReTorImT, 
         }
 
     	else { // if the beam is far from perpendicular to grating slits
-            xmin = -((sp.slit_height * cos(beta))/2) + sp.slit_height/sp.resolution - thick * (tan(alpha)-tan(beta));
+            xmin = -((sp.slit_height * cos(beta))/2) + sp.slit_height/sp.resolution - sp.thick * (tan(alpha)-tan(beta));
         }
         
     }
