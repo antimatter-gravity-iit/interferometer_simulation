@@ -164,7 +164,7 @@ void ( * intensity_after_2nd_grating(double current_z_position, double el1x, dou
     	double m  = 0;
     	double n  = 0;
     	int    a5 = 0;
-    	int    b  = 0;
+    	int    b5 = 0;
     	int    c5 = 0;
     	int    d5 = 0;
         double argument_d;
