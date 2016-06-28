@@ -49,7 +49,7 @@ void ( * intensity_after_1st_grating(double current_z_position,double el1, doubl
 
 	double z12 = current_z_position - sp.z_position_1st_grating;		//z location between 1st and 2nd gratings
 	double energy = sp.energy;
-	double width = sp.height;
+	double width = sp.slit_height;
 	double abszloc = current_z_position;
 	// Grating wedge angle. Variable alpha below depends on this. This is a free parameter. Appears to be related to beam splitting.
     	double wedgeangle = sp.wedgeangle;
@@ -136,7 +136,7 @@ void ( * intensity_after_2nd_grating(double current_z_position, double el1x, dou
 	double w1y = w1x;
 	double el1y = el1x;
     
-	double width = sp.height;
+	double width = sp.slit_height;
 	double abszloc = current_z_position;
 	double z12 = sp.z_position_2nd_grating - sp.z_position_1st_grating;
 	double z23 = current_z_position - sp.z_position_2nd_grating;

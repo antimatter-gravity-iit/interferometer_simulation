@@ -158,7 +158,7 @@ int main(int argc, char *argv[])
 	/* TODO Ycomment: y_start and y_end are not being used in the code. We didn't delete it for now in case the value they assume help us understand something later */
 	//sp.y_start  = -1.1e-4;   //y start position
 	//sp.y_end    = 1.1e-4;    //y end position
-	sp.height = sp.grating_period / 2;  // The height of each grating is calculated as half the grating period (distance between gratings).
+	sp.slit_height = sp.grating_period / 2;  // The height of each grating is calculated as half the grating period (distance between gratings).
 	sp.intensity_cutoff = 1e-6;	    // Point at which the intensity cuts off and is treated as 0. Can also be 5e-5 like in McMorran thesis, or 0.001.
 	sp.rowsT = 41;    		    // Rows of ReT and ImT arrays; used to calculate phase shift.
 
