@@ -173,6 +173,7 @@ void ( * intensity_after_2nd_grating(double current_z_position, double el1x, dou
         double argument_f;
         double argument_p;
         double argument_v;
+	double argument_f_p;
         double function_d;
         double function_v;
 
@@ -202,9 +203,6 @@ void ( * intensity_after_2nd_grating(double current_z_position, double el1x, dou
     	double ImT[41]={0};
     	RealorIm = 2;
     	ReTandImTgenerator(ImT,energy, RealorIm, current_z_position); 
-    
-    	double *phiI;
-    	phiI = (double*) calloc(sp.resolution, sizeof(double)); // it will affect intensity array
 	
 
 	for (int i=0; i<sp.resolution; i++) {
@@ -239,9 +237,9 @@ void ( * intensity_after_2nd_grating(double current_z_position, double el1x, dou
 						    
                         				function_d = exp(argument_d);                      
                         				function_v = exp(argument_v);
-                        				phiI[i] = argument_f + argument_p;
+                        				argument_f_p = argument_f + argument_p;
                         
-                        				intensity_array[i] +=  ((__real__ coef) * cos(phiI[i]) - (__imag__ coef) * sin(phiI[i]))*function_d*function_v ;
+                        				intensity_array[i] +=  ((__real__ coef) * cos(argument_f_p) - (__imag__ coef) * sin(argument_f_p))*function_d*function_v ;
 						}
 					}
 				}
@@ -252,7 +250,6 @@ void ( * intensity_after_2nd_grating(double current_z_position, double el1x, dou
 		
     	}
 
-	free(phiI);
 
 	end = clock();
 	diff =((double) (end - start))/ CLOCKS_PER_SEC;
