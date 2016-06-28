@@ -13,7 +13,7 @@
 
 #include <complex.h>
 
-double ( * ReTandImTgenerator(double ReTorImTar[], double energy, int ReTorImT, double width, double abszloc))
+double ( * ReTandImTgenerator(double ReTorImTar[], double energy, int ReTorImT, double abszloc))
 {
 	double gravAccel = -9.8;    // acceleration due to gravity. 
   	double wedgeangle = sp.wedgeangle; //0; //Grating wedge angle. The variable alpha below depends on this. This is a free parameter. Appears to be related to beam splitting.
@@ -30,7 +30,7 @@ double ( * ReTandImTgenerator(double ReTorImTar[], double energy, int ReTorImT, 
     	double difPlancks = 6.58212e-13; // hbar in mev * s
     	double Plancks = 6.626068e-34; // Planck's constant
   
-  	double eta = width/sp.grating_period; // ratio of 'height' of slit/windows in gratings to the period of the gratings
+  	double eta = sp.slit_height/sp.grating_period; // ratio of 'height' of slit/windows in gratings to the period of the gratings
   	double nmvel = sp.particle_velocity * 1e9;  // converting a m/s velocity to nm/s.
     	double alpha = wedgeangle * M_PI/180; // depends on wedgeangle above, which is a relatively free parameter. Appears to be bend of 'window' (slits in grating), if they bend forward or not.
     	double beta = tilt * M_PI; // depends on tilt angle, = 0 if beam is normal to gratings
@@ -50,30 +50,30 @@ double ( * ReTandImTgenerator(double ReTorImTar[], double energy, int ReTorImT, 
         
         
         
-      xmin= width * (1/sp.resolution - cos(beta)/2); // minimum distance beam travels through slit; or maybe it's when the 1st order diffracted beams are going in diagonally, what is the min x?
+      xmin= sp.slit_height * (1/sp.resolution - cos(beta)/2); // minimum distance beam travels through slit; or maybe it's when the 1st order diffracted beams are going in diagonally, what is the min x?
 
         if (beta<=alpha) { // if the beam is very orthogonal to gratings (almost 90 degrees), or wedge angle is significant
-            xmax=(width * cos(beta))/2-width/sp.resolution;
+            xmax=(sp.slit_height * cos(beta))/2-sp.slit_height/sp.resolution;
         }
         else { // if beam is not very perpendicular to gratings, then it travels through the slit diagonally, covering more distance, more image charge interaction, etc.
-            xmax= width  *  cos(beta)/2 - width/sp.resolution  +  thick  *  (tan(alpha)-tan(beta));
+            xmax= sp.slit_height  *  cos(beta)/2 - sp.slit_height/sp.resolution  +  thick  *  (tan(alpha)-tan(beta));
         }
     }
     else { // if beta < 0; this time xmin changes, xmax is the same
-        xmax = (width * cos(beta)/2)-width/sp.resolution;
+        xmax = (sp.slit_height * cos(beta)/2)-sp.slit_height/sp.resolution;
 
-    	if (fabsl(beta)<=alpha) { // fabsl is for long doubles and returns a long double absolute value; once again, if the tilt isn't that bad, one bound (this time xmin) is just width * cos(beta)/2  +  width/res.
-          xmin = -((width * cos(beta))/2) + width/sp.resolution; 
+    	if (fabsl(beta)<=alpha) { // fabsl is for long doubles and returns a long double absolute value; once again, if the tilt isn't that bad, one bound (this time xmin) is just sp.slit_height * cos(beta)/2  +  sp.slit_height/res.
+          xmin = -((sp.slit_height * cos(beta))/2) + sp.slit_height/sp.resolution; 
         }
 
     	else { // if the beam is far from perpendicular to grating slits
-            xmin = -((width * cos(beta))/2) + width/sp.resolution - thick * (tan(alpha)-tan(beta));
+            xmin = -((sp.slit_height * cos(beta))/2) + sp.slit_height/sp.resolution - thick * (tan(alpha)-tan(beta));
         }
         
     }
     
     for(int n=-((sp.rowsT-1)/2);n<=((sp.rowsT-1)/2);n++) {
-        for(ex=xmin; ex<xmax; ex +=width/sp.resolution) { //copied from above; resolution = step resolution in x-axis. ex += height of window / steps = (40 nm / 1000)
+        for(ex=xmin; ex<xmax; ex +=sp.slit_height/sp.resolution) { //copied from above; resolution = step resolution in x-axis. ex += height of window / steps = (40 nm / 1000)
 
           ////// THIS IS NOT IMPLEMENTED YET, ORIGINALLY IGOR PRO CODE THAT WAS IN HERE
 
@@ -83,16 +83,16 @@ double ( * ReTandImTgenerator(double ReTorImTar[], double energy, int ReTorImT, 
 //                beta *= -1
 //                ex *= -1
 //                ph  += 2 * Pi * charge_ratio * e_charge^2 * Coulomb
-//                    /(2 * muonium_vel * Plancks) * thick/((width/2 + ex)
+//                    /(2 * muonium_vel * Plancks) * thick/((sp.slit_height/2 + ex)
 //                     * cos(alpha) * cos(beta))
 //                if(sin(alpha + beta) != 0)
 //                    ph  += 2 * Pi * charge_ratio * e_charge^2 * Coulomb
 //                        /(2 * muonium_vel * Plancks * sin(alpha + beta))
-//                         * log((width/2 + ex + thick * (tan(alpha) + tan(beta)))
-//                        /(width/2 + ex))
+//                         * log((sp.slit_height/2 + ex + thick * (tan(alpha) + tan(beta)))
+//                        /(sp.slit_height/2 + ex))
 //                else
 //                    ph  += 2 * Pi * charge_ratio * e_charge^2 * Coulomb
-//                        /(2 * muonium_vel * Plancks) * (width/2 + ex)
+//                        /(2 * muonium_vel * Plancks) * (sp.slit_height/2 + ex)
 //                         * thick * cos(alpha)/cos(beta)
 //                endif
 //            endfor
