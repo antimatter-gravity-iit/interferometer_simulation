@@ -6,9 +6,6 @@
 #include <string>
 
 #include "Misc.h"
-//#include "PhaseShifts.h"
-//#include "Gratings.h"
-//#include "BeamParams.h"
 
 double maximumvalue(double arr[], int array_size){    
     // finds the max value of the array
@@ -40,11 +37,8 @@ double sinc(double x){
  * 	choice of scale for the plot.
  * The function only modifies the array fed to it; it doesn't return any value. 
  */
-
 double *ixgenerator(double a[], double current_z_position, int logchoice) 
 {
-    double const_e = 2.71828182845905; 
-    // the irrational constant e.
     double mu_lifetime = 0.0000022; 
     // half life average decay time of a muon, in seconds
     double max = maximumvalue(a, sp.resolution); 
@@ -63,10 +57,10 @@ double *ixgenerator(double a[], double current_z_position, int logchoice)
 	 */
 
         // Modeling electrons:
-        // a[i][1] = a[i][1] * (1 - pow(const_e, (-1 * realzloc / sp.particle_velocity)/mu_lifetime)); // why is mu_lifetime included for an electron modeling array?
+        // a[i][1] = a[i][1] * (1 - pow(M_E, (-1 * realzloc / sp.particle_velocity)/mu_lifetime)); // why is mu_lifetime included for an electron modeling array?
 
         // Modeling muonium: 
-        a[i] = a[i] * (pow(const_e, (-1 * realzloc / sp.particle_velocity)/mu_lifetime));
+        a[i] = a[i] * (pow(M_E, (-1 * realzloc / sp.particle_velocity)/mu_lifetime));
         
         if (a[i]<min){ // could also have min = 0
             a[i]=0;
