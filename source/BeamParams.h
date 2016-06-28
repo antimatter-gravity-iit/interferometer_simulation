@@ -14,7 +14,7 @@ double zp(double z, double v); 				// Compute magnification factor due to wavefr
  */
 double calculate_width(double z, double r0, double el0, double w0, double which_width);
 
-double v(double z,double r0, double el0, double w0); 	// Compute GSM radius of wavefront curvature
+double calculate_wavefront_radius(double z,double r0, double el0, double w0); 	// Compute GSM radius of wavefront curvature
 
 
 #endif // end of the file

@@ -74,9 +74,9 @@ void ( * intensity_after_1st_grating(double current_z_position,double el1, doubl
 	 * r2 = radius of GSM wavefront curvature after the first grating
 	 * el2 = GSM beam coherence width after the first grating.
     	 */
-	double w2=calculate_width(z12, r1, el1, w1, w1); // width of beam between z1 and z2 (after grating 1)
-	double r2 = v(z12, r1, el1, w1); // radius of wavefront curvature between grating 1 and 2
-	double el2 = calculate_width(z12, r1, el1, w1, el1); // beam coherence width
+	double w2=calculate_width(z12, r1, el1, w1, w1);		// width of beam between z1 and z2 (after grating 1)
+	double r2 = calculate_wavefront_radius(z12, r1, el1, w1);	// radius of wavefront curvature between grating 1 and 2
+	double el2 = calculate_width(z12, r1, el1, w1, el1);		// beam coherence width
     	int pos[41]={0};
 
 	for (int i=0; i<sp.rowsT; i++) // since sp.rowsT is currently 41, pos[i] = -20 to 20.
@@ -186,10 +186,10 @@ void ( * intensity_after_2nd_grating(double current_z_position, double el1x, dou
     	 */
     	double el3x = calculate_width(z13, r1x, el1x, w1x, el1x);	// z13 == G2z - G1z + z_start + 0 * zres; GSM coherence width in x-axis
     	double w3x = calculate_width(z13, r1x, el1x, w1x, w1x); 	// Beam width in x-axis
-    	double v3x = v(z13,r1x,el1x,w1x); 				// Gaussian-Schell Model (GSM) radius of wavefront curvature in x-axis
+    	double v3x = calculate_wavefront_radius(z13,r1x,el1x,w1x);	// Gaussian-Schell Model (GSM) radius of wavefront curvature in x-axis
     	double el3y = calculate_width(z13, r1y, el1y, w1y, el1y); 	// Coherence width in y-axis
     	double w3y = calculate_width(z13, r1y, el1y, w1y, w1y); 	// Beam width in y-axis
-    	double v3y = v(z13,r1y,el1y,w1y); 				// radius of wavefront curvature in y-axis
+    	double v3y = calculate_wavefront_radius(z13,r1y,el1y,w1y);	// radius of wavefront curvature in y-axis
     
     	int pos[41]={0}; // array of 41 elements
 

@@ -235,7 +235,7 @@ int main(int argc, char *argv[])
 	 */
 	double w1 = calculate_width(sp.z_position_1st_grating, sp.initial_radius_of_wavefront_curvature, sp.initial_coherence_width, sp.initial_beamwidth, sp.initial_beamwidth);
 	double el1 = calculate_width(sp.z_position_1st_grating, sp.initial_radius_of_wavefront_curvature, sp.initial_coherence_width, sp.initial_beamwidth, sp.initial_coherence_width);
-	double r1 = v(sp.z_position_1st_grating, sp.initial_radius_of_wavefront_curvature, sp.initial_coherence_width, sp.initial_beamwidth);
+	double r1 = calculate_wavefront_radius(sp.z_position_1st_grating, sp.initial_radius_of_wavefront_curvature, sp.initial_coherence_width, sp.initial_beamwidth);
 
 	// Developer: follow this indent structure.
 	if (sp.simulation_option == 1) {

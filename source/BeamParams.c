@@ -31,7 +31,7 @@ double calculate_width(double z, double r0, double el0, double w0, double which_
     return(width);
 }
 
-double v(double z,double r0, double el0, double w0) {
+double calculate_wavefront_radius(double z,double r0, double el0, double w0) {
     // compute GSM radius of wavefront curvature
     double lambda = sqrt((1.5 * pow(10,-18))/(sp.energy)); 
     // value containing wavelength; this is approx. wavelength of xrays.
