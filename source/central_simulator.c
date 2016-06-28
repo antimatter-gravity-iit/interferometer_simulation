@@ -136,7 +136,9 @@ int main(int argc, char *argv[])
 	else
 		sp.logchoice = 0;
 
-	sp.wavelength = 5.584e-10;
+	// De Broglie wavelength equation, where we use the mass as the sum of the muon and electrons masses.
+	sp.wavelength = 6.626068e-34 / (1.8926409e-28 * sp.particle_velocity);
+
 	sp.account_image_charge = 0;
 	sp.eta1 = 0.4;
 	sp.eta2 = 0.4;
