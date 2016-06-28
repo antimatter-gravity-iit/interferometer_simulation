@@ -147,20 +147,20 @@ int main(int argc, char *argv[])
 	sp.z_position_2nd_grating  = 1.0;
 	sp.G2_x   = 5e-8;
 	sp.theta  = 1e-6;
-	sp.thick  = 1.4e-8; // 14 nanometers. Not (real) thickness of gratings, most likely. Gratings are actually 1 micrometer thick. This is used for the electron part of the code.
+	sp.thick  = 1.4e-8;           // 14 nanometers. Not (real) thickness of gratings, most likely. Gratings are actually 1 micrometer thick. This is used for the electron part of the code.
 	sp.grating_thickness = 1.0e3; // 1000; // thickness of gratings; 1 micrometer = 1000 nm, this is in nm on purpose (see function ReTgenerator) Varname could be better. Right now grating_thickness is used for the VdW effect for atoms.
-	sp.wedgeangle =	0;	 // Grating wedge angle. Variable alpha below depends on this. This is a free parameter. Appears to be related to beam splitting.
-	sp.tilt = 0; 		 // Tilt.
-	sp.z_start  = -0.1;	 //z start position
-	sp.z_end    = 2.1;	 //z end position
- 	sp.x_start  = -2.0e-4;   //x start position
-	sp.x_end    = 2.0e-4;    //x end position
+	sp.wedgeangle =	0;	      // Grating wedge angle. Variable alpha below depends on this. This is a free parameter. Appears to be related to beam splitting.
+	sp.tilt       = 0; 	      // Tilt.
+	sp.z_start    = -0.1;	      //z start position
+	sp.z_end      = 2.1;	      //z end position
+ 	sp.x_start    = -2.0e-4;      //x start position
+	sp.x_end      = 2.0e-4;       //x end position
 	/* TODO Ycomment: y_start and y_end are not being used in the code. We didn't delete it for now in case the value they assume help us understand something later */
-	//sp.y_start  = -1.1e-4;   //y start position
-	//sp.y_end    = 1.1e-4;    //y end position
+	//sp.y_start  = -1.1e-4;      //y start position
+	//sp.y_end    = 1.1e-4;       //y end position
 	sp.slit_height = sp.grating_period / 2;  // The height of each grating is calculated as half the grating period (distance between gratings).
-	sp.intensity_cutoff = 1e-6;	    // Point at which the intensity cuts off and is treated as 0. Can also be 5e-5 like in McMorran thesis, or 0.001.
-	sp.rowsT = 41;    		    // Rows of ReT and ImT arrays; used to calculate phase shift.
+	sp.intensity_cutoff = 1e-6;	         // Point at which the intensity cuts off and is treated as 0. Can also be 5e-5 like in McMorran thesis, or 0.001.
+	sp.rowsT = 41;    		         // Rows of ReT and ImT arrays; used to calculate phase shift.
 
 	/* 
 	 * The program prints a standard message before proceeding to the simulation. It includes a copyright notice
@@ -234,9 +234,9 @@ int main(int argc, char *argv[])
 	 *
 	 * The functions 'calculate_width' and 'v' output a double.
 	 */
-	double w1 = calculate_width(sp.z_position_1st_grating, sp.initial_radius_of_wavefront_curvature, sp.initial_coherence_width, sp.initial_beamwidth, sp.initial_beamwidth);
+	double w1  = calculate_width(sp.z_position_1st_grating, sp.initial_radius_of_wavefront_curvature, sp.initial_coherence_width, sp.initial_beamwidth, sp.initial_beamwidth);
 	double el1 = calculate_width(sp.z_position_1st_grating, sp.initial_radius_of_wavefront_curvature, sp.initial_coherence_width, sp.initial_beamwidth, sp.initial_coherence_width);
-	double r1 = calculate_wavefront_radius(sp.z_position_1st_grating, sp.initial_radius_of_wavefront_curvature, sp.initial_coherence_width, sp.initial_beamwidth);
+	double r1  = calculate_wavefront_radius(sp.z_position_1st_grating, sp.initial_radius_of_wavefront_curvature, sp.initial_coherence_width, sp.initial_beamwidth);
 
 	// Developer: follow this indent structure.
 	if (sp.simulation_option == 1) {
@@ -342,12 +342,12 @@ int main(int argc, char *argv[])
 		SimplePlot::twoD("Intensity graph as particles diffract through gratings",pixel_array_memory,sp.x_start,sp.x_end,sp.z_start,sp.z_end,sp.resolution,sp.resolution); 
 	}
 	else if (sp.simulation_option == 2) {
-		// Using ROOT to plot intensity vs. position at end of interferometer.
-		SimplePlot::graph("Relative Intensity Along Final Grating", x_positions_array, intensity_array, sp.resolution);  
 		// Free the memory used by this array, since the simulation is over.
 		free(x_positions_array); 
 		// Same as above.
 		free(intensity_array); 
+		// Using ROOT to plot intensity vs. position at end of interferometer.
+		SimplePlot::graph("Relative Intensity Along Final Grating", x_positions_array, intensity_array, sp.resolution);  
 	}
 
 	// Free up the space used by the pixel_array_memory array.
