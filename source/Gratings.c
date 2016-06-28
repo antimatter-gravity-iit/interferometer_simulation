@@ -30,13 +30,13 @@ void ( * get_initial_intensity(double z, double x_positions_array[], double inte
 	w1 = calculate_width(z, sp.initial_radius_of_wavefront_curvature, sp.initial_coherence_width, sp.initial_beamwidth, sp.initial_beamwidth); 
 
 	for(int i=0; i<sp.resolution; i++) {
-		jj = pow((x_positions_array[i]/w1),2); 				// jj = (xpos/beamwidth)^2 
-		intensity_array[i]=exp(-(M_PI * jj)); 				// a[i][1] is the intensity of the beam at the xposition at step i.
+		jj = pow((x_positions_array[i]/w1),2); 		// jj = (xpos/beamwidth)^2 
+		intensity_array[i]=exp(-(M_PI * jj)); 		// a[i][1] is the intensity of the beam at the xposition at step i.
 	}
 
 	end = clock();
 	diff =((double) (end - start))/ CLOCKS_PER_SEC;
-	printf("Time elapsed: %f seconds\n",diff); //printing the time spent in get_initial_intensity.
+	printf("Time elapsed: %f seconds\n",diff); 		//printing the time spent in get_initial_intensity.
 }
 
 
@@ -54,14 +54,11 @@ void ( * intensity_after_1st_grating(double current_z_position,double el1, doubl
 	 * This is the twist about the x-axis.
 	 */
     	double tilt =sp.tilt; 
-	// G1 open fraction; how open the first grating is. With 0.4 open, a little over than half the muonium should pass through.
-	double eta1 = sp.eta1; 
-	// G2 open fraction; how open the second grating is.
-    	double eta2 = sp.eta2; 		
+	double eta1 = sp.eta1; 	// G1 open fraction; how open the first grating is. With 0.4 open, a little over than half the muonium should pass through.
+    	double eta2 = sp.eta2; 	// G2 open fraction; how open the second grating is.		
     	double coef; 
     	double lim=5;
-    	double lambda = sqrt((1.5 * pow(10,-18))/(energy)); 
-	// wavelength of what particles/waves we're working with; 
+    	double lambda = sqrt((1.5 * pow(10,-18))/(energy)); 	// wavelength of what particles/waves we're working with; 
 	double eta = sp.slit_height/sp.grating_period; 		// ratio of window 'height' to period of grating
 	//double particle_velocity = pow(2 * energy * e_charge/e_mass,1/2); electron velocity
     	double alpha = sp.wedgeangle * M_PI/180; 	// alpha and beta have been defined in almost every other function. Global variables? 
@@ -72,10 +69,11 @@ void ( * intensity_after_1st_grating(double current_z_position,double el1, doubl
 	 * r2 = radius of GSM wavefront curvature after the first grating
 	 * el2 = GSM beam coherence width after the first grating.
     	 */
-	double w2=calculate_width(z12, r1, el1, w1, w1);		// width of beam between z1 and z2 (after grating 1)
-	double r2 = calculate_wavefront_radius(z12, r1, el1, w1);	// radius of wavefront curvature between grating 1 and 2
+	double w2  = calculate_width(z12, r1, el1, w1, w1);		// width of beam between z1 and z2 (after grating 1)
+	double r2  = calculate_wavefront_radius(z12, r1, el1, w1);	// radius of wavefront curvature between grating 1 and 2
 	double el2 = calculate_width(z12, r1, el1, w1, el1);		// beam coherence width
-    	int pos[41]={0};
+    	
+	int pos[41]={0};
 
 	for (int i=0; i<sp.rowsT; i++) // since sp.rowsT is currently 41, pos[i] = -20 to 20.
 	{
@@ -128,33 +126,31 @@ void ( * intensity_after_2nd_grating(double current_z_position, double el1x, dou
 
 	// get intensity profile after two grating
 	double G2_x = sp.G2_x; //x position after second grating
-	double r1y = r1x;
-	double w1y = w1x;
+	double r1y  = r1x;
+	double w1y  = w1x;
 	double el1y = el1x;
-	double z12 = sp.z_position_2nd_grating - sp.z_position_1st_grating;
-	double z23 = current_z_position - sp.z_position_2nd_grating;
+	double z12  = sp.z_position_2nd_grating - sp.z_position_1st_grating;
+	double z23  = current_z_position - sp.z_position_2nd_grating;
 	double mytheta = sp.theta;
-	double energy = sp.energy;
+	double energy  = sp.energy;
 	/* 
 	 * A free parameter. Beta variable below depends on this. If beam is perpendicular to gratings, then tilt (and thus Beta) is 0.
 	 * This is the twist about the x-axis.
 	 */
-    	double tilt =sp.tilt; 
-	// G1 open fraction; how open the first grating is. With 0.4 open, a little over than half the muonium should pass through.
-	double eta1 = sp.eta1; 
-	// G2 open fraction; how open the second grating is.
-    	double eta2 = sp.eta2;
-    	double lambda = sqrt((1.5 * pow(10,-18))/(energy)); // wavelength we're working with of particles/waves
-    	double resolution = sp.resolution; // This is the resolution we want this graph at.
-    	double eta = sp.slit_height/sp.grating_period; // ratio of slit window 'height' to the period of the gratings
-        double alpha = sp.wedgeangle * M_PI/180;
-    	double beta = tilt * M_PI; // 0 if beam is normal to gratings
-    	double theta = M_PI * mytheta/180;
-    	double d1=sp.grating_period; // period = period of gratings
-    	double d2=sp.grating_period;
-    	double z13 = z12  +  z23; // z distance between grating 1 and 3
-    	double phi = 0;
-    	double lim =5;
+    	double tilt   = sp.tilt; 
+	double eta1   = sp.eta1;				// G1 open fraction; how open the first grating is. With 0.4 open, a little over than half the muonium should pass through. 
+    	double eta2   = sp.eta2;				// G2 open fraction; how open the second grating is.
+    	double lambda = sqrt((1.5 * pow(10,-18))/(energy));     // wavelength we're working with of particles/waves
+    	double eta    = sp.slit_height/sp.grating_period; 	// ratio of slit window 'height' to the period of the gratings
+        double alpha  = sp.wedgeangle * M_PI/180;
+    	double beta   = tilt * M_PI; 				// 0 if beam is normal to gratings
+    	double theta  = M_PI * mytheta/180;
+    	double d1     = sp.grating_period;			// period = period of gratings
+    	double d2     = sp.grating_period;
+    	double z13    = z12  +  z23; 				// z distance between grating 1 and 3
+    	double phi    = 0;
+    	double lim    = 5;
+    	double resolution = sp.resolution; 			// This is the resolution we want this graph at.
     	double _Complex coef;
 
     	/* THIS FUNCTION IS USING GSM MODEL FROM MCMORRAN, CRONIN 2008
@@ -183,21 +179,19 @@ void ( * intensity_after_2nd_grating(double current_z_position, double el1x, dou
 	 * el3 = GSM beam coherence width after the second grating.
     	 */
     	double el3x = calculate_width(z13, r1x, el1x, w1x, el1x);	// z13 == G2z - G1z + z_start + 0 * zres; GSM coherence width in x-axis
-    	double w3x = calculate_width(z13, r1x, el1x, w1x, w1x); 	// Beam width in x-axis
-    	double v3x = calculate_wavefront_radius(z13,r1x,el1x,w1x);	// Gaussian-Schell Model (GSM) radius of wavefront curvature in x-axis
+    	double w3x  = calculate_width(z13, r1x, el1x, w1x, w1x); 	// Beam width in x-axis
+    	double v3x  = calculate_wavefront_radius(z13,r1x,el1x,w1x);	// Gaussian-Schell Model (GSM) radius of wavefront curvature in x-axis
     	double el3y = calculate_width(z13, r1y, el1y, w1y, el1y); 	// Coherence width in y-axis
-    	double w3y = calculate_width(z13, r1y, el1y, w1y, w1y); 	// Beam width in y-axis
-    	double v3y = calculate_wavefront_radius(z13,r1y,el1y,w1y);	// radius of wavefront curvature in y-axis
+    	double w3y  = calculate_width(z13, r1y, el1y, w1y, w1y); 	// Beam width in y-axis
+    	double v3y  = calculate_wavefront_radius(z13,r1y,el1y,w1y);	// radius of wavefront curvature in y-axis
     
     	int pos[41]={0}; // array of 41 elements
 
-    	for (int i=0; i<sp.rowsT; i++){ // sp.rowsT = rows of ReT and ImT arrays = 41 for now
-    		pos[i]=i-((sp.rowsT-1)/2); // so this goes from -20 to 20
+    	for (int i=0; i<sp.rowsT; i++){     // sp.rowsT = rows of ReT and ImT arrays = 41 for now
+    		pos[i]=i-((sp.rowsT-1)/2);  // so this goes from -20 to 20
     	}
     
-    	double ReT[41]={0}; 
-    	// array of 41 0's for now.
-    	// array of 41 0's for now.
+    	double ReT[41]={0};     	// array of 41 0's for now.
     	int RealorIm = 1; 
     	ReTandImTgenerator(ReT,energy, RealorIm, current_z_position); 
     	double ImT[41]={0};
@@ -210,12 +204,12 @@ void ( * intensity_after_2nd_grating(double current_z_position, double el1x, dou
 			for (int m2=-lim; m2<=lim; m2++) {
 				for (int n1=-lim; n1<=lim; n1++) {
 					for (int n2=-lim; n2<=lim; n2++) {
-						dn =n1-n2;
-						n = ((double)(n1 + n2))/2;
+						dn = n1-n2;
+						n  = ((double)(n1 + n2))/2;
 						dm = m1-m2;
-						m = ((double)(m1 + m2))/2;
+						m  = ((double)(m1 + m2))/2;
 						a5 = (x2pnts(m1, (int  * )pos));
-						b = (x2pnts(m2, (int  * )pos));
+						b  = (x2pnts(m2, (int  * )pos));
 						c5 = (x2pnts(n1, (int  * )pos));
 						d5 = (x2pnts(n2, (int  * )pos));
 
