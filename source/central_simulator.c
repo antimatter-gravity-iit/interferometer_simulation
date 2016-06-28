@@ -149,7 +149,7 @@ int main(int argc, char *argv[])
 	sp.theta  = 1e-6;
 	sp.thick  = 1.4e-8;
 	sp.grating_thickness = 1.0e3; // 1000; // thickness of gratings; 1 micrometer = 1000 nm, this is in nm on purpose (see function ReTgenerator) Varname could be better. Right now grating_thickness is used for the VdW effect for atoms.
-	sp.wedgeangle =	0;	 // Wedge angle.
+	sp.wedgeangle =	0;	 // Grating wedge angle. Variable alpha below depends on this. This is a free parameter. Appears to be related to beam splitting.
 	sp.tilt = 0; 		 // Tilt.
 	sp.z_start  = -0.1;	 //z start position
 	sp.z_end    = 2.1;	 //z end position

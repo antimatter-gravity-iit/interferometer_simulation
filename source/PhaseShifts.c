@@ -16,7 +16,6 @@
 double ( * ReTandImTgenerator(double ReTorImTar[], double energy, int ReTorImT, double current_z_position))
 {
 	double gravAccel = -9.8;    // acceleration due to gravity. 
-  	double wedgeangle = sp.wedgeangle; //0; //Grating wedge angle. The variable alpha below depends on this. This is a free parameter. Appears to be related to beam splitting.
   	double tilt = sp.tilt;  //0; // A free parameter. Beta variable below depends on this. If beam is perp. to grating, then tilt (and thus Beta) are 0. This is the twist about the x-axis.
   	double eta1 = sp.eta1; //.4; //G1 open fraction; how open the first grating is. With .4 open, a little over than half the muonium should pass through it. Varname could be changed to better represent it.
   	double eta2 = sp.eta2; //.4; //G2 open fraction; how open the second grating is.
@@ -32,7 +31,7 @@ double ( * ReTandImTgenerator(double ReTorImTar[], double energy, int ReTorImT, 
   
   	double eta = sp.slit_height/sp.grating_period; // ratio of 'height' of slit/windows in gratings to the period of the gratings
   	double nmvel = sp.particle_velocity * 1e9;  // converting a m/s velocity to nm/s.
-    	double alpha = wedgeangle * M_PI/180; // depends on wedgeangle above, which is a relatively free parameter. Appears to be bend of 'window' (slits in grating), if they bend forward or not.
+    	double alpha = sp.wedgeangle * M_PI/180; // depends on wedgeangle above, which is a relatively free parameter. Appears to be bend of 'window' (slits in grating), if they bend forward or not.
     	double beta = tilt * M_PI; // depends on tilt angle, = 0 if beam is normal to gratings
     	double exnmleft; // how many nm from the left side of each slit are we?
     	double exnmright; // how many nm from the right side of each slit are we?
