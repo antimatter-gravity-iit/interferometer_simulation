@@ -207,14 +207,15 @@ void ( * intensity_after_2nd_grating(double current_z_position, double el1x, dou
 			for (int m2=-lim; m2<=lim; m2++) {
 				for (int n1=-lim; n1<=lim; n1++) {
 					for (int n2=-lim; n2<=lim; n2++) {
+						
 						dn = n1-n2;
 						n  = ((double)(n1 + n2))/2;
 						dm = m1-m2;
 						m  = ((double)(m1 + m2))/2;
-						a5 = (x2pnts(m1, (int  * )pos));
-						b  = (x2pnts(m2, (int  * )pos));
-						c5 = (x2pnts(n1, (int  * )pos));
-						d5 = (x2pnts(n2, (int  * )pos));
+						a5 = ( x2pnts( m1, (int *)pos ) );
+						b5 = ( x2pnts( m2, (int *)pos ) );
+						c5 = ( x2pnts( n1, (int *)pos ) );
+						d5 = ( x2pnts( n2, (int *)pos ) );
 
 						//argument_d corresponds to the argument of equation 18b from McMorran & Cronin 2008. Note that y=0
                         			argument_d = -M_PI*(pow( x_positions_array[i]-lambda*z23*(n*cos(theta)/d2 + m*z13/(d1*z23) ),2 )/pow(w3x,2) + pow((n*sin(theta)*lambda)/(d2*w3y),2));
@@ -225,10 +226,10 @@ void ( * intensity_after_2nd_grating(double current_z_position, double el1x, dou
                         			//argument_v corresponds to the argument of equation 18e from McMorran & Cronin 2008
                         			argument_v = -M_PI* pow(lambda*z23* (dn*cos(theta)/d2 + dm*z13/(d1*z23)),2)/pow(el3x,2) -M_PI*pow(dn*sin(theta)*lambda*z23/(d2*el3y),2);
 
-						coef = ReT[a5] + ImT[a5] * _Complex_I; 
-						coef = coef * (ReT[b]-ImT[b] * _Complex_I);						
-						coef = coef * (ReT[c5]  +  ImT[c5] * _Complex_I);
-						coef = coef * (ReT[d5]  -  ImT[d5] * _Complex_I);
+						coef =        (ReT[a5] + ImT[a5] * _Complex_I); 
+						coef = coef * (ReT[b5] - ImT[b5] * _Complex_I);						
+						coef = coef * (ReT[c5] + ImT[c5] * _Complex_I);
+						coef = coef * (ReT[d5] - ImT[d5] * _Complex_I);
 						
 						if (((__real__ coef) >= sp.intensity_cutoff) || ((__imag__ coef) >= sp.intensity_cutoff)) {
 						    
