@@ -104,12 +104,9 @@ double ( * ReTandImTgenerator(double ReTorImTar[], double energy, int ReTorImT, 
           exnmright = (xmax - ex) * 1.0e9; 
           // fc is another electron thing; or the diffraction pattern? 2pi*n*x/period?
           fc = 2 * M_PI * n * ex/sp.grating_period; // so the first fc = 2  *  pi  *  -20  *  xmin / period, last fc = 2  *  pi  *  20  *  xmax / period. Looks like fc is a quantity proportional to distance from bottom/top of each 'window'/slit
-            
-          // current_z_position is actually wrong; the code thinks the total z is 1m. It's actually closer to 2.8cm. Divide abszloc by 36.075 to get real value.
-          double realzloc = current_z_position / 36.075;
 
           // How much time has passed for a point in this system? x = vt, so t = x/v. x in this case is approximated by the z-location. We know v = vel.
-          timeFreefall = (realzloc/ sp.particle_velocity);
+          timeFreefall = current_z_position/ sp.particle_velocity;
 
           // Both electrons and atoms will fall due to gravity. According to Dr. Daniel Kaplan's paper at arxiv.org/ftp/arxiv/papers/1308/1308.0878.pdf, the phase shift caused is 2 * pi * g * t^2 / d, where t is the time in free fall and d is the period of the gratings.
 	if (sp.account_gravity == 1)
