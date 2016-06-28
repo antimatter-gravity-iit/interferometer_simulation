@@ -45,8 +45,6 @@ double *ixgenerator(double a[], double current_z_position, int logchoice)
     // maximum intensity value for a slice in z
     double min = sp.intensity_cutoff;
     // the minimum value the intensity can be at before being set to 0; cutoff is a global variable
-    // right now gratings are treated as being 0.5m apart. Divide zloc by 36.075 to get the proper distances, 1.4cm, between gratings.
-    double realzloc = current_z_position / 36.075;
 
     for (int i=0; i<sp.resolution; i++) {
         /*
@@ -57,10 +55,10 @@ double *ixgenerator(double a[], double current_z_position, int logchoice)
 	 */
 
         // Modeling electrons:
-        // a[i][1] = a[i][1] * (1 - pow(M_E, (-1 * realzloc / sp.particle_velocity)/mu_lifetime)); // why is mu_lifetime included for an electron modeling array?
+        // a[i][1] = a[i][1] * (1 - pow(M_E, (-1 * current_z_position / sp.particle_velocity)/mu_lifetime)); // why is mu_lifetime included for an electron modeling array?
 
         // Modeling muonium: 
-        a[i] = a[i] * (pow(M_E, (-1 * realzloc / sp.particle_velocity)/mu_lifetime));
+        a[i] = a[i] * (pow(M_E, (-1 * current_z_position / sp.particle_velocity)/mu_lifetime));
         
         if (a[i]<min){ // could also have min = 0
             a[i]=0;
