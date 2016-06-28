@@ -245,9 +245,6 @@ int main(int argc, char *argv[])
 		initial_z_position = sp.resolution - 1;
 	}
 
-	// TODO: LAcomment: ask M about these memsets.
-	memset(x_positions_array, 0, sp.resolution * sizeof(double));
-
 	for (int i=0; i<sp.resolution; i++)
 		x_positions_array[i] = sp.x_start + (i) * ((sp.x_end-sp.x_start)/(sp.resolution-1));
 	
