@@ -29,7 +29,6 @@ double ( * ReTandImTgenerator(double ReTorImTar[], int ReTorImT, double current_
     	double Plancks = 6.626068e-34; // Planck's constant
   
   	double eta = sp.slit_height/sp.grating_period; // ratio of 'height' of slit/windows in gratings to the period of the gratings
-  	double nmvel = sp.particle_velocity * 1e9;  // converting a m/s velocity to nm/s.
     	double alpha = sp.wedgeangle * M_PI/180; // depends on wedgeangle above, which is a relatively free parameter. Appears to be bend of 'window' (slits in grating), if they bend forward or not.
     	double beta = tilt * M_PI; // depends on tilt angle, = 0 if beam is normal to gratings
     	double exnmleft; // how many nm from the left side of each slit are we?
@@ -122,7 +121,7 @@ double ( * ReTandImTgenerator(double ReTorImTar[], int ReTorImT, double current_
  // phM is phase shift on Muonium/other neutral molecules due to Van der Waals effects through the gratings.
               	
 	else
-		phM = -C3 * sp.grating_thickness / (difPlancks * nmvel * pow(exnmleft, 3)) -  -C3 * sp.grating_thickness / (difPlancks * nmvel * pow(exnmright, 3));
+		phM = -C3 * sp.grating_thickness / (difPlancks * sp.particle_velocity * pow(exnmleft, 3)) -  -C3 * sp.grating_thickness / (difPlancks * sp.particle_velocity * pow(exnmright, 3));
                 
 	j=n + ((sp.rowsT-1)/2); // j goes from 0 to 40 (right now sp.rowsT = 41)
                 
