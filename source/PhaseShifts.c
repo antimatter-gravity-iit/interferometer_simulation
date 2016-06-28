@@ -13,7 +13,7 @@
 
 #include <complex.h>
 
-double ( * ReTandImTgenerator(double ReTorImTar[], double energy, int ReTorImT, double abszloc))
+double ( * ReTandImTgenerator(double ReTorImTar[], double energy, int ReTorImT, double current_z_position))
 {
 	double gravAccel = -9.8;    // acceleration due to gravity. 
   	double wedgeangle = sp.wedgeangle; //0; //Grating wedge angle. The variable alpha below depends on this. This is a free parameter. Appears to be related to beam splitting.
@@ -107,8 +107,8 @@ double ( * ReTandImTgenerator(double ReTorImTar[], double energy, int ReTorImT, 
           // fc is another electron thing; or the diffraction pattern? 2pi*n*x/period?
           fc = 2 * M_PI * n * ex/sp.grating_period; // so the first fc = 2  *  pi  *  -20  *  xmin / period, last fc = 2  *  pi  *  20  *  xmax / period. Looks like fc is a quantity proportional to distance from bottom/top of each 'window'/slit
             
-          // abszloc is actually wrong; the code thinks the total z is 1m. It's actually closer to 2.8cm. Divide abszloc by 36.075 to get real value.
-          double realzloc = abszloc / 36.075;
+          // current_z_position is actually wrong; the code thinks the total z is 1m. It's actually closer to 2.8cm. Divide abszloc by 36.075 to get real value.
+          double realzloc = current_z_position / 36.075;
 
           // How much time has passed for a point in this system? x = vt, so t = x/v. x in this case is approximated by the z-location. We know v = vel.
           timeFreefall = (realzloc/ sp.particle_velocity);
