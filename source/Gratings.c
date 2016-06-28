@@ -252,7 +252,6 @@ void ( * intensity_after_2nd_grating(double current_z_position, double el1x, dou
 		
     	}
 
-	free(x_positions_array);
 	free(phiI);
 
 	end = clock();
