@@ -49,7 +49,6 @@ void ( * intensity_after_1st_grating(double current_z_position,double el1, doubl
 
 	double z12 = current_z_position - sp.z_position_1st_grating;		//z location between 1st and 2nd gratings
 	double energy = sp.energy;
-	double abszloc = current_z_position;
 	// Grating wedge angle. Variable alpha below depends on this. This is a free parameter. Appears to be related to beam splitting.
     	double wedgeangle = sp.wedgeangle;
 	/* 
@@ -87,10 +86,10 @@ void ( * intensity_after_1st_grating(double current_z_position,double el1, doubl
 
 	double ReT[41]={0};
 	int RealorIm = 1;
-	ReTandImTgenerator(ReT,energy, RealorIm, abszloc); // calculates phase shift
+	ReTandImTgenerator(ReT,energy, RealorIm, current_z_position); // calculates phase shift
 	RealorIm = 2;
 	double ImT[41]={0};
-	ReTandImTgenerator(ImT,energy, RealorIm, abszloc); // calculates phase shift for imaginary part
+	ReTandImTgenerator(ImT,energy, RealorIm, current_z_position); // calculates phase shift for imaginary part
 
 	for (int i=0; i<sp.resolution; i++) { 
 		for (int n=-lim; n<=lim; n++) {
@@ -134,7 +133,6 @@ void ( * intensity_after_2nd_grating(double current_z_position, double el1x, dou
 	double r1y = r1x;
 	double w1y = w1x;
 	double el1y = el1x;
-	double abszloc = current_z_position;
 	double z12 = sp.z_position_2nd_grating - sp.z_position_1st_grating;
 	double z23 = current_z_position - sp.z_position_2nd_grating;
 	double mytheta = sp.theta;
@@ -203,10 +201,10 @@ void ( * intensity_after_2nd_grating(double current_z_position, double el1x, dou
     	// array of 41 0's for now.
     	// array of 41 0's for now.
     	int RealorIm = 1; 
-    	ReTandImTgenerator(ReT,energy, RealorIm, abszloc); 
+    	ReTandImTgenerator(ReT,energy, RealorIm, current_z_position); 
     	double ImT[41]={0};
     	RealorIm = 2;
-    	ReTandImTgenerator(ImT,energy, RealorIm, abszloc); 
+    	ReTandImTgenerator(ImT,energy, RealorIm, current_z_position); 
     
     	double *phix;
     	double *phiI;
