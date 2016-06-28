@@ -13,7 +13,7 @@
 
 #include <complex.h>
 
-double ( * ReTandImTgenerator(double ReTorImTar[], double energy, int ReTorImT, double current_z_position))
+double ( * ReTandImTgenerator(double ReTorImTar[], int ReTorImT, double current_z_position))
 {
 	double gravAccel = -9.8;    // acceleration due to gravity. 
   	double tilt = sp.tilt;  //0; // A free parameter. Beta variable below depends on this. If beam is perp. to grating, then tilt (and thus Beta) are 0. This is the twist about the x-axis.

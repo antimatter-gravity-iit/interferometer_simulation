@@ -48,7 +48,6 @@ void ( * intensity_after_1st_grating(double current_z_position,double el1, doubl
 	double diff=0;
 
 	double z12    = current_z_position - sp.z_position_1st_grating;	//z location between 1st and 2nd gratings
-	double energy = sp.energy;
 	/* 
 	 * A free parameter. Beta variable below depends on this. If beam is perpendicular to gratings, then tilt (and thus Beta) is 0.
 	 * This is the twist about the x-axis.
@@ -61,8 +60,7 @@ void ( * intensity_after_1st_grating(double current_z_position,double el1, doubl
     	double eta2   = sp.eta2; 				// G2 open fraction; how open the second grating is.		 
 	double eta    = sp.slit_height/sp.grating_period; 	// ratio of window 'height' to period of grating
     	double alpha  = sp.wedgeangle * M_PI/180; 		// alpha and beta have been defined in almost every other function. Global variables? 
-    	double beta   = tilt * M_PI; 				// defined in other functions too, same purpose.
-	//double particle_velocity = pow(2 * energy * e_charge/e_mass,1/2); electron velocity    	
+    	double beta   = tilt * M_PI; 				// defined in other functions too, same purpose.	
 	/*
 	 * Explanation of variables:
 	 * w2 = GSM width of beam after the first grating.
@@ -82,11 +80,11 @@ void ( * intensity_after_1st_grating(double current_z_position,double el1, doubl
 
 	double ReT[41]={0};
 	int RealorIm = 1;
-	ReTandImTgenerator(ReT,energy, RealorIm, current_z_position); // calculates phase shift
+	ReTandImTgenerator(ReT, RealorIm, current_z_position); // calculates phase shift
 		
 	double ImT[41]={0};
 	RealorIm = 2;
-	ReTandImTgenerator(ImT,energy, RealorIm, current_z_position); // calculates phase shift for imaginary part
+	ReTandImTgenerator(ImT, RealorIm, current_z_position); // calculates phase shift for imaginary part
 
 	for (int i=0; i<sp.resolution; i++) { 
 		for (int n=-lim; n<=lim; n++) {
@@ -132,7 +130,6 @@ void ( * intensity_after_2nd_grating(double current_z_position, double el1x, dou
 	double z12     = sp.z_position_2nd_grating - sp.z_position_1st_grating;
 	double z23     = current_z_position - sp.z_position_2nd_grating;
 	double mytheta = sp.theta;
-	double energy  = sp.energy;
 	/* 
 	 * A free parameter. Beta variable below depends on this. If beam is perpendicular to gratings, then tilt (and thus Beta) is 0.
 	 * This is the twist about the x-axis.
@@ -192,11 +189,11 @@ void ( * intensity_after_2nd_grating(double current_z_position, double el1x, dou
     
     	double ReT[41]={0};     	// array of 41 0's for now.
     	int RealorIm = 1; 
-    	ReTandImTgenerator(ReT,energy, RealorIm, current_z_position); 
+    	ReTandImTgenerator(ReT, RealorIm, current_z_position); 
     	
 	double ImT[41]={0};
     	RealorIm = 2;
-    	ReTandImTgenerator(ImT,energy, RealorIm, current_z_position); 
+    	ReTandImTgenerator(ImT, RealorIm, current_z_position); 
 	
 
 	for (int i=0; i<sp.resolution; i++) {

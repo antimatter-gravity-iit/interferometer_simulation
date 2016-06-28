@@ -11,7 +11,6 @@
 typedef struct {
 int account_gravity;				// account for gravitational forces [1] yes, [0] no.
 double particle_velocity;			// velocity of particle
-double energy;					// energy of electron
 int simulation_option;				// choose whether or not to have a full simulation, or a final simulation interference pattern  
 int logchoice;					// whether or not to scale interferance pattern with a log base in order to see smaller intensities
 int account_image_charge;                     	// whether or not to consider image charge effects. 0 for False. //not used in program.
