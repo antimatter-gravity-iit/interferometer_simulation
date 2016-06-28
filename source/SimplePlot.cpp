@@ -156,7 +156,7 @@ void SimplePlot::twoD(const char *title, double value[],
 
 	h->Draw(options);
 	h->GetXaxis()->SetTitle("Horizontal displacement x (micro meters)");
-	h->GetYaxis()->SetTitle("Verticle displacement y (micro meters)");
+	h->GetYaxis()->SetTitle("Vertical displacement y (micro meters)");
 	h->GetXaxis()->CenterTitle();
 	h->GetYaxis()->CenterTitle();
 	c->Update();
