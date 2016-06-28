@@ -162,6 +162,10 @@ int main(int argc, char *argv[])
 	sp.intensity_cutoff = 1e-6;	    // Point at which the intensity cuts off and is treated as 0. Can also be 5e-5 like in McMorran thesis, or 0.001.
 	sp.rowsT = 41;    		    // Rows of ReT and ImT arrays; used to calculate phase shift.
 
+	/* 
+	 * The program prints a standard message before proceeding to the simulation. It includes a copyright notice
+	 * and displays the values the user has given as input for the simulation.
+	 */
 	printf("Interferometer Simulation 1.0\n");
 	printf("Copyright (C) 2016 Antimatter Gravity Interferometer Group, Illinois Institute of Technology (IIT).\n");
 	printf("License: GNU GPL version 2\n----------\n");
@@ -196,19 +200,15 @@ int main(int argc, char *argv[])
 	 * It's the intensities of the x-positions and the intensities?  That doesn't make sense to me."
 	 * Original description: "Initializing two arrays to contain the intensities and xpositions of each intensity."	
 	 */
-	
-	double *intensity_array;							// Intensity array.
-    	double *Grat3x;							// Array of x position of intensity.
+	double *intensity_array;						// Intensity array.
+    	double *Grat3x;								// Array of x position of intensity.
 	intensity_array = (double*) calloc(sp.resolution, sizeof(double)); 	// Allocate dynamic memory for intensity array.
-	Grat3x = (double*) calloc(sp.resolution, sizeof(double)); 	// Allocate dynamic memory for horizontal position array.
+	Grat3x = (double*) calloc(sp.resolution, sizeof(double)); 		// Allocate dynamic memory for horizontal position array.
 	int initial_z_position;							// Where z position begins.
-	double max;							// Stores computed max value of intensity at a specific x location.
-		
-    	// TODO LAcomment: make sense of these and rename variables accordingly.
-
-   	int total_number_of_pixels = sp.resolution * sp.resolution;  	// Pixels on full simulation graph.
+	double max;								// Stores computed max value of intensity at a specific x location.
+   	int total_number_of_pixels = sp.resolution * sp.resolution;  		// Pixels on full simulation graph.
     	double *pixel_array_memory = (double*) calloc(total_number_of_pixels, sizeof(double)); 	// Allocating dynamic memory for pixel array.
-	double z_resolution = (sp.z_end-sp.z_start)/sp.resolution; 	// Step resolution used in computation.
+	double z_resolution = (sp.z_end-sp.z_start)/sp.resolution; 		// Step resolution used in computation.
 
      
 	/*
@@ -232,7 +232,6 @@ int main(int argc, char *argv[])
 	 *
 	 * The functions 'calculate_width' and 'v' output a double.
 	 */
-		
 	double w1 = calculate_width(sp.z_position_1st_grating, sp.initial_radius_of_wavefront_curvature, sp.initial_coherence_width, sp.initial_beamwidth, sp.initial_beamwidth);
 	double el1 = calculate_width(sp.z_position_1st_grating, sp.initial_radius_of_wavefront_curvature, sp.initial_coherence_width, sp.initial_beamwidth, sp.initial_coherence_width);
 	double r1 = v(sp.z_position_1st_grating, sp.initial_radius_of_wavefront_curvature, sp.initial_coherence_width, sp.initial_beamwidth);
@@ -252,7 +251,6 @@ int main(int argc, char *argv[])
 		Grat3x[i] = sp.x_start + (i) * ((sp.x_end-sp.x_start)/(sp.resolution-1));
 	
 	for (int i=(initial_z_position); i<sp.resolution; i++) {
-		// TODO: LAcomment: said "i=299 is just to get last row of z." What?
 		// Each time the loop repeats, you reset the array's positions and intensities to zero. 
 		memset(intensity_array, 0, sp.resolution * sizeof(double));
 		
