@@ -5,7 +5,6 @@
 #include <math.h>
 #include <string>
 
-
 #include "PhaseShifts.h"
 #include "BeamParams.h"
 #include "Misc.h"
@@ -15,11 +14,10 @@
 
 double ( * ReTandImTgenerator(double ReTorImTar[], int ReTorImT, double current_z_position))
 {
-	double gravity_acceleration = -9.8;    // acceleration due to gravity. 
-  	double tilt = sp.tilt;  //0; // A free parameter. Beta variable below depends on this. If beam is perp. to grating, then tilt (and thus Beta) are 0. This is the twist about the x-axis.
+	double gravity_acceleration = -9.8;	// acceleration due to gravity. 
+  	double tilt = sp.tilt;			// A free parameter. Beta variable below depends on this. If beam is perp. to grating, then tilt (and thus Beta) are 0. This is the twist about the x-axis.
     
 	//values not included in simparam structure.  can be moved there but not entirely necessary 
-	double chargeratio =0.0; //strength of image charge (units of e, electron charge); values of 0.03, 0.05, or more can be had //not used
     	double C3 = 2.0453e-2; 			// the VdW coefficient for hydrogen (assumed to be the same for muonium). In meV * nm^3.
     	double hbar = 6.58212e-13; 		// Planck's reduced constant in meV * s.
   
