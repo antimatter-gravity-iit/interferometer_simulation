@@ -137,7 +137,6 @@ void ( * intensity_after_2nd_grating(double current_z_position, double el1x, dou
 	double el1y    = el1x;
 	double z12     = sp.z_position_2nd_grating - sp.z_position_1st_grating;
 	double z23     = current_z_position - sp.z_position_2nd_grating;
-	double mytheta = sp.theta;
 	/* 
 	 * A free parameter. Beta variable below depends on this. If beam is perpendicular to gratings, then tilt (and thus Beta) is 0.
 	 * This is the twist about the x-axis.
@@ -148,7 +147,7 @@ void ( * intensity_after_2nd_grating(double current_z_position, double el1x, dou
     	double eta    = sp.slit_height/sp.grating_period; 	// ratio of slit window 'height' to the period of the gratings
         double alpha  = sp.wedgeangle * M_PI/180;
     	double beta   = tilt * M_PI; 				// 0 if beam is normal to gratings
-    	double theta  = M_PI * mytheta/180;
+    	double theta  = M_PI * sp.theta/180;
     	double d1     = sp.grating_period;			// period = period of gratings
     	double d2     = sp.grating_period;
     	double z13    = z12  +  z23; 				// z distance between grating 1 and 3
