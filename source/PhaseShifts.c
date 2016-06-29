@@ -35,7 +35,7 @@ double ( * ReTandImTgenerator(double ReTorImTar[], int ReTorImT, double current_
     	long double xmin; // beginning of path of wave through the slit
     	long double xmax; // end of path of wave/beam through the slit
     	double fc;
-    	long double phM; // phase shift if dealing with neutral atoms/molecules
+    	long double phase_van_der_waals; // phase shift if dealing with neutral atoms/molecules
     	double phGrav; // phase shift due to gravity.
     	double ex;
     	double timeFreefall;
@@ -105,14 +105,14 @@ double ( * ReTandImTgenerator(double ReTorImTar[], int ReTorImT, double current_
 				phGrav = 0;
 			  
 			if (sp.account_van_der_waals == 1) {
-				// phM is phase shift on Muonium/other neutral molecules due to Van der Waals effects through the gratings.
+				// phase_van_der_waals is phase shift on Muonium/other neutral molecules due to Van der Waals effects through the gratings.
 				if (exnmleft == 0 || exnmright == 0)
-					phM = 0;
+					phase_van_der_waals = 0;
 				else
-					phM = -C3 * sp.grating_thickness / (hbar * sp.particle_velocity * pow(exnmleft, 3)) -  -C3 * sp.grating_thickness / (hbar * sp.particle_velocity * pow(exnmright, 3));
+					phase_van_der_waals = -C3 * sp.grating_thickness / (hbar * sp.particle_velocity * pow(exnmleft, 3)) -  -C3 * sp.grating_thickness / (hbar * sp.particle_velocity * pow(exnmright, 3));
 			}
 			else {
-				phM = 0;
+				phase_van_der_waals = 0;
 			}	
 
 			// j goes from 0 to 40 (right now sp.rowsT = 41)
@@ -120,12 +120,12 @@ double ( * ReTandImTgenerator(double ReTorImTar[], int ReTorImT, double current_
 				
 			// if it's the ReT array
 			if (ReTorImT == 1)										
-				// so fc and phM are both phase shifts; angles.
-				ReTorImTar[j]  += cos(phM + fc + phGrav);
+				// so fc and phase_van_der_waals are both phase shifts; angles.
+				ReTorImTar[j]  += cos(phase_van_der_waals + fc + phGrav);
 			// if it's the ImT array
 			else if (ReTorImT == 2)
-				// so fc and phM are both phase shifts; angles.
-				ReTorImTar[j]  += sin(phM + fc + phGrav); 
+				// so fc and phase_van_der_waals are both phase shifts; angles.
+				ReTorImTar[j]  += sin(phase_van_der_waals + fc + phGrav); 
 		}
 	}
 	
