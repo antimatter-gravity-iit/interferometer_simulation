@@ -20,8 +20,8 @@ double grating_period;                  	// period of grating - 100 nanometers.
 double initial_radius_of_wavefront_curvature;   // Corresponds to r0 in older versions.
 double initial_coherence_width;                 // Corresponds to el0 in older versions. 50e-9 can also be used.
 double initial_beamwidth;                      	// Corresponds to w0 in older versions. Muonium beam width. Can also be: 2e-6, 1e-6.
-double z_position_1st_grating;                  // It being 1 micron is arbitrary, pretty sure. Also same as thickness of gratings.
-double z_position_2nd_grating;                  // assumed to be 1 meter away on z-axis.
+double z_position_1st_grating;                  // Distance of 1st grating to z axis origin (z=0).
+double z_position_2nd_grating;                  // Distance of 2nd grating to z axis origin (z=0).
 double G2_x;		                   	// 50 nm. Initial lateral offset of G2.
 double theta;		                   	// could be 0.05 or more. This is the twist between 1st and second gratings, in degrees. 2nd and 3rd grating are fixed to same rotational twist.
 double thick;		                	// 14 nanometers. Not (real) thickness of gratings, most likely. Gratings are 1 micrometer thick.
