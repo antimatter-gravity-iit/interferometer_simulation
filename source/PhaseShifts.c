@@ -36,7 +36,7 @@ double ( * ReTandImTgenerator(double ReTorImTar[], int ReTorImT, double current_
     	long double phase_van_der_waals; // phase shift if dealing with neutral atoms/molecules
     	double phase_gravity; // phase shift due to gravity.
     	double ex;
-    	double timeFreefall;
+    	double time_free_fall;
     	int j;
 
 	// if the beam is not normal/perpendicular to the gratings it encounters
@@ -90,7 +90,7 @@ double ( * ReTandImTgenerator(double ReTorImTar[], int ReTorImT, double current_
 			fc = 2 * M_PI * n * ex/sp.grating_period; 
 			
 			// TODO LAcomment: rewrite. "How much time has passed for a point in this system?" 
-			timeFreefall = current_z_position / sp.particle_velocity;
+			time_free_fall = current_z_position / sp.particle_velocity;
 
 			/* Atoms will fall due to gravity.
 			 * According to Dr. Daniel Kaplan's paper at arxiv.org/ftp/arxiv/papers/1308/1308.0878.pdf,
@@ -98,7 +98,7 @@ double ( * ReTandImTgenerator(double ReTorImTar[], int ReTorImT, double current_
 			 */
 			if (sp.account_gravity == 1)
 				// phase shift due to gravity on particles
-				phase_gravity = (2 * M_PI * gravity_acceleration * pow(timeFreefall, 2)) / sp.grating_period;
+				phase_gravity = (2 * M_PI * gravity_acceleration * pow(time_free_fall, 2)) / sp.grating_period;
 			else
 				phase_gravity = 0;
 			  
