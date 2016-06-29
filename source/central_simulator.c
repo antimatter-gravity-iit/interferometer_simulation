@@ -50,14 +50,24 @@
  *     and choice of logarithmic or linear intensity scale for the plot (only if the full simulation is requested),
  * and calculates the necessary parameters in order to perform the simulation with the user's desired arguments.
  *
- * Top-down view of gratings:
+ * Side view of gratings:
+ * 
+ * x axis (vertical)
+ * ^
+ * |  1 micron      1 meter
+ * |
+ * |	  ||          ||          ||
+ * |	  ||          ||          ||
+ * |	  ||	      ||          ||
+ * |	--||----------||----------||----->
+ * |	--||----------||----------||----->
+ * |	--||----------||----------||----->
+ * |	  ||	      ||          ||
+ * |	  ||          ||          ||
+ * |	  ||          ||          ||
+ * |
+ * ======================================> z axis (beam direction)
  *
- *
- *                                    ---------------------   -> at z_position_2nd_grating = 1,         z2
- *
- *                                    ---------------------   -> at z_position_1st_grating = 0.000001,  z1
- *
- *                                       (beam going up)
  */ 
 
 #include <stdio.h>
@@ -92,8 +102,6 @@
 // sp is the simulation parameters structure that contains all of the simulation dependent variables. The struct is located in Misc.h.
 simparam sp;
 
-                       
-
 /*
  * The function 'main' is the main program that contains all of the global data and function calls to other functions
  * in order to simulate wave particles through a diffraction grating. It takes an integer and an array as arguments
@@ -105,7 +113,7 @@ simparam sp;
  * These are the simulation parameters that the user has to provide, in the format "<position>. <explanation>":
  * 1. Account for gravity? 1 = True, 0 = False.
  * 2. Account for Van der Waals effects? 1 = True, 0 = False.
- * 3. Resolution [300-400 recommended]. 
+ * 3. Resolution in pixels [300-400 recommended]. 
  * 4. Velocity of particles in m/s.
  * 5. Pitch of gratings in nm.
  * 6. Output the total simulation [1]? or the final interference pattern [2]?
@@ -116,18 +124,18 @@ simparam sp;
  */
 int main(int argc, char *argv[])
 {
-	// Account for gravity? 1 = True, 0 = False.
-	sp.account_gravity = atoi(argv[1]);
-	// Account for van_der_waals? 1 = True, 0 = False.
-	sp.account_van_der_waals = atoi(argv[2]);
+	// Account for gravity?	1 = True, 0 = False.
+	sp.account_gravity		= atoi(argv[1]);
+	// Account for Van der Waals? 1 = True, 0 = False.
+	sp.account_van_der_waals	= atoi(argv[2]);
 	// Resolution.
-	sp.resolution = atoi(argv[3]);
-	// Velocity of particle.
-	sp.particle_velocity = atof(argv[4]);
-	// The period is inputted in nanometers (e.g. 100), but the program uses it in meters (e.g. 100.0e-9 == 1.0e-7).
-	sp.grating_period = atof(argv[5]) / 1.0e9;
+	sp.resolution			= atoi(argv[3]);
+	// Velocity of beam particles.
+	sp.particle_velocity		= atof(argv[4]);
+	// The period is inputted in nanometers, but the program converts it to meters for internal usage.
+	sp.grating_period		= atof(argv[5]) / 1.0e9;
 	// Output the total simulation [1]? or the final interference pattern [2]?
-	sp.simulation_option = atoi(argv[6]);
+	sp.simulation_option		= atoi(argv[6]);
 	/*
 	 * If the user asks for the total simulation (sp.simulation_option is 1), the program needs to know
 	 * if the intensity scale of the plot is going to be linear or logarithmic (the latter helps
@@ -138,32 +146,46 @@ int main(int argc, char *argv[])
 		sp.logchoice = atoi(argv[7]);
 	else
 		sp.logchoice = 0;
+	
+	// Gaussian Schell-model beam parameters.
+	sp.initial_beamwidth				= 3.0e-5;	// In m.
+	sp.initial_coherence_width			= 1.0e-6;	// In m.
+	sp.initial_radius_of_wavefront_curvature	= -4.04;	// In m.
+	
+	/*
+	 * de Broglie wavelength for the matter waves.
+	 * de Broglie equation: wavelength = Planck constant / mass * velocity,
+	 * where we approximate the mass as the sum of the muon and electron masses.
+	 */
+	sp.wavelength 			= 6.626068e-34 / (1.8926409e-28 * sp.particle_velocity);
 
-	// De Broglie equation: wavelength = Planck constant / mass * velocity, where we use the mass as the sum of the muon and electron masses.
-	sp.wavelength = 6.626068e-34 / (1.8926409e-28 * sp.particle_velocity);
+	// Grating geometry parameters.
+	sp.z_position_1st_grating	= 1.0e-6;		// In m.
+	sp.z_position_2nd_grating	= 1.0;			// In m.
+	// Height of each slit is calculated as half the grating period (distance between gratings).
+	sp.slit_height 			= sp.grating_period / 2;
+	sp.eta1				= 0.4;			// TODO LAcomment: explain.
+	sp.eta2				= 0.4;			// TODO LAcomment: explain.
+	sp.G2_x				= 5e-8;			// In m. TODO LAcomment: explain based on Dr McMorran's info.
+	sp.theta			= 1e-6;			// In degrees. This is the relative rotation angle between the two gratings.
+	sp.grating_thickness		= 1.0e-6;		// In m. Used for the VdW effect for atoms: see PhaseShifts.c.
+	sp.wedgeangle			= 0;		  	// In degrees. Grating wedge angle.
+	sp.tilt				= 0; 	      		// Tilt.
 
-	sp.eta1 = 0.4;
-	sp.eta2 = 0.4;
-	sp.initial_radius_of_wavefront_curvature = -4.04;	// In m.
-	sp.initial_coherence_width = 1.0e-6;			// In m.
-        sp.initial_beamwidth       = 3.0e-5;			// In m.
-	sp.z_position_1st_grating  = 1.0e-6;			// In m.
-	sp.z_position_2nd_grating  = 1.0;			// In m.
-	sp.G2_x   = 5e-8;					// In m.
-	sp.theta  = 1e-6;					// In degrees. This is the relative rotation angle between the two gratings.
-	sp.grating_thickness = 1.0e-6;	// Thickness of gratings: 1 micrometer. Used for the VdW effect for atoms: see PhaseShifts.c.
-	sp.wedgeangle =	0;	      	// Grating wedge angle. Variable alpha below depends on this. This is a free parameter. Appears to be related to beam splitting.
-	sp.tilt       = 0; 	      // Tilt.
-	sp.z_start    = -0.1;	      //z start position
-	sp.z_end      = 2.1;	      //z end position
- 	sp.x_start    = -2.0e-4;      //x start position
-	sp.x_end      = 2.0e-4;       //x end position
-	/* TODO Ycomment: y_start and y_end are not being used in the code. We didn't delete it for now in case the value they assume help us understand something later */
-	//sp.y_start  = -1.1e-4;      //y start position
-	//sp.y_end    = 1.1e-4;       //y end position
-	sp.slit_height = sp.grating_period / 2;  // The height of each grating is calculated as half the grating period (distance between gratings).
-	sp.intensity_cutoff = 1e-6;	         // Point at which the intensity cuts off and is treated as 0. Can also be 5e-5 like in McMorran thesis, or 0.001.
-	sp.rowsT = 41;    		         // Rows of ReT and ImT arrays; used to calculate phase shift.
+	// Spatial parameters.	
+	sp.z_start    			= -0.1;	      		// z start position
+	sp.z_end      			= 2.1;	      		// z end position
+ 	sp.x_start    			= -2.0e-4;     		// x start position
+	sp.x_end      			= 2.0e-4;      		// x end position
+	/* 
+	 * TODO Ycomment: y_start and y_end are not being used in the code. 
+	 * We didn't delete it for now in case the value they assume help us understand something later
+	 */
+	//sp.y_start  = -1.1e-4;      				// y start position
+	//sp.y_end    = 1.1e-4;       				// y end position
+
+	sp.intensity_cutoff		= 1e-6;        		// Point at which the intensity cuts off and is treated as 0.
+	sp.rowsT 			= 41;  	 		// Rows of ReT and ImT arrays; used to calculate phase shift.
 
 	/* 
 	 * The program prints a standard message before proceeding to the simulation. It includes a copyright notice
@@ -209,7 +231,6 @@ int main(int argc, char *argv[])
 	 * given that the beam propagates in the z direction. That is, with each step in z the intensity_array holds the intensity
 	 * values associated with each position in x.
 	 */
-	
 	double *intensity_array;						// Intensity array.
     	double *x_positions_array;						// Array of x position of intensity.
 	intensity_array = (double*) calloc(sp.resolution, sizeof(double)); 	// Allocate dynamic memory for intensity array.
