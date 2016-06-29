@@ -14,7 +14,6 @@ int account_van_der_waals;
 double particle_velocity;			// velocity of particle
 int simulation_option;				// choose whether or not to have a full simulation, or a final simulation interference pattern  
 int logchoice;					// whether or not to scale interferance pattern with a log base in order to see smaller intensities
-int account_image_charge;                     	// whether or not to consider image charge effects. 0 for False. //not used in program.
 double eta1;	                           	// G1 open fraction; how open the first grating is. With .4 open, a little over than half the muonium should pass through it.
 double eta2;	                           	// G2 open fraction; how open the second grating is.
 double grating_period;                  	// period of grating - 100 nanometers.
