@@ -36,7 +36,7 @@ double ( * ReTandImTgenerator(double ReTorImTar[], int ReTorImT, double current_
     	long double xmax; // end of path of wave/beam through the slit
     	double fc;
     	long double phase_van_der_waals; // phase shift if dealing with neutral atoms/molecules
-    	double phGrav; // phase shift due to gravity.
+    	double phase_gravity; // phase shift due to gravity.
     	double ex;
     	double timeFreefall;
     	int j;
@@ -100,9 +100,9 @@ double ( * ReTandImTgenerator(double ReTorImTar[], int ReTorImT, double current_
 			 */
 			if (sp.account_gravity == 1)
 				// phase shift due to gravity on particles
-				phGrav = (2 * M_PI * gravity_acceleration * pow(timeFreefall, 2)) / sp.grating_period;
+				phase_gravity = (2 * M_PI * gravity_acceleration * pow(timeFreefall, 2)) / sp.grating_period;
 			else
-				phGrav = 0;
+				phase_gravity = 0;
 			  
 			if (sp.account_van_der_waals == 1) {
 				// phase_van_der_waals is phase shift on Muonium/other neutral molecules due to Van der Waals effects through the gratings.
@@ -121,11 +121,11 @@ double ( * ReTandImTgenerator(double ReTorImTar[], int ReTorImT, double current_
 			// if it's the ReT array
 			if (ReTorImT == 1)										
 				// so fc and phase_van_der_waals are both phase shifts; angles.
-				ReTorImTar[j]  += cos(phase_van_der_waals + fc + phGrav);
+				ReTorImTar[j]  += cos(phase_van_der_waals + fc + phase_gravity);
 			// if it's the ImT array
 			else if (ReTorImT == 2)
 				// so fc and phase_van_der_waals are both phase shifts; angles.
-				ReTorImTar[j]  += sin(phase_van_der_waals + fc + phGrav); 
+				ReTorImTar[j]  += sin(phase_van_der_waals + fc + phase_gravity); 
 		}
 	}
 	
