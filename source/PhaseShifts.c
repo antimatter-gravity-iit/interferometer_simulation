@@ -15,7 +15,7 @@
 
 double ( * ReTandImTgenerator(double ReTorImTar[], int ReTorImT, double current_z_position))
 {
-	double gravAccel = -9.8;    // acceleration due to gravity. 
+	double gravity_acceleration = -9.8;    // acceleration due to gravity. 
   	double tilt = sp.tilt;  //0; // A free parameter. Beta variable below depends on this. If beam is perp. to grating, then tilt (and thus Beta) are 0. This is the twist about the x-axis.
   	double eta1 = sp.eta1; //.4; //G1 open fraction; how open the first grating is. With .4 open, a little over than half the muonium should pass through it. Varname could be changed to better represent it.
   	double eta2 = sp.eta2; //.4; //G2 open fraction; how open the second grating is.
@@ -101,7 +101,7 @@ double ( * ReTandImTgenerator(double ReTorImTar[], int ReTorImT, double current_
 			 */
 			if (sp.account_gravity == 1)
 				// phase shift due to gravity on particles
-				phGrav = (2 * M_PI * gravAccel * pow(timeFreefall, 2)) / sp.grating_period;
+				phGrav = (2 * M_PI * gravity_acceleration * pow(timeFreefall, 2)) / sp.grating_period;
 			else
 				phGrav = 0;
 			  
