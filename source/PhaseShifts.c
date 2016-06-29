@@ -26,7 +26,6 @@ double ( * ReTandImTgenerator(double ReTorImTar[], int ReTorImT, double current_
     	double e_charge = 1.6021765e-19;	// electric charge in Coulombs of electron (abs. value)
     	double Coulomb = 8.98755179e-9; 	// force; m^2/(Coulomb^-2)
     	double hbar = 6.58212e-13; 		// Planck's reduced constant in meV * s.
-    	double Planck = 6.626068e-34;		// Planck's constant
   
   	double eta = sp.slit_height/sp.grating_period; // ratio of 'height' of slit/windows in gratings to the period of the gratings
     	double alpha = sp.wedgeangle * M_PI/180; // depends on wedgeangle above, which is a relatively free parameter. Appears to be bend of 'window' (slits in grating), if they bend forward or not.
