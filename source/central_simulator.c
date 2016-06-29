@@ -148,10 +148,10 @@ int main(int argc, char *argv[])
 	sp.z_position_1st_grating  = 1.0e-6;			// In m.
 	sp.z_position_2nd_grating  = 1.0;			// In m.
 	sp.G2_x   = 5e-8;					// In m.
-	sp.theta  = 1e-6;
-	sp.thick  = 1.4e-8;           // 14 nanometers. Not (real) thickness of gratings, most likely. Gratings are actually 1 micrometer thick.
-	sp.grating_thickness = 1.0e-6; // Thickness of gratings: 1 micrometer. Used for the VdW effect for atoms: see PhaseShifts.c.
-	sp.wedgeangle =	0;	      // Grating wedge angle. Variable alpha below depends on this. This is a free parameter. Appears to be related to beam splitting.
+	sp.theta  = 1e-6;					// In degrees. This is the relative rotation angle between the two gratings.
+	sp.thick  = 1.4e-8;           	// 14 nanometers. Not (real) thickness of gratings, most likely. Gratings are actually 1 micrometer thick.
+	sp.grating_thickness = 1.0e-6;	// Thickness of gratings: 1 micrometer. Used for the VdW effect for atoms: see PhaseShifts.c.
+	sp.wedgeangle =	0;	      	// Grating wedge angle. Variable alpha below depends on this. This is a free parameter. Appears to be related to beam splitting.
 	sp.tilt       = 0; 	      // Tilt.
 	sp.z_start    = -0.1;	      //z start position
 	sp.z_end      = 2.1;	      //z end position
