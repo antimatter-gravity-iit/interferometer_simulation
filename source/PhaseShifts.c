@@ -23,7 +23,6 @@ double ( * ReTandImTgenerator(double ReTorImTar[], int ReTorImT, double current_
     	double C3 = 2.0453e-2; 			// the VdW coefficient for hydrogen (assumed to be the same for muonium). In meV * nm^3.
     	double hbar = 6.58212e-13; 		// Planck's reduced constant in meV * s.
   
-  	double eta = sp.slit_height/sp.grating_period; // ratio of 'height' of slit/windows in gratings to the period of the gratings
     	double alpha = sp.wedgeangle * M_PI/180; // depends on wedgeangle above, which is a relatively free parameter. Appears to be bend of 'window' (slits in grating), if they bend forward or not.
     	double beta = tilt * M_PI; // depends on tilt angle, = 0 if beam is normal to gratings
     	double exnmleft; // how many nm from the left side of each slit are we?

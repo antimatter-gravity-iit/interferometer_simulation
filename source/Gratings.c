@@ -58,7 +58,6 @@ void ( * intensity_after_1st_grating(double current_z_position,double el1, doubl
     	double tilt   = sp.tilt; 
 	double eta1   = sp.eta1; 				// G1 open fraction; how open the first grating is. With 0.4 open, a little over than half the muonium should pass through.
     	double eta2   = sp.eta2; 				// G2 open fraction; how open the second grating is.		 
-	double eta    = sp.slit_height/sp.grating_period; 	// ratio of window 'height' to period of grating
     	double alpha  = sp.wedgeangle * M_PI/180; 		// alpha and beta have been defined in almost every other function. Global variables? 
     	double beta   = tilt * M_PI; 				// defined in other functions too, same purpose.	
 	/*
@@ -144,7 +143,6 @@ void ( * intensity_after_2nd_grating(double current_z_position, double el1x, dou
     	double tilt   = sp.tilt; 
 	double eta1   = sp.eta1;				// G1 open fraction; how open the first grating is. With 0.4 open, a little over than half the muonium should pass through. 
     	double eta2   = sp.eta2;				// G2 open fraction; how open the second grating is.
-    	double eta    = sp.slit_height/sp.grating_period; 	// ratio of slit window 'height' to the period of the gratings
         double alpha  = sp.wedgeangle * M_PI/180;
     	double beta   = tilt * M_PI; 				// 0 if beam is normal to gratings
     	double theta  = M_PI * sp.theta/180;
