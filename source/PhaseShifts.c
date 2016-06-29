@@ -35,10 +35,10 @@ double ( * ReTandImTgenerator(double ReTorImTar[], int ReTorImT, double current_
     	double exnmright; // how many nm from the right side of each slit are we?
     	long double xmin; // beginning of path of wave through the slit
     	long double xmax; // end of path of wave/beam through the slit
-    	float fc;
+    	double fc;
     	long double phM; // phase shift if dealing with neutral atoms/molecules
     	double phGrav; // phase shift due to gravity.
-    	float ex;
+    	double ex;
     	double timeFreefall;
     	int j;
 
