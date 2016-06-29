@@ -93,7 +93,15 @@ void ( * intensity_after_1st_grating(double current_z_position,double el1, doubl
 				// TODO: explain what n, m, dm, dn are. LR, Y 
 				double dm = (m + n)/2;
 
-				coef = ReT[x2pnts(n, (int * )pos)] * ReT[x2pnts(m,(int * )pos)] + ImT[x2pnts(n,(int * )pos)] * ImT[x2pnts(m,(int * )pos)];
+				if (sp.account_gravity == 0 || sp.account_Van_der_Waals == 0)
+				{ // if useimagecharge = 0, ignore image charge effects at G1. 
+					coef = sinc(eta1 * M_PI * n)  *  (sinc(eta1 * M_PI * m) * pow((eta1), 2));
+				}
+
+				else
+				{ // if usechargeimage = 1, don't ignore image charge effects at G1.
+					coef = ReT[x2pnts(n, (int * )pos)] * ReT[x2pnts(m,(int * )pos)] + ImT[x2pnts(n,(int * )pos)] * ImT[x2pnts(m,(int * )pos)];
+				}
 				
 				coef = coef * exp(-M_PI * pow((dn * sp.wavelength * z12)/(sp.grating_period * el2),2));
 				// added isfinite macro in order to avoid inf values
@@ -211,6 +219,19 @@ void ( * intensity_after_2nd_grating(double current_z_position, double el1x, dou
 						c5 = ( x2pnts( n1, (int *)pos ) );
 						d5 = ( x2pnts( n2, (int *)pos ) );
 
+						// 0 means ignore image charge effects, 1 means include image charge effects
+						if (sp.account_gravity == 0 || sp.account_Van_der_Waals == 0) {
+							coef = sinc(eta1 * M_PI * m1) +  0 * _Complex_I;
+							coef = coef * (sinc(eta1 * M_PI * m2)) +  0 * _Complex_I;
+						}
+						else { // assumes G1 is identical to G2
+							coef = 	      (ReT[a5] + ImT[a5] * _Complex_I); // 
+							coef = coef * (ReT[b5] - ImT[b5] * _Complex_I);
+						}
+					
+						coef = coef * (ReT[c5] + ImT[c5] * _Complex_I);
+						coef = coef * (ReT[d5] - ImT[d5] * _Complex_I);
+
 						//argument_d corresponds to the argument of equation 18b from McMorran & Cronin 2008. Note that y=0
                         			argument_d = -M_PI*(pow( x_positions_array[i]-sp.wavelength*z23*(n*cos(theta)/d2 + m*z13/(d1*z23) ),2 )/pow(w3x,2) + pow((n*sin(theta)*sp.wavelength)/(d2*w3y),2));
                         			//argument_f corresponds to the argument of equation 18c from McMorran & Cronin 2008. Note that y=0
@@ -220,10 +241,6 @@ void ( * intensity_after_2nd_grating(double current_z_position, double el1x, dou
                         			//argument_v corresponds to the argument of equation 18e from McMorran & Cronin 2008
                         			argument_v = -M_PI* pow(sp.wavelength*z23* (dn*cos(theta)/d2 + dm*z13/(d1*z23)),2)/pow(el3x,2) -M_PI*pow(dn*sin(theta)*sp.wavelength*z23/(d2*el3y),2);
 
-						coef =        (ReT[a5] + ImT[a5] * _Complex_I); 
-						coef = coef * (ReT[b5] - ImT[b5] * _Complex_I);						
-						coef = coef * (ReT[c5] + ImT[c5] * _Complex_I);
-						coef = coef * (ReT[d5] - ImT[d5] * _Complex_I);
 						
 						if (((__real__ coef) >= sp.intensity_cutoff) || ((__imag__ coef) >= sp.intensity_cutoff)) {
 						    

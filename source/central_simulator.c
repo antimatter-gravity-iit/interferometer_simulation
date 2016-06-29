@@ -117,14 +117,16 @@ int main(int argc, char *argv[])
 {
 	// Account for gravity? 1 = True, 0 = False.
 	sp.account_gravity = atoi(argv[1]);
+	// Account for Van_der_Waals? 1 = True, 0 = False.
+	sp.account_Van_der_Waals = atoi(argv[2]);
 	// Resolution.
-	sp.resolution = atoi(argv[2]);
+	sp.resolution = atoi(argv[3]);
 	// Velocity of particle.
-	sp.particle_velocity = atof(argv[3]);
+	sp.particle_velocity = atof(argv[4]);
 	// The period is inputted in nanometers (e.g. 100), but the program uses it in meters (e.g. 100.0e-9 == 1.0e-7).
-	sp.grating_period = atof(argv[4]) / 1.0e9;
+	sp.grating_period = atof(argv[5]) / 1.0e9;
 	// Output the total simulation [1]? or the final interference pattern [2]?
-	sp.simulation_option = atoi(argv[5]);
+	sp.simulation_option = atoi(argv[6]);
 	/*
 	 * If the user asks for the total simulation (sp.simulation_option is 1), the program needs to know
 	 * if the intensity scale of the plot is going to be linear or logarithmic (the latter helps
@@ -132,7 +134,7 @@ int main(int argc, char *argv[])
 	 * logarithmic scale.
 	 */
 	if(sp.simulation_option == 1)
-		sp.logchoice = atoi(argv[6]);
+		sp.logchoice = atoi(argv[7]);
 	else
 		sp.logchoice = 0;
 
@@ -179,9 +181,14 @@ int main(int argc, char *argv[])
 		printf("yes\n");
 	else
 		printf("no\n");
+	printf("Is Van der Waals interaction being considered? ");
+	if (sp.account_Van_der_Waals == 1)
+		printf("yes\n");
+	else
+		printf("no\n");
 	printf("Resolution of simulation plot: %3.0f pixels\n", sp.resolution);
 	printf("Velocity of particles: %4.1f m/s\n", sp.particle_velocity);
-	printf("'Period' of gratings (distance between two successive slits in one grating): %3.1f nm\n", sp.grating_period * 1.0e9);
+	printf("'Period' of gratings (distance between two successive slits): %3.1f nm\n", sp.grating_period * 1.0e9);
 	printf("Computing the full simulation or just the final interference pattern (using relative intensities)? ");
 	if (sp.simulation_option == 1) {
 		printf("full simulation\n");

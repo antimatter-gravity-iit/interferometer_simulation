@@ -107,22 +107,28 @@ double ( * ReTandImTgenerator(double ReTorImTar[], int ReTorImT, double current_
           // How much time has passed for a point in this system? x = vt, so t = x/v. x in this case is approximated by the z-location. We know v = vel.
           timeFreefall = current_z_position/ sp.particle_velocity;
 
-          // Both electrons and atoms will fall due to gravity. According to Dr. Daniel Kaplan's paper at arxiv.org/ftp/arxiv/papers/1308/1308.0878.pdf, the phase shift caused is 2 * pi * g * t^2 / d, where t is the time in free fall and d is the period of the gratings.
+        // Both electrons and atoms will fall due to gravity. According to Dr. Daniel Kaplan's paper at arxiv.org/ftp/arxiv/papers/1308/1308.0878.pdf, the phase shift caused is 2 * pi * g * t^2 / d, where t is the time in free fall and d is the period of the gratings.
 	if (sp.account_gravity == 1)
+		
 		phGrav = (2 * M_PI * gravAccel * pow(timeFreefall, 2)) / sp.grating_period;  // phase shift due to gravity on particles
-
+	
 	else
+	
 		phGrav = 0;
-         
+        
           
-          
-	if (exnmleft == 0 || exnmright == 0)
-		phM = 0;
- // phM is phase shift on Muonium/other neutral molecules due to Van der Waals effects through the gratings.
+        sp.account_Van_der_Waals = exnmleft == 0 || exnmright == 0;
+
+	if (sp.account_Van_der_Waals == 0) 
+	
+		phM = 0;  // phM is phase shift on Muonium/other neutral molecules due to Van der Waals effects through the gratings.
               	
 	else
+	
 		phM = -C3 * sp.grating_thickness / (hbar * sp.particle_velocity * pow(exnmleft, 3)) -  -C3 * sp.grating_thickness / (hbar * sp.particle_velocity * pow(exnmright, 3));
+	
                 
+
 	j=n + ((sp.rowsT-1)/2); // j goes from 0 to 40 (right now sp.rowsT = 41)
                 
                 
