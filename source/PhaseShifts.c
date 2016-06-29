@@ -47,7 +47,7 @@ double ( * ReTandImTgenerator(double ReTorImTar[], int ReTorImT, double current_
 		}
 		// if beam is not very perpendicular to gratings, then it travels through the slit diagonally, covering more distance, more image charge interaction, etc.	
 		else {
-		xmax= sp.slit_height  *  cos(beta)/2 - sp.slit_height/sp.resolution  +  sp.thick  *  (tan(alpha)-tan(beta));
+		xmax= sp.slit_height  *  cos(beta)/2 - sp.slit_height/sp.resolution  +  sp.grating_thickness  *  (tan(alpha)-tan(beta));
 		}
     	}
 	// if beta < 0; this time xmin changes, xmax is the same
@@ -61,7 +61,7 @@ double ( * ReTandImTgenerator(double ReTorImTar[], int ReTorImT, double current_
 		  xmin = -((sp.slit_height * cos(beta))/2) + sp.slit_height/sp.resolution; 
 		}
 		else { // if the beam is far from perpendicular to grating slits
-		    xmin = -((sp.slit_height * cos(beta))/2) + sp.slit_height/sp.resolution - sp.thick * (tan(alpha)-tan(beta));
+		    xmin = -((sp.slit_height * cos(beta))/2) + sp.slit_height/sp.resolution - sp.grating_thickness * (tan(alpha)-tan(beta));
 		}
 	}  
     	for (int n=-((sp.rowsT-1)/2);n<=((sp.rowsT-1)/2);n++) {
