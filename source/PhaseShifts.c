@@ -17,19 +17,18 @@ double ( * ReTandImTgenerator(double ReTorImTar[], int ReTorImT, double current_
 	double gravity_acceleration = -9.8;	// acceleration due to gravity. 
   	double tilt = sp.tilt;			// A free parameter. Beta variable below depends on this. If beam is perp. to grating, then tilt (and thus Beta) are 0. This is the twist about the x-axis.
     
-	//values not included in simparam structure.  can be moved there but not entirely necessary 
-    	double C3 = 2.0453e-2; 			// the VdW coefficient for hydrogen (assumed to be the same for muonium). In meV * nm^3.
-    	double hbar = 6.58212e-13; 		// Planck's reduced constant in meV * s.
-  
-    	double alpha = sp.wedgeangle * M_PI/180; // depends on wedgeangle above, which is a relatively free parameter. Appears to be bend of 'window' (slits in grating), if they bend forward or not.
-    	double beta = tilt * M_PI; // depends on tilt angle, = 0 if beam is normal to gratings
-    	double exnmleft; // how many nm from the left side of each slit are we?
-    	double exnmright; // how many nm from the right side of each slit are we?
-    	long double xmin; // beginning of path of wave through the slit
-    	long double xmax; // end of path of wave/beam through the slit
+    	double C3 = 2.0453e-2;			// the VdW coefficient for hydrogen (assumed to be the same for muonium). In meV * nm^3.
+    	double hbar = 6.58212e-13;		// Planck's reduced constant in meV * s.
+   	// TODO: LAcomment: explain. Variable 'alpha' "appears to be bend of 'window' (slits in grating), if they bend forward or not."
+    	double alpha = sp.wedgeangle * M_PI/180;
+    	double beta = tilt * M_PI; 		// depends on tilt angle, = 0 if beam is normal to gratings
+    	double exnmleft;			// how many nm from the left side of each slit are we?
+    	double exnmright;			// how many nm from the right side of each slit are we?
+    	long double xmin;			// beginning of path of wave through the slit
+    	long double xmax;			// end of path of wave/beam through the slit
     	double fc;
-    	long double phase_van_der_waals; // phase shift if dealing with neutral atoms/molecules
-    	double phase_gravity; // phase shift due to gravity.
+    	long double phase_van_der_waals;	// phase shift if dealing with neutral atoms/molecules
+    	double phase_gravity;			// phase shift due to gravity.
     	double ex;
     	double time_free_fall;
     	int j;
