@@ -117,9 +117,9 @@ double ( * ReTandImTgenerator(double ReTorImTar[], int ReTorImT, double current_
 		phGrav = 0;
         
           
-        sp.account_Van_der_Waals = exnmleft == 0 || exnmright == 0;
+        sp.account_van_der_waals = exnmleft == 0 || exnmright == 0;
 
-	if (sp.account_Van_der_Waals == 0) 
+	if (sp.account_van_der_waals == 0) 
 	
 		phM = 0;  // phM is phase shift on Muonium/other neutral molecules due to Van der Waals effects through the gratings.
               	

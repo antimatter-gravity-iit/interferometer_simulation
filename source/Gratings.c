@@ -93,7 +93,7 @@ void ( * intensity_after_1st_grating(double current_z_position,double el1, doubl
 				// TODO: explain what n, m, dm, dn are. LR, Y 
 				double dm = (m + n)/2;
 
-				if (sp.account_gravity == 0 || sp.account_Van_der_Waals == 0)
+				if (sp.account_gravity == 0 || sp.account_van_der_waals == 0)
 				{ // if useimagecharge = 0, ignore image charge effects at G1. 
 					coef = sinc(eta1 * M_PI * n)  *  (sinc(eta1 * M_PI * m) * pow((eta1), 2));
 				}
@@ -219,7 +219,7 @@ void ( * intensity_after_2nd_grating(double current_z_position, double el1x, dou
 						d5 = ( x2pnts( n2, (int *)pos ) );
 
 						// 0 means ignore image charge effects, 1 means include image charge effects
-						if (sp.account_gravity == 0 || sp.account_Van_der_Waals == 0) {
+						if (sp.account_gravity == 0 || sp.account_van_der_waals == 0) {
 							coef = sinc(eta1 * M_PI * m1) +  0 * _Complex_I;
 							coef = coef * (sinc(eta1 * M_PI * m2)) +  0 * _Complex_I;
 						}

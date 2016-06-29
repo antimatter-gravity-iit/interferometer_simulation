@@ -117,8 +117,8 @@ int main(int argc, char *argv[])
 {
 	// Account for gravity? 1 = True, 0 = False.
 	sp.account_gravity = atoi(argv[1]);
-	// Account for Van_der_Waals? 1 = True, 0 = False.
-	sp.account_Van_der_Waals = atoi(argv[2]);
+	// Account for van_der_waals? 1 = True, 0 = False.
+	sp.account_van_der_waals = atoi(argv[2]);
 	// Resolution.
 	sp.resolution = atoi(argv[3]);
 	// Velocity of particle.
@@ -182,7 +182,7 @@ int main(int argc, char *argv[])
 	else
 		printf("no\n");
 	printf("Is Van der Waals interaction being considered? ");
-	if (sp.account_Van_der_Waals == 1)
+	if (sp.account_van_der_waals == 1)
 		printf("yes\n");
 	else
 		printf("no\n");
