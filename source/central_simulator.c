@@ -104,11 +104,12 @@ simparam sp;
  *
  * These are the simulation parameters that the user has to provide, in the format "<position>. <explanation>":
  * 1. Account for gravity? 1 = True, 0 = False.
- * 2. Resolution [300-400 recommended]. 
- * 3. Velocity of particles in m/s.
- * 4. Pitch of gratings in nm.
- * 5. Output the total simulation [1]? or the final interference pattern [2]?
- * 6. If previous argument is 1, use a logarithmic scale for plotting intensities [1] or a normal scale [0]?
+ * 2. Account for Van der Waals effects? 1 = True, 0 = False.
+ * 3. Resolution [300-400 recommended]. 
+ * 4. Velocity of particles in m/s.
+ * 5. Pitch of gratings in nm.
+ * 6. Output the total simulation [1]? or the final interference pattern [2]?
+ * 7. If previous argument is 1, use a logarithmic scale for plotting intensities [1] or a normal scale [0]?
  *
  * Remember that argv[] is the standard argument vector used in C for inputting command-line arguments to the program.
  * The "simparam" structure is defined in Misc.h.
