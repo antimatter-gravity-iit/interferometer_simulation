@@ -17,8 +17,6 @@ double ( * ReTandImTgenerator(double ReTorImTar[], int ReTorImT, double current_
 {
 	double gravity_acceleration = -9.8;    // acceleration due to gravity. 
   	double tilt = sp.tilt;  //0; // A free parameter. Beta variable below depends on this. If beam is perp. to grating, then tilt (and thus Beta) are 0. This is the twist about the x-axis.
-  	double eta1 = sp.eta1; //.4; //G1 open fraction; how open the first grating is. With .4 open, a little over than half the muonium should pass through it. Varname could be changed to better represent it.
-  	double eta2 = sp.eta2; //.4; //G2 open fraction; how open the second grating is.
     
 	//values not included in simparam structure.  can be moved there but not entirely necessary 
 	double chargeratio =0.0; //strength of image charge (units of e, electron charge); values of 0.03, 0.05, or more can be had //not used
