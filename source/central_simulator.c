@@ -371,12 +371,13 @@ int main(int argc, char *argv[])
 		SimplePlot::twoD("Intensity graph as particles diffract through gratings",pixel_array_memory,sp.x_start,sp.x_end,sp.z_start,sp.z_end,sp.resolution,sp.resolution); 
 	}
 	else if (sp.simulation_option == 2) {
+		// Using ROOT to plot intensity vs. position at end of interferometer.
+		SimplePlot::graph("Relative Intensity Along Final Grating", x_positions_array, intensity_array, sp.resolution);		
 		// Free the memory used by this array, since the simulation is over.
 		free(x_positions_array); 
 		// Same as above.
 		free(intensity_array); 
-		// Using ROOT to plot intensity vs. position at end of interferometer.
-		SimplePlot::graph("Relative Intensity Along Final Grating", x_positions_array, intensity_array, sp.resolution);  
+		  
 	}
 
 	// Free up the space used by the pixel_array_memory array.
