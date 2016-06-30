@@ -147,16 +147,16 @@ void SimplePlot::twoD(const char *title, double value[],
 	TH2D *h = new TH2D(name, title, NX, Xmin, Xmax, NY, Ymin, Ymax);
 	for(int ix=0; ix<NX; ++ix) { //  0   1    0     1   rows  rows
 		for(int iy=0; iy<NY; ++iy) {
-			h->SetBinContent(ix+1,iy+1,value[INDEX(ix,iy)]);
+			h->SetBinContent(ix+1,iy+1,value[INDEX(iy,ix)]);
 		}
 	}
-	double mean_x = h->GetMean(1);
-	printf("Mean x = %.20f \n",mean_x);
-	printf("Minimum measurement necessary to see gravitational effects: %.3fpm \n", fabs((mean_x)*1000000));       //convert um to nm
+	double mean_vertical = h->GetMean(2);
+	printf("Mean x = %.20f \n",mean_vertical);
+	printf("Minimum measurement necessary to see gravitational effects: %.3fpm \n", fabs((mean_vertical)*1.0e12));  //convert m to pm
 
 	h->Draw(options);
-	h->GetXaxis()->SetTitle("Vertical displacement x (meters)");
-	h->GetYaxis()->SetTitle("Distance along z axis (meters)");
+	h->GetXaxis()->SetTitle("Distance along z axis (meters)");
+	h->GetYaxis()->SetTitle("Vertical displacement x (meters)");
 	h->GetXaxis()->CenterTitle();
 	h->GetYaxis()->CenterTitle();
 	c->Update();
