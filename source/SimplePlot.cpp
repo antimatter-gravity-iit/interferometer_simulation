@@ -72,7 +72,7 @@ void SimplePlot::graph(const char *title, const double x[], const double y[],
 	// create the graph (automatically goes into *c); this plots x vs y
 	TGraph *g = new TGraph(nValues,x,y);
 	g->SetTitle(title);
-	g->GetXaxis()->SetTitle("Horizontal displacement x (meters)");
+	g->GetXaxis()->SetTitle("Vertical displacement x (meters)");
 	g->GetYaxis()->SetTitle("Relative Intensity");
 	g->GetXaxis()->CenterTitle();
 	g->GetYaxis()->CenterTitle();
@@ -155,8 +155,8 @@ void SimplePlot::twoD(const char *title, double value[],
 	printf("Minimum measurement necessary to see gravitational effects: %.3fpm \n", fabs((mean_x)*1000000));       //convert um to nm
 
 	h->Draw(options);
-	h->GetXaxis()->SetTitle("Horizontal displacement x (micro meters)");
-	h->GetYaxis()->SetTitle("Vertical displacement y (micro meters)");
+	h->GetXaxis()->SetTitle("Vertical displacement x (meters)");
+	h->GetYaxis()->SetTitle("Distance along z axis (meters)");
 	h->GetXaxis()->CenterTitle();
 	h->GetYaxis()->CenterTitle();
 	c->Update();
