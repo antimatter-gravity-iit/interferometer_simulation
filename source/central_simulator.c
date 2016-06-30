@@ -54,7 +54,7 @@
  * 
  * x axis (vertical)
  * ^
- * |  1 micron      1 meter
+ * | z = 1 micron  z = 4.5 cm  z = 9.0 cm
  * |
  * |	  ||          ||          ||
  * |	  ||          ||          ||
@@ -161,7 +161,7 @@ int main(int argc, char *argv[])
 
 	// Grating geometry parameters.
 	sp.z_position_1st_grating	= 1.0e-6;		// In m.
-	sp.z_position_2nd_grating	= 1.0;			// In m.
+	sp.z_position_2nd_grating	= 4.5e-2;		// In m.
 	// Height of each slit is calculated as half the grating period (distance between gratings).
 	sp.slit_height 			= sp.grating_period / 2;
 	sp.eta1				= 0.4;			// TODO LAcomment: explain.
@@ -172,17 +172,27 @@ int main(int argc, char *argv[])
 	sp.wedgeangle			= 0;		  	// In degrees. Grating wedge angle.
 	sp.tilt				= 0; 	      		// Tilt.
 
-	// Spatial parameters.	
-	sp.z_start    			= -0.1;	      		// z start position
-	sp.z_end      			= 2.1;	      		// z end position
- 	sp.x_start    			= -2.0e-4;     		// x start position
-	sp.x_end      			= 2.0e-4;      		// x end position
+	/* 
+	 * Spatial parameters.
+	 *
+	 * These parameters control 'the size of the grating' in the x direction:
+	 * delta x = (x_end - x_start) should equal the height of one grating.
+	 *
+	 * The total distance the beam travels is delta z = (z_end - z_start),
+	 * such that the distance between gratings is controlled by both the
+	 * z_position_1st_grating and z_position_2nd_grating variables above,
+	 * and z_start and z_end below.
+	 */	
+	sp.z_start    			= -1.0e-2;	      	// In m. z start position
+	sp.z_end      			= 1.0e-1;	      	// In m. z end position
+ 	sp.x_start    			= -5.0e-3;     		// In m. x start position
+	sp.x_end      			= 5.0e-3;      		// In m. x end position
 	/* 
 	 * TODO Ycomment: y_start and y_end are not being used in the code. 
 	 * We didn't delete it for now in case the value they assume help us understand something later
 	 */
-	//sp.y_start  = -1.1e-4;      				// y start position
-	//sp.y_end    = 1.1e-4;       				// y end position
+	//sp.y_start  = -5.0e-3;      				// y start position
+	//sp.y_end    = 5.0e-3;       				// y end position
 
 	sp.intensity_cutoff		= 1e-6;        		// Point at which the intensity cuts off and is treated as 0.
 	sp.rowsT 			= 41;  	 		// Rows of ReT and ImT arrays; used to calculate phase shift.
