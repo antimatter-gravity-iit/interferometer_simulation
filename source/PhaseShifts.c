@@ -73,8 +73,8 @@ double ( * ReT_and_ImT_generator(double ReTorImTar[], int ReTorImT, double curre
 		for (ex=xmin; ex<xmax; ex +=sp.slit_height/sp.resolution) {
 			// ex is how far you are from the grating 'wall'
 			// exnm is how far from the wall in nanometers.
-			exnmleft = ex * 1.0e9;
-			exnmright = (xmax - ex) * 1.0e9; 
+			exnmleft = fabs(ex) * 1.0e9;
+			exnmright = fabs(xmax - ex) * 1.0e9; 
 			
 			/* TODO LAcomment : rewrite. 
 			 * "fc is another electron thing; or the diffraction pattern? 2pi*n*x/period?
@@ -101,7 +101,7 @@ double ( * ReT_and_ImT_generator(double ReTorImTar[], int ReTorImT, double curre
 				if (exnmleft == 0 || exnmright == 0)
 					phase_van_der_waals = 0;
 				else
-					phase_van_der_waals = -C3 * sp.grating_thickness / (hbar * sp.particle_velocity * pow(exnmleft, 3)) -  -C3 * sp.grating_thickness / (hbar * sp.particle_velocity * pow(exnmright, 3));
+					phase_van_der_waals = -C3 * sp.grating_thickness / (hbar * sp.particle_velocity * pow(exnmleft, 3)) -C3 * sp.grating_thickness / (hbar * sp.particle_velocity * pow(exnmright, 3));
 			}
 			else {
 				phase_van_der_waals = 0;
