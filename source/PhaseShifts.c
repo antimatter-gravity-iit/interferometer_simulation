@@ -27,7 +27,7 @@ double ( * ReT_and_ImT_generator(double ReTorImTar[], int ReTorImT, double curre
     	long double xmin;			// beginning of path of wave through the slit
     	long double xmax;			// end of path of wave/beam through the slit
     	double fc;
-    	long double phase_van_der_waals;	// phase shift if dealing with neutral atoms/molecules
+    	double phase_van_der_waals;		// phase shift if dealing with neutral atoms/molecules
     	double phase_gravity;			// phase shift due to gravity.
     	double ex;
     	double time_free_fall;
@@ -125,4 +125,6 @@ double ( * ReT_and_ImT_generator(double ReTorImTar[], int ReTorImT, double curre
 		// TODO LAcomment: explain. "So is this some sort of normalization?"	
 		ReTorImTar[i] = ReTorImTar[i]/sp.resolution;
 	}
+	printf("Gravitational phase shift: %.9f rad\n", phase_gravity);
+	printf("Van der Waals phase shift: %.9f rad\n", phase_van_der_waals);
 }
