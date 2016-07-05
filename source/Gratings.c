@@ -78,12 +78,10 @@ void ( * intensity_after_1st_grating(double current_z_position,double el1, doubl
 	}
 
 	double ReT[41]={0};
-	int Real_or_Im = 1;
-	ReT_and_ImT_generator(ReT, Real_or_Im, current_z_position); // calculates phase shift
+	ReT_and_ImT_generator(ReT, 1, current_z_position); // calculates phase shift where 1 is to consider real components
 		
 	double ImT[41]={0};
-	Real_or_Im = 2;
-	ReT_and_ImT_generator(ImT, Real_or_Im, current_z_position); // calculates phase shift for imaginary part
+	ReT_and_ImT_generator(ImT, 2, current_z_position); // calculates phase shift where 2 is to consider real components
 
 	for (int i=0; i<sp.resolution; i++) { 
 		for (int n=-lim; n<=lim; n++) {
@@ -192,13 +190,11 @@ void ( * intensity_after_2nd_grating(double current_z_position, double el1x, dou
     		pos[i]=i-((sp.rowsT-1)/2);  // so this goes from -20 to 20
     	}
     
-    	double ReT[41]={0};     	// array of 41 0's for now.
-    	int Real_or_Im = 1; 
-    	ReT_and_ImT_generator(ReT, Real_or_Im, current_z_position); 
-    	
+	double ReT[41]={0};
+	ReT_and_ImT_generator(ReT, 1, current_z_position); // calculates phase shift where 1 is to consider real components
+		
 	double ImT[41]={0};
-    	Real_or_Im = 2;
-    	ReT_and_ImT_generator(ImT, Real_or_Im, current_z_position); 
+	ReT_and_ImT_generator(ImT, 2, current_z_position); // calculates phase shift where 2 is to consider real components 
 	
 
 	for (int i=0; i<sp.resolution; i++) {
