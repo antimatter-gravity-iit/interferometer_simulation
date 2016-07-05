@@ -90,7 +90,7 @@ void ( * intensity_after_1st_grating(double current_z_position,double el1, doubl
 				// TODO: explain what n, m, dm, dn are. LR, Y 
 				double dm = (m + n)/2;
 
-				if (sp.account_gravity == 0 || sp.account_van_der_waals == 0)
+				if (sp.account_gravity == 0 && sp.account_van_der_waals == 0)
 				{ // if useimagecharge = 0, ignore image charge effects at G1. 
 					coef = sinc(eta1 * M_PI * n)  *  (sinc(eta1 * M_PI * m) * pow((eta1), 2));
 				}
