@@ -213,7 +213,7 @@ void ( * intensity_after_2nd_grating(double current_z_position, double el1x, dou
 						d5 = ( x2pnts( n2, (int *)pos ) );
 
 						// 0 means ignore image charge effects, 1 means include image charge effects
-						if (sp.account_gravity == 0 || sp.account_van_der_waals == 0) {
+						if (sp.account_gravity == 0 && sp.account_van_der_waals == 0) {
 							coef = sinc(eta1 * M_PI * m1) +  0 * _Complex_I;
 							coef = coef * (sinc(eta1 * M_PI * m2)) +  0 * _Complex_I;
 						}
