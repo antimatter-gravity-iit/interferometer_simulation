@@ -1,0 +1,25 @@
+Interferometer simulation
+=========================
+
+Copyright (C) 2016 Antimatter Gravity Interferometer Group, Illinois Institute of Technology (IIT).
+
+Code inspired by thesis by Dr. Benjamin McMorran
+"Electron Diffraction and Interferometry Using Nanostructures"
+Available at: http://gradworks.umi.com/33/52/3352633.html
+ 
+Collaborators:
+    Arthur Romero, 16 July to 24 August 2015
+        -- Original author
+    Adam Denchfield, 20 October 2015 to December 2015
+        -- Additional parameters and functionality
+    Melanie Cornelius (Dooley), 1 Nov 2015 to present
+        -- Optimizations, standards, and readability edits
+        -- Comments tagged with Mcomment
+    Isaac Gewarges, January 2016 to April 28 2016
+        -- Optimizations, standards, readability edits, and variable organization.
+    Lucas Maia Rios, 23 May 2016 to present
+        -- Comments tagged with LRcomment
+    Lucas Neves Abrantes, 23 May 2016 to present
+        -- Comments tagged with LAcomment
+    Yuri Rossi Tonin, 6 May 2016 to present
+        -- Comments tagged with Ycomment

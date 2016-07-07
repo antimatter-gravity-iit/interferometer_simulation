@@ -49,15 +49,15 @@ Again, it's not tested yet, but if you want to use a different compiler version,
 with whatever commands you use to run GCC and G++.
 
 
-Basic build-and-run
+Basic build
 ------------------------------------------------------------
 You can build the interferometer simulation from the source files and run it in 5 easy steps:
 
 1. Download or clone the Git repository located at https://github.com/antimatter-gravity-iit/interferometer_simulation.
    If you've downloaded it as a compressed file, extract the contents before proceeding.
 
-Now say the path to the directory where you placed the compressed file or where you executed the clone command is 
-/<path>/<to>/<directory>. Inside it there should now be a directory called "interferometer_simulation" (without the quotes),
+Say the path to the directory where you placed the compressed file or where you executed the "git clone" command is 
+/<path>/<to>/<directory>. Inside there should now be a directory called "interferometer_simulation" (without the quotes),
 unless you specified a different name.
 
 2. Enter the new directory; its path should be /<path>/<to>/<directory>/interferometer_simulation. Inside it you'll find
@@ -72,24 +72,8 @@ program succesfully. If it doesn't work, check the build configuration section a
 with some test plot in it. Click "File>>Quit ROOT" in this window to continue. Repeat until no more windows show up.
 
 5. If the previous step ran smoothly, you're ready to go! To run the program, use the command "./program" followed by
-the values you want to input into it.
+the values you want to input into it. See section "Running the simulation" below for more information.
 
-This is the list of arguments in the order you have to input them to the program: 
-
- * 1. Account for gravity? 1 = True, 0 = False.
- * 2. Account for Van der Waals interactions? 1 = True, 0 = False.  
- * 3. Resolution [300-400 recommended]. 
- * 4. Velocity of particles in m/s.
- * 5. Pitch of gratings [in nm] 
- * 6. Output the total simulation [1]? or the final interference pattern [2]?
- * 7. (if argv[6] == 1), logscale [1] or normal scale [0]?
-
-For example: if you want a full simulation of 6400 m/s fast atom beam interferometry, plotted with a logarithmic intensity
-scale, accounting for gravity and Van der Waals interactions, with a resolution of 300 pixels and a grating pitch of 100 nm,
-you have to type "./program 1 300 6400 100 1 1". Yup.
-
-After the program runs (it can take several minutes) you should be shown a ROOT plot with the simulation,
-which you can save as a pdf by clicking "File>>Save as..." in the ROOT window. Done!
 
 Other build options
 ------------------------------------------------------------
@@ -104,3 +88,45 @@ These are all the targets you can supply to the "make" command (step 3 above):
     clean           removes output files (executables)
 
 For example; running "make sptest" only creates the test program, while "make clean" removes the executable files.               
+
+
+Running the simulation
+============================================================
+
+Beam propagating through the gratings (side view):
+------------------------------------------------------------
+ x axis (vertical)
+ ^
+ | z = 1 micron  z = 4.5 cm  z = 9.0 cm
+ |
+ |      ||          ||          ||
+ |      ||          ||          ||
+ |      ||          ||          ||
+ |    --||----------||----------||----->
+ |    --||----------||----------||----->
+ |    --||----------||----------||----->
+ |      ||          ||          ||
+ |      ||          ||          ||
+ |      ||          ||          ||
+ |
+ ======================================> z axis (beam direction)
+
+Command-line arguments
+------------------------------------------------------------
+The program takes the following simulation parameters as input: 
+
+ * 1. Account for gravity? 1 = True, 0 = False.
+ * 2. Account for Van der Waals interactions? 1 = True, 0 = False.  
+ * 3. Resolution [300-400 recommended]. 
+ * 4. Velocity of particles in m/s.
+ * 5. Pitch of gratings [in nm] 
+ * 6. Output the total simulation [1]? or the final interference pattern [2]?
+ * 7. (if argv[6] == 1), logscale [1] or normal scale [0]?
+
+When running the executable file with the "./" shell command, you must supply the arguments in the order above, with blank
+spaces between them. For example: if you want a full simulation of 6300 m/s fast atom beam interferometry, plotted with
+a logarithmic intensity scale, accounting for gravity and Van der Waals interactions, with a resolution of 300 pixels
+and a grating pitch of 100 nm, you have to type "./program 1 1 300 6300 100 1 1" in your terminal. Yup.
+
+After the program runs (it can take several minutes) you should be shown a ROOT plot with the simulation,
+which you can save as a pdf (or a variety of other file types) by clicking "File>>Save as..." in the ROOT window. Done!
