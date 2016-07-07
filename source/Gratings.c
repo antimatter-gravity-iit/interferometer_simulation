@@ -75,8 +75,8 @@ void ( * intensity_after_1st_grating(double current_z_position,double el1, doubl
 	pos[i]=i-((sp.rowsT-1)/2);
 	}
 
-	double ReT[41]={0};
-	ReT_and_ImT_generator(ReT, 1, current_z_position); // calculates phase shift where 1 is to consider real components
+	double real_part_fourier_coefficient_array[41]={0};
+	ReT_and_ImT_generator(real_part_fourier_coefficient_array, 1, current_z_position); // calculates phase shift where 1 is to consider real components
 		
 	double ImT[41]={0};
 	ReT_and_ImT_generator(ImT, 2, current_z_position); // calculates phase shift where 2 is to consider real components
@@ -95,7 +95,7 @@ void ( * intensity_after_1st_grating(double current_z_position,double el1, doubl
 
 				else
 				{ // if usechargeimage = 1, don't ignore image charge effects at G1.
-					coef = ReT[x2pnts(n1, (int * )pos)] * ReT[x2pnts(n2,(int * )pos)] + ImT[x2pnts(n1,(int * )pos)] * ImT[x2pnts(n2,(int * )pos)];
+					coef = real_part_fourier_coefficient_array[x2pnts(n1, (int * )pos)] * real_part_fourier_coefficient_array[x2pnts(n2,(int * )pos)] + ImT[x2pnts(n1,(int * )pos)] * ImT[x2pnts(n2,(int * )pos)];
 				}
 				
 				coef = coef * exp(-M_PI * pow((dn * sp.wavelength * z12)/(sp.grating_period * el2),2));
@@ -182,12 +182,12 @@ void ( * intensity_after_2nd_grating(double current_z_position, double el1x, dou
     
     	int pos[41]={0}; // array of 41 elements
 
-    	for (int i=0; i<sp.rowsT; i++){     // sp.rowsT = rows of ReT and ImT arrays = 41 for now
+    	for (int i=0; i<sp.rowsT; i++){     // sp.rowsT = rows of real_part_fourier_coefficient_array and ImT arrays = 41 for now
     		pos[i]=i-((sp.rowsT-1)/2);  // so this goes from -20 to 20
     	}
     
-	double ReT[41]={0};
-	ReT_and_ImT_generator(ReT, 1, current_z_position); // calculates phase shift where 1 is to consider real components
+	double real_part_fourier_coefficient_array[41]={0};
+	ReT_and_ImT_generator(real_part_fourier_coefficient_array, 1, current_z_position); // calculates phase shift where 1 is to consider real components
 		
 	double ImT[41]={0};
 	ReT_and_ImT_generator(ImT, 2, current_z_position); // calculates phase shift where 2 is to consider real components 
@@ -216,12 +216,12 @@ void ( * intensity_after_2nd_grating(double current_z_position, double el1x, dou
 
 						}
 						else { // assumes G1 is identical to G2
-							coef = 	      (ReT[a5] + ImT[a5] * _Complex_I); // 
-							coef = coef * (ReT[b5] - ImT[b5] * _Complex_I);
+							coef = 	      (real_part_fourier_coefficient_array[a5] + ImT[a5] * _Complex_I); // 
+							coef = coef * (real_part_fourier_coefficient_array[b5] - ImT[b5] * _Complex_I);
 						}
 					
-						coef = coef * (ReT[c5] + ImT[c5] * _Complex_I);
-						coef = coef * (ReT[d5] - ImT[d5] * _Complex_I);
+						coef = coef * (real_part_fourier_coefficient_array[c5] + ImT[c5] * _Complex_I);
+						coef = coef * (real_part_fourier_coefficient_array[d5] - ImT[d5] * _Complex_I);
 
 						//argument_d corresponds to the argument of equation 18b from McMorran & Cronin 2008. Note that y=0
                         			argument_d = -M_PI*(pow( x_positions_array[i]-sp.wavelength*z23*(average_n*cos(theta)/d2 + average_m*z13/(d1*z23) ),2 )/pow(w3x,2) + pow((average_n*sin(theta)*sp.wavelength)/(d2*w3y),2));

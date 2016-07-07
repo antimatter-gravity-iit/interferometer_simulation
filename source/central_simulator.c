@@ -195,7 +195,7 @@ int main(int argc, char *argv[])
 	//sp.y_end    = 5.0e-3;       				// y end position
 
 	sp.intensity_cutoff		= 1e-10;        		// Point at which the intensity cuts off and is treated as 0.
-	sp.rowsT 			= 41;  	 		// Rows of ReT and ImT arrays; used to calculate phase shift.
+	sp.rowsT 			= 41;  	 		// Rows of real_part_fourier_coefficient_array and imaginary_part_fourier_coefficient_array arrays; used to calculate phase shift.
 
 	/* 
 	 * The program prints a standard message before proceeding to the simulation. It includes a copyright notice

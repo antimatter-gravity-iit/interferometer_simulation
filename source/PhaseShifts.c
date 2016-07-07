@@ -110,7 +110,7 @@ double ( * ReT_and_ImT_generator(double ReTorImTar[], int ReTorImT, double curre
 			// j goes from 0 to 40 (right now sp.rowsT = 41)
 			j = n + ((sp.rowsT-1)/2);
 				
-			// if it's the ReT array
+			// if it's the real_part_fourier_coefficient_array
 			if (ReTorImT == 1)										
 				// so fc and phase_van_der_waals are both phase shifts; angles.
 				ReTorImTar[j]  += cos(phase_van_der_waals + fc + phase_gravity);
