@@ -74,7 +74,7 @@ double *ixgenerator(double a[], double current_z_position, int logchoice)
 
 int x2pnts(int value, int  * arr)
 {
-    for (int i = 0; i < sp.rowsT; i++)
+    for (int i = 0; i < sp.number_of_rows_fourier_coefficient_array; i++)
     {
         if (value ==  * (arr + i))
         {

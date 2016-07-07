@@ -70,32 +70,32 @@ void ( * intensity_after_1st_grating(double current_z_position,double el1, doubl
     	
 	int pos[41]={0};
 
-	for (int i=0; i<sp.rowsT; i++) // since sp.rowsT is currently 41, pos[i] = -20 to 20.
+	for (int i=0; i<sp.number_of_rows_fourier_coefficient_array; i++) // since sp.number_of_rows_fourier_coefficient_array is currently 41, pos[i] = -20 to 20.
 	{
-	pos[i]=i-((sp.rowsT-1)/2);
+	pos[i]=i-((sp.number_of_rows_fourier_coefficient_array-1)/2);
 	}
 
-	double ReT[41]={0};
-	ReT_and_ImT_generator(ReT, 1, current_z_position); // calculates phase shift where 1 is to consider real components
+	double real_part_fourier_coefficient_array[41]={0};
+	ReT_and_ImT_generator(real_part_fourier_coefficient_array, 1, current_z_position); // calculates phase shift where 1 is to consider real components
 		
-	double ImT[41]={0};
-	ReT_and_ImT_generator(ImT, 2, current_z_position); // calculates phase shift where 2 is to consider real components
+	double imaginary_part_fourier_coefficient_array[41]={0};
+	ReT_and_ImT_generator(imaginary_part_fourier_coefficient_array, 2, current_z_position); // calculates phase shift where 2 is to consider real components
 
 	for (int i=0; i<sp.resolution; i++) { 
-		for (int n=-lim; n<=lim; n++) {
-			for (int m=-lim; m<=lim; m++) {
-				double dn =n-m; 
+		for (int n1=-lim; n1<=lim; n1++) {
+			for (int n2=-lim; n2<=lim; n2++) {
+				double dn =n1-n2; 
 				// TODO: explain what n, m, dm, dn are. LR, Y 
-				double dm = (m + n)/2;
+				double average_n = (n1 + n2)/2;
 
 				if (sp.account_gravity == 0 && sp.account_van_der_waals == 0)
 				{ // if useimagecharge = 0, ignore image charge effects at G1. 
-					coef = sinc(sp.grating1_open_fraction * M_PI * n)  *  (sinc(sp.grating1_open_fraction * M_PI * m) * pow((sp.grating1_open_fraction), 2));
+					coef = sinc(sp.grating1_open_fraction * M_PI * n1)  *  (sinc(sp.grating1_open_fraction * M_PI * n2) * pow((sp.grating1_open_fraction), 2));
 				}
 
 				else
 				{ // if usechargeimage = 1, don't ignore image charge effects at G1.
-					coef = ReT[x2pnts(n, (int * )pos)] * ReT[x2pnts(m,(int * )pos)] + ImT[x2pnts(n,(int * )pos)] * ImT[x2pnts(m,(int * )pos)];
+					coef = real_part_fourier_coefficient_array[x2pnts(n1, (int * )pos)] * real_part_fourier_coefficient_array[x2pnts(n2,(int * )pos)] + imaginary_part_fourier_coefficient_array[x2pnts(n1,(int * )pos)] * imaginary_part_fourier_coefficient_array[x2pnts(n2,(int * )pos)];
 				}
 				
 				coef = coef * exp(-M_PI * pow((dn * sp.wavelength * z12)/(sp.grating_period * el2),2));
@@ -105,7 +105,7 @@ void ( * intensity_after_1st_grating(double current_z_position,double el1, doubl
 					coef=0;
 				}
 			      	else { // if coef ends up larger than cutoff value, add the values to the current a[i][1]'s intensities.
-					intensity_array[i] +=   coef * exp(-M_PI * pow(((x_positions_array[i]-dm * sp.wavelength * z12/sp.grating_period)/w2),2)) * cos(2 * M_PI * (dn/sp.grating_period) * (x_positions_array[i]-dm * sp.wavelength * z12/sp.grating_period) * (1-z12/r2));
+					intensity_array[i] +=   coef * exp(-M_PI * pow(((x_positions_array[i]-average_n * sp.wavelength * z12/sp.grating_period)/w2),2)) * cos(2 * M_PI * (dn/sp.grating_period) * (x_positions_array[i]-average_n * sp.wavelength * z12/sp.grating_period) * (1-z12/r2));
 				    // Since a[i][1] etc. is actually the ix array, and arrays essentially get passed by reference, this is modifying the ix array.
 				    continue;
 				}
@@ -154,8 +154,8 @@ void ( * intensity_after_2nd_grating(double current_z_position, double el1x, dou
 
     	double dn = 0;
     	double dm = 0;
-    	double m  = 0;
-    	double n  = 0;
+    	double average_m  = 0;
+    	double average_n  = 0;
     	int    a5 = 0;
     	int    b5 = 0;
     	int    c5 = 0;
@@ -182,15 +182,15 @@ void ( * intensity_after_2nd_grating(double current_z_position, double el1x, dou
     
     	int pos[41]={0}; // array of 41 elements
 
-    	for (int i=0; i<sp.rowsT; i++){     // sp.rowsT = rows of ReT and ImT arrays = 41 for now
-    		pos[i]=i-((sp.rowsT-1)/2);  // so this goes from -20 to 20
+    	for (int i=0; i<sp.number_of_rows_fourier_coefficient_array; i++){     // sp.number_of_rows_fourier_coefficient_array = rows of real_part_fourier_coefficient_array and imaginary_part_fourier_coefficient_array arrays = 41 for now
+    		pos[i]=i-((sp.number_of_rows_fourier_coefficient_array-1)/2);  // so this goes from -20 to 20
     	}
     
-	double ReT[41]={0};
-	ReT_and_ImT_generator(ReT, 1, current_z_position); // calculates phase shift where 1 is to consider real components
+	double real_part_fourier_coefficient_array[41]={0};
+	ReT_and_ImT_generator(real_part_fourier_coefficient_array, 1, current_z_position); // calculates phase shift where 1 is to consider real components
 		
-	double ImT[41]={0};
-	ReT_and_ImT_generator(ImT, 2, current_z_position); // calculates phase shift where 2 is to consider real components 
+	double imaginary_part_fourier_coefficient_array[41]={0};
+	ReT_and_ImT_generator(imaginary_part_fourier_coefficient_array, 2, current_z_position); // calculates phase shift where 2 is to consider real components 
 	
 
 	for (int i=0; i<sp.resolution; i++) {
@@ -200,9 +200,9 @@ void ( * intensity_after_2nd_grating(double current_z_position, double el1x, dou
 					for (int n2=-lim; n2<=lim; n2++) {
 						
 						dn = n1-n2;
-						n  = ((double)(n1 + n2))/2;
+						average_n  = ((double)(n1 + n2))/2;
 						dm = m1-m2;
-						m  = ((double)(m1 + m2))/2;
+						average_m  = ((double)(m1 + m2))/2;
 						a5 = ( x2pnts( m1, (int *)pos ) );
 						b5 = ( x2pnts( m2, (int *)pos ) );
 						c5 = ( x2pnts( n1, (int *)pos ) );
@@ -216,19 +216,19 @@ void ( * intensity_after_2nd_grating(double current_z_position, double el1x, dou
 
 						}
 						else { // assumes G1 is identical to G2
-							coef = 	      (ReT[a5] + ImT[a5] * _Complex_I); // 
-							coef = coef * (ReT[b5] - ImT[b5] * _Complex_I);
+							coef = 	      (real_part_fourier_coefficient_array[a5] + imaginary_part_fourier_coefficient_array[a5] * _Complex_I); // 
+							coef = coef * (real_part_fourier_coefficient_array[b5] - imaginary_part_fourier_coefficient_array[b5] * _Complex_I);
 						}
 					
-						coef = coef * (ReT[c5] + ImT[c5] * _Complex_I);
-						coef = coef * (ReT[d5] - ImT[d5] * _Complex_I);
+						coef = coef * (real_part_fourier_coefficient_array[c5] + imaginary_part_fourier_coefficient_array[c5] * _Complex_I);
+						coef = coef * (real_part_fourier_coefficient_array[d5] - imaginary_part_fourier_coefficient_array[d5] * _Complex_I);
 
 						//argument_d corresponds to the argument of equation 18b from McMorran & Cronin 2008. Note that y=0
-                        			argument_d = -M_PI*(pow( x_positions_array[i]-sp.wavelength*z23*(n*cos(theta)/d2 + m*z13/(d1*z23) ),2 )/pow(w3x,2) + pow((n*sin(theta)*sp.wavelength)/(d2*w3y),2));
+                        			argument_d = -M_PI*(pow( x_positions_array[i]-sp.wavelength*z23*(average_n*cos(theta)/d2 + average_m*z13/(d1*z23) ),2 )/pow(w3x,2) + pow((average_n*sin(theta)*sp.wavelength)/(d2*w3y),2));
                         			//argument_f corresponds to the argument of equation 18c from McMorran & Cronin 2008. Note that y=0
                         			argument_f = -2*M_PI * x_positions_array[i] * ((dn*cos(theta)/d2)*(1-z23/v3x) + (dm/d1)*(1-z13/v3x));
                         			//argument_p corresponds to the argument of equation 18d from McMorran & Cronin 2008
-                        			argument_p = (2*M_PI*sp.wavelength*z13*dm/d1)*(n*cos(theta)/d2 + m/d1)*(1-z13/v3x) +     (2*M_PI*sp.wavelength*z23*dn/d2)*( (m*cos(theta)/d1) * (1-z13/v3x) - (n*z23/d2)*(pow(cos(theta),2)/v3x)+pow(sin(theta),2)/v3y ) ;
+                        			argument_p = (2*M_PI*sp.wavelength*z13*dm/d1)*(average_n*cos(theta)/d2 + average_m/d1)*(1-z13/v3x) +     (2*M_PI*sp.wavelength*z23*dn/d2)*( (average_m*cos(theta)/d1) * (1-z13/v3x) - (average_n*z23/d2)*(pow(cos(theta),2)/v3x)+pow(sin(theta),2)/v3y ) ;
                         			//argument_v corresponds to the argument of equation 18e from McMorran & Cronin 2008
                         			argument_v = -M_PI* pow(sp.wavelength*z23* (dn*cos(theta)/d2 + dm*z13/(d1*z23)),2)/pow(el3x,2) -M_PI*pow(dn*sin(theta)*sp.wavelength*z23/(d2*el3y),2);
 
