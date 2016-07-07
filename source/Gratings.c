@@ -155,7 +155,7 @@ void ( * intensity_after_2nd_grating(double current_z_position, double el1x, dou
     	double dn = 0;
     	double dm = 0;
     	double average_m  = 0;
-    	double n  = 0;
+    	double average_n  = 0;
     	int    a5 = 0;
     	int    b5 = 0;
     	int    c5 = 0;
@@ -200,7 +200,7 @@ void ( * intensity_after_2nd_grating(double current_z_position, double el1x, dou
 					for (int n2=-lim; n2<=lim; n2++) {
 						
 						dn = n1-n2;
-						n  = ((double)(n1 + n2))/2;
+						average_n  = ((double)(n1 + n2))/2;
 						dm = m1-m2;
 						average_m  = ((double)(m1 + m2))/2;
 						a5 = ( x2pnts( m1, (int *)pos ) );
@@ -224,11 +224,11 @@ void ( * intensity_after_2nd_grating(double current_z_position, double el1x, dou
 						coef = coef * (ReT[d5] - ImT[d5] * _Complex_I);
 
 						//argument_d corresponds to the argument of equation 18b from McMorran & Cronin 2008. Note that y=0
-                        			argument_d = -M_PI*(pow( x_positions_array[i]-sp.wavelength*z23*(n*cos(theta)/d2 + average_m*z13/(d1*z23) ),2 )/pow(w3x,2) + pow((n*sin(theta)*sp.wavelength)/(d2*w3y),2));
+                        			argument_d = -M_PI*(pow( x_positions_array[i]-sp.wavelength*z23*(average_n*cos(theta)/d2 + average_m*z13/(d1*z23) ),2 )/pow(w3x,2) + pow((average_n*sin(theta)*sp.wavelength)/(d2*w3y),2));
                         			//argument_f corresponds to the argument of equation 18c from McMorran & Cronin 2008. Note that y=0
                         			argument_f = -2*M_PI * x_positions_array[i] * ((dn*cos(theta)/d2)*(1-z23/v3x) + (dm/d1)*(1-z13/v3x));
                         			//argument_p corresponds to the argument of equation 18d from McMorran & Cronin 2008
-                        			argument_p = (2*M_PI*sp.wavelength*z13*dm/d1)*(n*cos(theta)/d2 + average_m/d1)*(1-z13/v3x) +     (2*M_PI*sp.wavelength*z23*dn/d2)*( (average_m*cos(theta)/d1) * (1-z13/v3x) - (n*z23/d2)*(pow(cos(theta),2)/v3x)+pow(sin(theta),2)/v3y ) ;
+                        			argument_p = (2*M_PI*sp.wavelength*z13*dm/d1)*(average_n*cos(theta)/d2 + average_m/d1)*(1-z13/v3x) +     (2*M_PI*sp.wavelength*z23*dn/d2)*( (average_m*cos(theta)/d1) * (1-z13/v3x) - (average_n*z23/d2)*(pow(cos(theta),2)/v3x)+pow(sin(theta),2)/v3y ) ;
                         			//argument_v corresponds to the argument of equation 18e from McMorran & Cronin 2008
                         			argument_v = -M_PI* pow(sp.wavelength*z23* (dn*cos(theta)/d2 + dm*z13/(d1*z23)),2)/pow(el3x,2) -M_PI*pow(dn*sin(theta)*sp.wavelength*z23/(d2*el3y),2);
 
