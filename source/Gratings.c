@@ -82,11 +82,11 @@ void ( * intensity_after_1st_grating(double current_z_position,double el1, doubl
 	 * This is the twist about the x-axis.
 	 */
 
-    	double coef; 
-    	double diffraction_orders    = 5;
-    	double tilt   = sp.tilt; 
-    	double alpha  = sp.wedgeangle * M_PI/180; 		// alpha and beta have been defined in almost every other function. Global variables? 
-    	double beta   = tilt * M_PI; 				// defined in other functions too, same purpose.	
+    	double coefficient; 
+    	double diffraction_orders  = 5;
+    	double tilt   		   = sp.tilt; 
+    	double alpha 		   = sp.wedgeangle * M_PI/180; 	// alpha and beta have been defined in almost every other function. Global variables? 
+    	double beta  		   = tilt * M_PI; 		// defined in other functions too, same purpose.	
 	/*
 	 * Explanation of variables:
 	 * w2 = GSM width of beam after the first grating.
@@ -119,22 +119,22 @@ void ( * intensity_after_1st_grating(double current_z_position,double el1, doubl
 
 				if (sp.account_gravity == 0 && sp.account_van_der_waals == 0)
 				{ // if useimagecharge = 0, ignore image charge effects at G1. 
-					coef = sinc(sp.grating1_open_fraction * M_PI * n1)  *  (sinc(sp.grating1_open_fraction * M_PI * n2) * pow((sp.grating1_open_fraction), 2));
+					coefficient = sinc(sp.grating1_open_fraction * M_PI * n1)  *  (sinc(sp.grating1_open_fraction * M_PI * n2) * pow((sp.grating1_open_fraction), 2));
 				}
 
 				else
 				{ // if usechargeimage = 1, don't ignore image charge effects at G1.
-					coef = real_part_fourier_coefficient_array[x2pnts(n1, (int * )pos)] * real_part_fourier_coefficient_array[x2pnts(n2,(int * )pos)] + imaginary_part_fourier_coefficient_array[x2pnts(n1,(int * )pos)] * imaginary_part_fourier_coefficient_array[x2pnts(n2,(int * )pos)];
+					coefficient = real_part_fourier_coefficient_array[x2pnts(n1, (int * )pos)] * real_part_fourier_coefficient_array[x2pnts(n2,(int * )pos)] + imaginary_part_fourier_coefficient_array[x2pnts(n1,(int * )pos)] * imaginary_part_fourier_coefficient_array[x2pnts(n2,(int * )pos)];
 				}
 				
-				coef = coef * exp(-M_PI * pow((dn * sp.wavelength * z12)/(sp.grating_period * el2),2));
+				coefficient = coefficient * exp(-M_PI * pow((dn * sp.wavelength * z12)/(sp.grating_period * el2),2));
 				// added isfinite macro in order to avoid inf values
 
-				if (std::isfinite(coef)==0 || coef < sp.intensity_cutoff) { // if coef is infinite, then:
-					coef=0;
+				if (std::isfinite(coefficient)==0 || coefficient < sp.intensity_cutoff) { // if coefficient is infinite, then:
+					coefficient=0;
 				}
-			      	else { // if coef ends up larger than cutoff value, add the values to the current a[i][1]'s intensities.
-					intensity_array[i] +=   coef * exp(-M_PI * pow(((x_positions_array[i]-average_n * sp.wavelength * z12/sp.grating_period)/w2),2)) * cos(2 * M_PI * (dn/sp.grating_period) * (x_positions_array[i]-average_n * sp.wavelength * z12/sp.grating_period) * (1-z12/r2));
+			      	else { // if coefficient ends up larger than cutoff value, add the values to the current a[i][1]'s intensities.
+					intensity_array[i] +=   coefficient * exp(-M_PI * pow(((x_positions_array[i]-average_n * sp.wavelength * z12/sp.grating_period)/w2),2)) * cos(2 * M_PI * (dn/sp.grating_period) * (x_positions_array[i]-average_n * sp.wavelength * z12/sp.grating_period) * (1-z12/r2));
 				    // Since a[i][1] etc. is actually the ix array, and arrays essentially get passed by reference, this is modifying the ix array.
 				    continue;
 				}
@@ -174,7 +174,7 @@ void ( * intensity_after_2nd_grating(double current_z_position, double el1x, dou
     	double z13    = z12  +  z23; 				// z distance between grating 1 and 3
     	double phi    = 0;
     	double diffraction_orders    = 5;
-    	double _Complex coef;
+    	double _Complex coefficient;
 
     	/* THIS FUNCTION IS USING GSM MODEL FROM MCMORRAN, CRONIN 2008
     	 * IT MUST BE CHANGED IF YOU WANT TO USE OLDER MODEL FROM BREZGER 2003
@@ -239,17 +239,17 @@ void ( * intensity_after_2nd_grating(double current_z_position, double el1x, dou
 						// 0 means ignore image charge effects, 1 means include image charge effects
 
 						if (sp.account_gravity == 0 && sp.account_van_der_waals == 0) {
-							coef = 	       sinc(sp.grating1_open_fraction * M_PI * m1) +  0 * _Complex_I;
-							coef = coef * (sinc(sp.grating1_open_fraction * M_PI * m2)) +  0 * _Complex_I;
+							coefficient = 	       sinc(sp.grating1_open_fraction * M_PI * m1) +  0 * _Complex_I;
+							coefficient = coefficient * (sinc(sp.grating1_open_fraction * M_PI * m2)) +  0 * _Complex_I;
 
 						}
 						else { // assumes G1 is identical to G2
-							coef = 	      (real_part_fourier_coefficient_array[a5] + imaginary_part_fourier_coefficient_array[a5] * _Complex_I); // 
-							coef = coef * (real_part_fourier_coefficient_array[b5] - imaginary_part_fourier_coefficient_array[b5] * _Complex_I);
+							coefficient = 	      (real_part_fourier_coefficient_array[a5] + imaginary_part_fourier_coefficient_array[a5] * _Complex_I); // 
+							coefficient = coefficient * (real_part_fourier_coefficient_array[b5] - imaginary_part_fourier_coefficient_array[b5] * _Complex_I);
 						}
 					
-							coef = coef * (real_part_fourier_coefficient_array[c5] + imaginary_part_fourier_coefficient_array[c5] * _Complex_I);
-							coef = coef * (real_part_fourier_coefficient_array[d5] - imaginary_part_fourier_coefficient_array[d5] * _Complex_I);
+							coefficient = coefficient * (real_part_fourier_coefficient_array[c5] + imaginary_part_fourier_coefficient_array[c5] * _Complex_I);
+							coefficient = coefficient * (real_part_fourier_coefficient_array[d5] - imaginary_part_fourier_coefficient_array[d5] * _Complex_I);
 
 						//argument_d corresponds to the argument of equation 18b from McMorran & Cronin 2008. Note that y=0
                         			argument_d = -M_PI*(pow( x_positions_array[i]-sp.wavelength*z23*(average_n*cos(theta)/d2 + average_m*z13/(d1*z23) ),2 )/pow(w3x,2) + pow((average_n*sin(theta)*sp.wavelength)/(d2*w3y),2));
@@ -261,13 +261,13 @@ void ( * intensity_after_2nd_grating(double current_z_position, double el1x, dou
                         			argument_v = -M_PI* pow(sp.wavelength*z23* (dn*cos(theta)/d2 + dm*z13/(d1*z23)),2)/pow(el3x,2) -M_PI*pow(dn*sin(theta)*sp.wavelength*z23/(d2*el3y),2);
 
 						
-						if (((__real__ coef) >= sp.intensity_cutoff) || ((__imag__ coef) >= sp.intensity_cutoff)) {
+						if (((__real__ coefficient) >= sp.intensity_cutoff) || ((__imag__ coefficient) >= sp.intensity_cutoff)) {
 						    
                         				function_d   = exp(argument_d);                      
                         				function_v   = exp(argument_v);
                         				argument_f_p = argument_f + argument_p;
                         
-                        				intensity_array[i] +=  ((__real__ coef) * cos(argument_f_p) - (__imag__ coef) * sin(argument_f_p))*function_d*function_v ;
+                        				intensity_array[i] +=  ((__real__ coefficient) * cos(argument_f_p) - (__imag__ coefficient) * sin(argument_f_p))*function_d*function_v ;
 						}
 					}
 				}
