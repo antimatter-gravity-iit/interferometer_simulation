@@ -24,14 +24,12 @@ void ( * get_initial_intensity(double z, double x_positions_array[], double inte
 
 
 	double w1;
-	double jj;
 
 	// Width of incoming beam, calculated from initial parameters.
 	w1 = calculate_width(z, sp.initial_radius_of_wavefront_curvature, sp.initial_coherence_width, sp.initial_beamwidth, sp.initial_beamwidth); 
 
 	for(int i=0; i<sp.resolution; i++) {
-		jj = pow((x_positions_array[i]/w1),2); 		// jj = (xpos/beamwidth)^2 
-		intensity_array[i]=exp(-(M_PI * jj)); 		// a[i][1] is the intensity of the beam at the xposition at step i.
+		intensity_array[i]=exp(-(M_PI * pow((x_positions_array[i]/w1),2))); 		// a[i][1] is the intensity of the beam at the xposition at step i.
 	}
 
 	end = clock();
