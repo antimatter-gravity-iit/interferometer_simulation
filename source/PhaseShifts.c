@@ -114,7 +114,7 @@ double ( * ReT_and_ImT_generator(double ReTorImTar[], int ReTorImT, double curre
 			if (ReTorImT == 1)										
 				// so fc and phase_van_der_waals are both phase shifts; angles.
 				ReTorImTar[j]  += cos(phase_van_der_waals + fc + phase_gravity);
-			// if it's the ImT array
+			// if it's the imaginary_part_fourier_coefficient_array array
 			else if (ReTorImT == 2)
 				// so fc and phase_van_der_waals are both phase shifts; angles.
 				ReTorImTar[j]  += sin(phase_van_der_waals + fc + phase_gravity); 
