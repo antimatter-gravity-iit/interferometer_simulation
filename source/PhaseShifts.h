@@ -34,6 +34,6 @@
 #ifndef PHASESHIFTS_H
 #define PHASESHIFTS_H
 
-double ( * ReT_and_ImT_generator(double ReTorImTar[], int ReTorImT, double current_z_position)); // the function responsible for calculating the real and imaginary phase shifts of various physical effects
+double ( * real_and_imaginary_arrays_generator(double ReTorImTar[], int ReTorImT, double current_z_position)); // the function responsible for calculating the real and imaginary phase shifts of various physical effects
 
 #endif

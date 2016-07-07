@@ -55,14 +55,12 @@ void ( * get_initial_intensity(double z, double x_positions_array[], double inte
 
 
 	double w1;
-	double jj;
 
 	// Width of incoming beam, calculated from initial parameters.
 	w1 = calculate_width(z, sp.initial_radius_of_wavefront_curvature, sp.initial_coherence_width, sp.initial_beamwidth, sp.initial_beamwidth); 
 
 	for(int i=0; i<sp.resolution; i++) {
-		jj = pow((x_positions_array[i]/w1),2); 		// jj = (xpos/beamwidth)^2 
-		intensity_array[i]=exp(-(M_PI * jj)); 		// a[i][1] is the intensity of the beam at the xposition at step i.
+		intensity_array[i]=exp(-(M_PI * pow((x_positions_array[i]/w1),2))); 		// a[i][1] is the intensity of the beam at the xposition at step i.
 	}
 
 	end = clock();
@@ -85,7 +83,7 @@ void ( * intensity_after_1st_grating(double current_z_position,double el1, doubl
 	 */
 
     	double coef; 
-    	double lim    = 5;
+    	double diffraction_orders    = 5;
     	double tilt   = sp.tilt; 
     	double alpha  = sp.wedgeangle * M_PI/180; 		// alpha and beta have been defined in almost every other function. Global variables? 
     	double beta   = tilt * M_PI; 				// defined in other functions too, same purpose.	
@@ -107,14 +105,14 @@ void ( * intensity_after_1st_grating(double current_z_position,double el1, doubl
 	}
 
 	double real_part_fourier_coefficient_array[41]={0};
-	ReT_and_ImT_generator(real_part_fourier_coefficient_array, 1, current_z_position); // calculates phase shift where 1 is to consider real components
+	real_and_imaginary_arrays_generator(real_part_fourier_coefficient_array, 1, current_z_position); // calculates phase shift where 1 is to consider real components
 		
 	double imaginary_part_fourier_coefficient_array[41]={0};
-	ReT_and_ImT_generator(imaginary_part_fourier_coefficient_array, 2, current_z_position); // calculates phase shift where 2 is to consider real components
+	real_and_imaginary_arrays_generator(imaginary_part_fourier_coefficient_array, 2, current_z_position); // calculates phase shift where 2 is to consider real components
 
 	for (int i=0; i<sp.resolution; i++) { 
-		for (int n1=-lim; n1<=lim; n1++) {
-			for (int n2=-lim; n2<=lim; n2++) {
+		for (int n1=-diffraction_orders; n1<=diffraction_orders; n1++) {
+			for (int n2=-diffraction_orders; n2<=diffraction_orders; n2++) {
 				double dn =n1-n2; 
 				// TODO: explain what n, m, dm, dn are. LR, Y 
 				double average_n = (n1 + n2)/2;
@@ -175,8 +173,7 @@ void ( * intensity_after_2nd_grating(double current_z_position, double el1x, dou
     	double d2     = sp.grating_period;
     	double z13    = z12  +  z23; 				// z distance between grating 1 and 3
     	double phi    = 0;
-    	double lim    = 5;
-    	double resolution = sp.resolution; 			// This is the resolution we want this graph at.
+    	double diffraction_orders    = 5;
     	double _Complex coef;
 
     	/* THIS FUNCTION IS USING GSM MODEL FROM MCMORRAN, CRONIN 2008
@@ -218,17 +215,17 @@ void ( * intensity_after_2nd_grating(double current_z_position, double el1x, dou
     	}
     
 	double real_part_fourier_coefficient_array[41]={0};
-	ReT_and_ImT_generator(real_part_fourier_coefficient_array, 1, current_z_position); // calculates phase shift where 1 is to consider real components
+	real_and_imaginary_arrays_generator(real_part_fourier_coefficient_array, 1, current_z_position); // calculates phase shift where 1 is to consider real components
 		
 	double imaginary_part_fourier_coefficient_array[41]={0};
-	ReT_and_ImT_generator(imaginary_part_fourier_coefficient_array, 2, current_z_position); // calculates phase shift where 2 is to consider real components 
+	real_and_imaginary_arrays_generator(imaginary_part_fourier_coefficient_array, 2, current_z_position); // calculates phase shift where 2 is to consider real components 
 	
 
 	for (int i=0; i<sp.resolution; i++) {
-		for (int m1=-lim; m1<=lim; m1++) {
-			for (int m2=-lim; m2<=lim; m2++) {
-				for (int n1=-lim; n1<=lim; n1++) {
-					for (int n2=-lim; n2<=lim; n2++) {
+		for (int m1=-diffraction_orders; m1<=diffraction_orders; m1++) {
+			for (int m2=-diffraction_orders; m2<=diffraction_orders; m2++) {
+				for (int n1=-diffraction_orders; n1<=diffraction_orders; n1++) {
+					for (int n2=-diffraction_orders; n2<=diffraction_orders; n2++) {
 						
 						dn = n1-n2;
 						average_n  = ((double)(n1 + n2))/2;
@@ -242,8 +239,8 @@ void ( * intensity_after_2nd_grating(double current_z_position, double el1x, dou
 						// 0 means ignore image charge effects, 1 means include image charge effects
 
 						if (sp.account_gravity == 0 && sp.account_van_der_waals == 0) {
-							coef = sinc(eta1 * M_PI * m1) +  0 * _Complex_I;
-							coef = coef * (sinc(eta1 * M_PI * m2)) +  0 * _Complex_I;
+							coef = 	       sinc(sp.grating1_open_fraction * M_PI * m1) +  0 * _Complex_I;
+							coef = coef * (sinc(sp.grating1_open_fraction * M_PI * m2)) +  0 * _Complex_I;
 
 						}
 						else { // assumes G1 is identical to G2
@@ -251,8 +248,8 @@ void ( * intensity_after_2nd_grating(double current_z_position, double el1x, dou
 							coef = coef * (real_part_fourier_coefficient_array[b5] - imaginary_part_fourier_coefficient_array[b5] * _Complex_I);
 						}
 					
-						coef = coef * (real_part_fourier_coefficient_array[c5] + imaginary_part_fourier_coefficient_array[c5] * _Complex_I);
-						coef = coef * (real_part_fourier_coefficient_array[d5] - imaginary_part_fourier_coefficient_array[d5] * _Complex_I);
+							coef = coef * (real_part_fourier_coefficient_array[c5] + imaginary_part_fourier_coefficient_array[c5] * _Complex_I);
+							coef = coef * (real_part_fourier_coefficient_array[d5] - imaginary_part_fourier_coefficient_array[d5] * _Complex_I);
 
 						//argument_d corresponds to the argument of equation 18b from McMorran & Cronin 2008. Note that y=0
                         			argument_d = -M_PI*(pow( x_positions_array[i]-sp.wavelength*z23*(average_n*cos(theta)/d2 + average_m*z13/(d1*z23) ),2 )/pow(w3x,2) + pow((average_n*sin(theta)*sp.wavelength)/(d2*w3y),2));
