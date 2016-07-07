@@ -14,8 +14,8 @@ int account_van_der_waals;
 double particle_velocity;			// Velocity of beam particles.
 int simulation_option;				// choose whether or not to have a full simulation, or a final simulation interference pattern  
 int logchoice;					// whether or not to scale interference pattern with a log base in order to see smaller intensities
-double eta1;	                           	// G1 open fraction; how open the first grating is. With .4 open, a little over than half the muonium should pass through it.
-double eta2;	                           	// G2 open fraction; how open the second grating is.
+double grating1_open_fraction;                  // G1 open fraction; how open the first grating is. With .4 open, a little over than half the muonium should pass through it.
+double grating2_open_fraction;	                // G2 open fraction; how open the second grating is.
 double grating_period;                  	// 'Grating period' means the distance between two consecutive slit openings.
 double initial_radius_of_wavefront_curvature;   // Corresponds to r0 in older versions.
 double initial_coherence_width;                 // Corresponds to el0 in older versions.

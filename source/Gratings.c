@@ -56,8 +56,6 @@ void ( * intensity_after_1st_grating(double current_z_position,double el1, doubl
     	double coef; 
     	double lim    = 5;
     	double tilt   = sp.tilt; 
-	double eta1   = sp.eta1; 				// G1 open fraction; how open the first grating is. With 0.4 open, a little over than half the muonium should pass through.
-    	double eta2   = sp.eta2; 				// G2 open fraction; how open the second grating is.		 
     	double alpha  = sp.wedgeangle * M_PI/180; 		// alpha and beta have been defined in almost every other function. Global variables? 
     	double beta   = tilt * M_PI; 				// defined in other functions too, same purpose.	
 	/*
@@ -92,7 +90,7 @@ void ( * intensity_after_1st_grating(double current_z_position,double el1, doubl
 
 				if (sp.account_gravity == 0 && sp.account_van_der_waals == 0)
 				{ // if useimagecharge = 0, ignore image charge effects at G1. 
-					coef = sinc(eta1 * M_PI * n)  *  (sinc(eta1 * M_PI * m) * pow((eta1), 2));
+					coef = sinc(sp.grating1_open_fraction * M_PI * n)  *  (sinc(sp.grating1_open_fraction * M_PI * m) * pow((sp.grating1_open_fraction), 2));
 				}
 
 				else
@@ -139,8 +137,6 @@ void ( * intensity_after_2nd_grating(double current_z_position, double el1x, dou
 	 * This is the twist about the x-axis.
 	 */
     	double tilt   = sp.tilt; 
-	double eta1   = sp.eta1;				// G1 open fraction; how open the first grating is. With 0.4 open, a little over than half the muonium should pass through. 
-    	double eta2   = sp.eta2;				// G2 open fraction; how open the second grating is.
         double alpha  = sp.wedgeangle * M_PI/180;
     	double beta   = tilt * M_PI; 				// 0 if beam is normal to gratings
     	double theta  = M_PI * sp.theta/180;
@@ -214,8 +210,8 @@ void ( * intensity_after_2nd_grating(double current_z_position, double el1x, dou
 
 						// 0 means ignore image charge effects, 1 means include image charge effects
 						if (sp.account_gravity == 0 || sp.account_van_der_waals == 0) {
-							coef = sinc(eta1 * M_PI * m1) +  0 * _Complex_I;
-							coef = coef * (sinc(eta1 * M_PI * m2)) +  0 * _Complex_I;
+							coef = sinc(sp.grating1_open_fraction * M_PI * m1) +  0 * _Complex_I;
+							coef = coef * (sinc(sp.grating1_open_fraction * M_PI * m2)) +  0 * _Complex_I;
 						}
 						else { // assumes G1 is identical to G2
 							coef = 	      (ReT[a5] + ImT[a5] * _Complex_I); // 

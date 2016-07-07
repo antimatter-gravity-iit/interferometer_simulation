@@ -164,8 +164,8 @@ int main(int argc, char *argv[])
 	sp.z_position_2nd_grating	= 4.5e-2;		// In m.
 	// Height of each slit is calculated as half the grating period (distance between gratings).
 	sp.slit_height 			= sp.grating_period / 2;
-	sp.eta1				= 0.4;			// TODO LAcomment: explain.
-	sp.eta2				= 0.4;			// TODO LAcomment: explain.
+	sp.grating1_open_fraction	= 0.4;			// TODO LAcomment: explain.
+	sp.grating2_open_fraction	= 0.4;			// TODO LAcomment: explain.
 	sp.G2_x				= 5e-8;			// In m. TODO LAcomment: explain based on Dr McMorran's info.
 	sp.theta			= 1e-6;			// In degrees. This is the relative rotation angle between the two gratings.
 	sp.grating_thickness		= 1.0e-6;		// In m. Used for the VdW effect for atoms: see PhaseShifts.c.
