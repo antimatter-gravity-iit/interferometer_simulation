@@ -137,7 +137,7 @@ int main(int argc, char *argv[])
 	sp.theta			= 1e-6;			// In degrees. This is the relative rotation angle between the two gratings.
 	sp.grating_thickness		= 1.0e-6;		// In m. Used for the VdW effect for atoms: see PhaseShifts.c.
 	sp.wedgeangle			= 0;		  	// In degrees. Grating wedge angle.
-	sp.tilt				= 0; 	      		// Tilt.
+	sp.tilt				= 0* M_PI/180; 	      		// Tilt.
 
 	/* 
 	 * Spatial parameters.

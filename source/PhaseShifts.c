@@ -46,13 +46,11 @@
 double ( * real_and_imaginary_arrays_generator(double ReTorImTar[], int ReTorImT, double current_z_position))
 {
 	double gravity_acceleration = -9.8;	// acceleration due to gravity. 
-  	double tilt = sp.tilt;			// A free parameter. Beta variable below depends on this. If beam is perp. to grating, then tilt (and thus Beta) are 0. This is the twist about the x-axis.
-    
-    	double C3 = 2.0453e-2;			// the VdW coefficient for hydrogen (assumed to be the same for muonium). In meV * nm^3.
+  	double C3 = 2.0453e-2;			// the VdW coefficient for hydrogen (assumed to be the same for muonium). In meV * nm^3.
     	double hbar = 6.58212e-13;		// Planck's reduced constant in meV * s.
    	// TODO: LAcomment: explain. Variable 'alpha' "appears to be bend of 'window' (slits in grating), if they bend forward or not."
     	double alpha = sp.wedgeangle * M_PI/180;
-    	double beta = tilt * M_PI; 		// depends on tilt angle, = 0 if beam is normal to gratings
+    	double beta = sp.tilt * M_PI; 		// depends on tilt angle, = 0 if beam is normal to gratings
     	double exnmleft;			// how many nm from the left side of each slit are we?
     	double exnmright;			// how many nm from the right side of each slit are we?
     	double xmin;				// beginning of path of wave through the slit
