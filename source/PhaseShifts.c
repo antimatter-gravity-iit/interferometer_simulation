@@ -24,8 +24,8 @@ double ( * ReT_and_ImT_generator(double ReTorImTar[], int ReTorImT, double curre
     	double beta = tilt * M_PI; 		// depends on tilt angle, = 0 if beam is normal to gratings
     	double exnmleft;			// how many nm from the left side of each slit are we?
     	double exnmright;			// how many nm from the right side of each slit are we?
-    	long double xmin;			// beginning of path of wave through the slit
-    	long double xmax;			// end of path of wave/beam through the slit
+    	double xmin;				// beginning of path of wave through the slit
+    	double xmax;				// end of path of wave/beam through the slit
     	double fc;
     	double phase_van_der_waals;		// phase shift if dealing with neutral atoms/molecules
     	double phase_gravity;			// phase shift due to gravity.
@@ -54,16 +54,16 @@ double ( * ReT_and_ImT_generator(double ReTorImTar[], int ReTorImT, double curre
 	else {
 		xmax = (sp.slit_height * cos(beta)/2)-sp.slit_height/sp.resolution;
 		/*
-		 * fabsl is for long doubles and returns a long double absolute value; once again,
+		 * fabs is for doubles and returns a double absolute value; once again,
 		 * if the tilt isn't that bad, one bound (this time xmin) is just sp.slit_height * cos(beta)/2  +  sp.slit_height/res.
 		 */
-		if (fabsl(beta)<=alpha) {
+		if (fabs(beta)<=alpha) {
 		  xmin = -((sp.slit_height * cos(beta))/2) + sp.slit_height/sp.resolution; 
 		}
 		else { // if the beam is far from perpendicular to grating slits
 		    xmin = -((sp.slit_height * cos(beta))/2) + sp.slit_height/sp.resolution - sp.grating_thickness * (tan(alpha)-tan(beta));
 		}
-	}  
+	}
     	for (int n=-((sp.rowsT-1)/2);n<=((sp.rowsT-1)/2);n++) {
        		/*
 		 * TODO: LAcomment: make sense of this and explain. 
@@ -125,6 +125,6 @@ double ( * ReT_and_ImT_generator(double ReTorImTar[], int ReTorImT, double curre
 		// TODO LAcomment: explain. "So is this some sort of normalization?"	
 		ReTorImTar[i] = ReTorImTar[i]/sp.resolution;
 	}
-	printf("Gravitational phase shift: %.9f rad\n", phase_gravity);
-	printf("Van der Waals phase shift: %.9f rad\n", phase_van_der_waals);
+	printf("Gravitational phase shift: %.10f rad\n", phase_gravity);
+	printf("Van der Waals phase shift: %.10f rad\n", phase_van_der_waals);
 }
