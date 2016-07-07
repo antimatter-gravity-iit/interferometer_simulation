@@ -37,7 +37,7 @@ double x_end;					// x position ends, 200 microns
 double slit_height;				// maximum z height
 double wavelength;				// beam's wavelength
 double intensity_cutoff;			// =.000001  Intensity values below cutoff value are truncated or neglected (treated as 0). Can also be 5e-5 like in McMorran thesis. Or 0.001.
-int rowsT ; 			        	// Rows of real_part_fourier_coefficient_array and imaginary_part_fourier_coefficient_array arrays; used to calculate phase shift.    
+int number_of_rows_fourier_coefficient_array; 	// Rows of real_part_fourier_coefficient_array and imaginary_part_fourier_coefficient_array arrays; used to calculate phase shift.    
 }simparam;
 
 extern simparam sp;

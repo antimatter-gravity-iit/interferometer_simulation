@@ -70,9 +70,9 @@ void ( * intensity_after_1st_grating(double current_z_position,double el1, doubl
     	
 	int pos[41]={0};
 
-	for (int i=0; i<sp.rowsT; i++) // since sp.rowsT is currently 41, pos[i] = -20 to 20.
+	for (int i=0; i<sp.number_of_rows_fourier_coefficient_array; i++) // since sp.number_of_rows_fourier_coefficient_array is currently 41, pos[i] = -20 to 20.
 	{
-	pos[i]=i-((sp.rowsT-1)/2);
+	pos[i]=i-((sp.number_of_rows_fourier_coefficient_array-1)/2);
 	}
 
 	double real_part_fourier_coefficient_array[41]={0};
@@ -182,8 +182,8 @@ void ( * intensity_after_2nd_grating(double current_z_position, double el1x, dou
     
     	int pos[41]={0}; // array of 41 elements
 
-    	for (int i=0; i<sp.rowsT; i++){     // sp.rowsT = rows of real_part_fourier_coefficient_array and imaginary_part_fourier_coefficient_array arrays = 41 for now
-    		pos[i]=i-((sp.rowsT-1)/2);  // so this goes from -20 to 20
+    	for (int i=0; i<sp.number_of_rows_fourier_coefficient_array; i++){     // sp.number_of_rows_fourier_coefficient_array = rows of real_part_fourier_coefficient_array and imaginary_part_fourier_coefficient_array arrays = 41 for now
+    		pos[i]=i-((sp.number_of_rows_fourier_coefficient_array-1)/2);  // so this goes from -20 to 20
     	}
     
 	double real_part_fourier_coefficient_array[41]={0};

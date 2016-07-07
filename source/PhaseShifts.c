@@ -64,7 +64,7 @@ double ( * ReT_and_ImT_generator(double ReTorImTar[], int ReTorImT, double curre
 		    xmin = -((sp.slit_height * cos(beta))/2) + sp.slit_height/sp.resolution - sp.grating_thickness * (tan(alpha)-tan(beta));
 		}
 	}
-    	for (int n=-((sp.rowsT-1)/2);n<=((sp.rowsT-1)/2);n++) {
+    	for (int n=-((sp.number_of_rows_fourier_coefficient_array-1)/2);n<=((sp.number_of_rows_fourier_coefficient_array-1)/2);n++) {
        		/*
 		 * TODO: LAcomment: make sense of this and explain. 
 		 * Original comment stated the code below was somewhat copied from McMorran's 'NOT IMPLEMENTED YET' section.
@@ -107,8 +107,8 @@ double ( * ReT_and_ImT_generator(double ReTorImTar[], int ReTorImT, double curre
 				phase_van_der_waals = 0;
 			}	
 
-			// j goes from 0 to 40 (right now sp.rowsT = 41)
-			j = n + ((sp.rowsT-1)/2);
+			// j goes from 0 to 40 (right now sp.number_of_rows_fourier_coefficient_array = 41)
+			j = n + ((sp.number_of_rows_fourier_coefficient_array-1)/2);
 				
 			// if it's the real_part_fourier_coefficient_array
 			if (ReTorImT == 1)										
@@ -121,7 +121,7 @@ double ( * ReT_and_ImT_generator(double ReTorImTar[], int ReTorImT, double curre
 		}
 	}
 	
-	for (int i=0; i<sp.rowsT; i++) {	
+	for (int i=0; i<sp.number_of_rows_fourier_coefficient_array; i++) {	
 		// TODO LAcomment: explain. "So is this some sort of normalization?"	
 		ReTorImTar[i] = ReTorImTar[i]/sp.resolution;
 	}
