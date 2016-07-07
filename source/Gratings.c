@@ -54,7 +54,7 @@ void ( * intensity_after_1st_grating(double current_z_position,double el1, doubl
 	 */
 
     	double coef; 
-    	double lim    = 5;
+    	double diffraction_orders    = 5;
     	double tilt   = sp.tilt; 
     	double alpha  = sp.wedgeangle * M_PI/180; 		// alpha and beta have been defined in almost every other function. Global variables? 
     	double beta   = tilt * M_PI; 				// defined in other functions too, same purpose.	
@@ -82,8 +82,8 @@ void ( * intensity_after_1st_grating(double current_z_position,double el1, doubl
 	real_and_imaginary_arrays_generator(imaginary_part_fourier_coefficient_array, 2, current_z_position); // calculates phase shift where 2 is to consider real components
 
 	for (int i=0; i<sp.resolution; i++) { 
-		for (int n1=-lim; n1<=lim; n1++) {
-			for (int n2=-lim; n2<=lim; n2++) {
+		for (int n1=-diffraction_orders; n1<=diffraction_orders; n1++) {
+			for (int n2=-diffraction_orders; n2<=diffraction_orders; n2++) {
 				double dn =n1-n2; 
 				// TODO: explain what n, m, dm, dn are. LR, Y 
 				double average_n = (n1 + n2)/2;
@@ -144,7 +144,7 @@ void ( * intensity_after_2nd_grating(double current_z_position, double el1x, dou
     	double d2     = sp.grating_period;
     	double z13    = z12  +  z23; 				// z distance between grating 1 and 3
     	double phi    = 0;
-    	double lim    = 5;
+    	double diffraction_orders    = 5;
     	double resolution = sp.resolution; 			// This is the resolution we want this graph at.
     	double _Complex coef;
 
@@ -194,10 +194,10 @@ void ( * intensity_after_2nd_grating(double current_z_position, double el1x, dou
 	
 
 	for (int i=0; i<sp.resolution; i++) {
-		for (int m1=-lim; m1<=lim; m1++) {
-			for (int m2=-lim; m2<=lim; m2++) {
-				for (int n1=-lim; n1<=lim; n1++) {
-					for (int n2=-lim; n2<=lim; n2++) {
+		for (int m1=-diffraction_orders; m1<=diffraction_orders; m1++) {
+			for (int m2=-diffraction_orders; m2<=diffraction_orders; m2++) {
+				for (int n1=-diffraction_orders; n1<=diffraction_orders; n1++) {
+					for (int n2=-diffraction_orders; n2<=diffraction_orders; n2++) {
 						
 						dn = n1-n2;
 						average_n  = ((double)(n1 + n2))/2;
