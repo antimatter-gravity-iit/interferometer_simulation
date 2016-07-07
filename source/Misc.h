@@ -1,4 +1,35 @@
-// Misc.h - contains functions of other miscellaneous tasks, such as taking care of boundary conditions, checking the max value in an array, etc. Also contains structures.
+/* 
+ * Misc.h
+ * Copyright (C) 2016 Antimatter Gravity Interferometer Group, Illinois Institute of Technology (IIT). 
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ *
+ * 				*
+ *
+ * Code inspired by thesis by Dr. Benjamin McMorran
+ * Electron Diffraction and Interferometry Using Nanostructures
+ * http://gradworks.umi.com/33/52/3352633.html
+ *
+ * For a list of collaborators see README.md and CREDITS.
+ *				
+ *				*
+ * 
+ * DESCRIPTION:
+ * Header file for Misc.c. Contains structure declarations.
+ *
+ */
 
 #ifndef MISC_H
 #define MISC_H

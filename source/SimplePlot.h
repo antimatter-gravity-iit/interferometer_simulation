@@ -1,4 +1,35 @@
-//	SimplePlot.h - simple plotting functions
+/* 
+ * SimplePlot.h
+ * Copyright (C) 2016 Antimatter Gravity Interferometer Group, Illinois Institute of Technology (IIT). 
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, write to the Free Software Foundation, Inc.,
+ * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+ *
+ * 				*
+ *
+ * Code inspired by thesis by Dr. Benjamin McMorran
+ * Electron Diffraction and Interferometry Using Nanostructures
+ * http://gradworks.umi.com/33/52/3352633.html
+ *
+ * For a list of collaborators see README.md and CREDITS.
+ *				
+ *				*
+ * 
+ * DESCRIPTION:
+ * Simple plotting functions using ROOT libraries.
+ *
+ */
 
 #ifndef SIMPLEPLOT_H
 #define SIMPLEPLOT_H
@@ -70,4 +101,4 @@ public:
 	static void selectGrayScale() { setPalette(52,0); } // see Root docs
 };
 
-#endif // SIMPLEPLOT_HH
+#endif
