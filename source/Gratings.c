@@ -143,7 +143,6 @@ void ( * intensity_after_2nd_grating(double current_z_position, double el1x, dou
     	double z13    = z12  +  z23; 				// z distance between grating 1 and 3
     	double phi    = 0;
     	double diffraction_orders    = 5;
-    	double resolution = sp.resolution; 			// This is the resolution we want this graph at.
     	double _Complex coef;
 
     	/* THIS FUNCTION IS USING GSM MODEL FROM MCMORRAN, CRONIN 2008
