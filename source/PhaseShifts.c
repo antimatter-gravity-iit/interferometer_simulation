@@ -48,8 +48,6 @@ double ( * real_and_imaginary_arrays_generator(double ReTorImTar[], int ReTorImT
 	double gravity_acceleration = -9.8;	// acceleration due to gravity. 
   	double C3 = 2.0453e-2;			// the VdW coefficient for hydrogen (assumed to be the same for muonium). In meV * nm^3.
     	double hbar = 6.58212e-13;		// Planck's reduced constant in meV * s.
-   	// TODO: LAcomment: explain. Variable 'alpha' "appears to be bend of 'window' (slits in grating), if they bend forward or not."
-    	double alpha = sp.wedgeangle * M_PI/180;
     	double exnmleft;			// how many nm from the left side of each slit are we?
     	double exnmright;			// how many nm from the right side of each slit are we?
     	double xmin;				// beginning of path of wave through the slit
@@ -70,12 +68,12 @@ double ( * real_and_imaginary_arrays_generator(double ReTorImTar[], int ReTorImT
 		 */
 		xmin= sp.slit_height * (1/sp.resolution - cos(sp.tilt)/2); 
 		// if the beam is very orthogonal to gratings (almost 90 degrees), or wedge angle is significant
-		if (sp.tilt<=alpha) {
+		if (sp.tilt<=sp.wedgeangle) {
 			xmax=(sp.slit_height * cos(sp.tilt))/2-sp.slit_height/sp.resolution;
 		}
 		// if beam is not very perpendicular to gratings, then it travels through the slit diagonally, covering more distance, more image charge interaction, etc.	
 		else {
-		xmax= sp.slit_height  *  cos(sp.tilt)/2 - sp.slit_height/sp.resolution  +  sp.grating_thickness  *  (tan(alpha)-tan(sp.tilt));
+		xmax= sp.slit_height  *  cos(sp.tilt)/2 - sp.slit_height/sp.resolution  +  sp.grating_thickness  *  (tan(sp.wedgeangle)-tan(sp.tilt));
 		}
     	}
 	// if tilt < 0; this time xmin changes, xmax is the same
@@ -85,11 +83,11 @@ double ( * real_and_imaginary_arrays_generator(double ReTorImTar[], int ReTorImT
 		 * fabs is for doubles and returns a double absolute value; once again,
 		 * if the tilt isn't that bad, one bound (this time xmin) is just sp.slit_height * cos(sp.tilt)/2  +  sp.slit_height/res.
 		 */
-		if (fabs(sp.tilt)<=alpha) {
+		if (fabs(sp.tilt)<=sp.wedgeangle) {
 		  xmin = -((sp.slit_height * cos(sp.tilt))/2) + sp.slit_height/sp.resolution; 
 		}
 		else { // if the beam is far from perpendicular to grating slits
-		    xmin = -((sp.slit_height * cos(sp.tilt))/2) + sp.slit_height/sp.resolution - sp.grating_thickness * (tan(alpha)-tan(sp.tilt));
+		    xmin = -((sp.slit_height * cos(sp.tilt))/2) + sp.slit_height/sp.resolution - sp.grating_thickness * (tan(sp.wedgeangle)-tan(sp.tilt));
 		}
 	}
     	for (int n=-((sp.number_of_rows_fourier_coefficient_array-1)/2);n<=((sp.number_of_rows_fourier_coefficient_array-1)/2);n++) {
