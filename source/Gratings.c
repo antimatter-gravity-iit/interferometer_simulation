@@ -77,15 +77,9 @@ void ( * intensity_after_1st_grating(double current_z_position,double el1, doubl
 	double diff=0;
 
 	double z12    = current_z_position - sp.z_position_1st_grating;	//z location between 1st and 2nd gratings
-	/* 
-	 * A free parameter. Beta variable below depends on this. If beam is perpendicular to gratings, then tilt (and thus Beta) is 0.
-	 * This is the twist about the x-axis.
-	 */
-
-    	double coefficient; 
+	double coefficient; 
     	double diffraction_orders  = 5;
-    	double alpha 		   = sp.wedgeangle * M_PI/180; 	// alpha and beta have been defined in almost every other function. Global variables? 
-    	double beta  		   = sp.tilt * M_PI; 		// defined in other functions too, same purpose.	
+    	double alpha 		   = sp.wedgeangle * M_PI/180; 	// alpha and beta have been defined in almost every other function. Global variables?	
 	/*
 	 * Explanation of variables:
 	 * w2 = GSM width of beam after the first grating.
@@ -160,12 +154,7 @@ void ( * intensity_after_2nd_grating(double current_z_position, double el1x, dou
 	double el1y    = el1x;
 	double z12     = sp.z_position_2nd_grating - sp.z_position_1st_grating;
 	double z23     = current_z_position - sp.z_position_2nd_grating;
-	/* 
-	 * A free parameter. Beta variable below depends on this. If beam is perpendicular to gratings, then tilt (and thus Beta) is 0.
-	 * This is the twist about the x-axis.
-	 */
         double alpha  = sp.wedgeangle * M_PI/180;
-    	double beta   = sp.tilt * M_PI; 				// 0 if beam is normal to gratings
     	double theta  = M_PI * sp.theta/180;
     	double d1     = sp.grating_period;			// period = period of gratings
     	double d2     = sp.grating_period;
