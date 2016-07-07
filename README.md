@@ -2,10 +2,11 @@
 Simulates phase shift of particles (due to various effects) moving through 
 a 3-grating interferometer.
 
-For installation instructions, refer to the INSTALL file. 
+For installation and usage instructions, refer to the INSTALL file. 
 A summary of changes can be found in CHANGELOG.md.
 
 The current coding conventions are contained in CONTRIBUTING.md.
+For a list of contributors, see section "Authors" below and the CREDITS file.
 
 ______________________
 **Effects Accounted For:**

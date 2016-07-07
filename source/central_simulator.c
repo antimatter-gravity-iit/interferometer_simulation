@@ -22,22 +22,7 @@
  * Electron Diffraction and Interferometry Using Nanostructures
  * http://gradworks.umi.com/33/52/3352633.html
  *
- *  Collaborators:
- *     Arthur Romero, 16 July to 24 August 2015
- *         -- Original author
- *     Adam Denchfield, 20 October 2015 to December 2015
- *         -- Additional parameters and functionality
- *     Melanie Cornelius (Dooley), 1 Nov 2015 to present
- *         -- Optimizations, standards, and readability edits
- *         -- Comments tagged with Mcomment
- *     Isaac Gewarges, January 2016 to April 28 2016
- *         -- Optimizations, standards, readability edits, and variable organization.
- *     Lucas Maia Rios, 23 May 2016 to present
- *         -- Comments tagged with LRcomment
- *     Lucas Neves Abrantes, 23 May 2016 to present
- *         -- Comments tagged with LAcomment
- *     Yuri Rossi Tonin, 6 May 2016 to present
- *         -- Comments tagged with Ycomment
+ * For a list of collaborators see README.md and CREDITS.
  *
  * 				*
  *
@@ -49,24 +34,6 @@
  *     choice of intensity profile or final simulation paths,
  *     and choice of logarithmic or linear intensity scale for the plot (only if the full simulation is requested),
  * and calculates the necessary parameters in order to perform the simulation with the user's desired arguments.
- *
- * Side view of gratings:
- * 
- * x axis (vertical)
- * ^
- * | z = 1 micron  z = 4.5 cm  z = 9.0 cm
- * |
- * |	  ||          ||          ||
- * |	  ||          ||          ||
- * |	  ||	      ||          ||
- * |	--||----------||----------||----->
- * |	--||----------||----------||----->
- * |	--||----------||----------||----->
- * |	  ||	      ||          ||
- * |	  ||          ||          ||
- * |	  ||          ||          ||
- * |
- * ======================================> z axis (beam direction)
  *
  */ 
 
