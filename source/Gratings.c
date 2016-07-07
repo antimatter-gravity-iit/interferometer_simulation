@@ -76,10 +76,10 @@ void ( * intensity_after_1st_grating(double current_z_position,double el1, doubl
 	}
 
 	double real_part_fourier_coefficient_array[41]={0};
-	ReT_and_ImT_generator(real_part_fourier_coefficient_array, 1, current_z_position); // calculates phase shift where 1 is to consider real components
+	real_and_imaginary_arrays_generator(real_part_fourier_coefficient_array, 1, current_z_position); // calculates phase shift where 1 is to consider real components
 		
 	double imaginary_part_fourier_coefficient_array[41]={0};
-	ReT_and_ImT_generator(imaginary_part_fourier_coefficient_array, 2, current_z_position); // calculates phase shift where 2 is to consider real components
+	real_and_imaginary_arrays_generator(imaginary_part_fourier_coefficient_array, 2, current_z_position); // calculates phase shift where 2 is to consider real components
 
 	for (int i=0; i<sp.resolution; i++) { 
 		for (int n1=-lim; n1<=lim; n1++) {
@@ -187,10 +187,10 @@ void ( * intensity_after_2nd_grating(double current_z_position, double el1x, dou
     	}
     
 	double real_part_fourier_coefficient_array[41]={0};
-	ReT_and_ImT_generator(real_part_fourier_coefficient_array, 1, current_z_position); // calculates phase shift where 1 is to consider real components
+	real_and_imaginary_arrays_generator(real_part_fourier_coefficient_array, 1, current_z_position); // calculates phase shift where 1 is to consider real components
 		
 	double imaginary_part_fourier_coefficient_array[41]={0};
-	ReT_and_ImT_generator(imaginary_part_fourier_coefficient_array, 2, current_z_position); // calculates phase shift where 2 is to consider real components 
+	real_and_imaginary_arrays_generator(imaginary_part_fourier_coefficient_array, 2, current_z_position); // calculates phase shift where 2 is to consider real components 
 	
 
 	for (int i=0; i<sp.resolution; i++) {
@@ -220,8 +220,8 @@ void ( * intensity_after_2nd_grating(double current_z_position, double el1x, dou
 							coef = coef * (real_part_fourier_coefficient_array[b5] - imaginary_part_fourier_coefficient_array[b5] * _Complex_I);
 						}
 					
-						coef = coef * (real_part_fourier_coefficient_array[c5] + imaginary_part_fourier_coefficient_array[c5] * _Complex_I);
-						coef = coef * (real_part_fourier_coefficient_array[d5] - imaginary_part_fourier_coefficient_array[d5] * _Complex_I);
+							coef = coef * (real_part_fourier_coefficient_array[c5] + imaginary_part_fourier_coefficient_array[c5] * _Complex_I);
+							coef = coef * (real_part_fourier_coefficient_array[d5] - imaginary_part_fourier_coefficient_array[d5] * _Complex_I);
 
 						//argument_d corresponds to the argument of equation 18b from McMorran & Cronin 2008. Note that y=0
                         			argument_d = -M_PI*(pow( x_positions_array[i]-sp.wavelength*z23*(average_n*cos(theta)/d2 + average_m*z13/(d1*z23) ),2 )/pow(w3x,2) + pow((average_n*sin(theta)*sp.wavelength)/(d2*w3y),2));
