@@ -151,7 +151,7 @@ void ( * intensity_after_2nd_grating(double current_z_position, double el1x, dou
 	double r1y     = r1x;
 	double w1y     = w1x;
 	double el1y    = el1x;
-	double z23     = current_z_position - sp.z_position_2nd_grating;
+	double current_z_distance_to_2nd_grating     = current_z_position - sp.z_position_2nd_grating;
     	double d1     = sp.grating_period;			// period = period of gratings
     	double d2     = sp.grating_period;
     	double current_z_distance_to_1st_grating    = current_z_position - sp.z_position_1st_grating; // z distance between grating 1 and 3
