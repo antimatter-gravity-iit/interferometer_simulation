@@ -106,13 +106,13 @@ int main(int argc, char *argv[])
 	/*
 	 * If the user asks for the total simulation (sp.simulation_option is 1), the program needs to know
 	 * if the intensity scale of the plot is going to be linear or logarithmic (the latter helps
-	 * to see where more of the particles go). sp.logchoice == 0 means linear scale, == 1 means
+	 * to see where more of the particles go). sp.logarithm_scale == 0 means linear scale, == 1 means
 	 * logarithmic scale.
 	 */
 	if(sp.simulation_option == 1)
-		sp.logchoice = atoi(argv[7]);
+		sp.logarithm_scale = atoi(argv[7]);
 	else
-		sp.logchoice = 0;
+		sp.logarithm_scale = 0;
 	
 	// Gaussian Schell-model beam parameters.
 	sp.initial_beamwidth				= 3.0e-5;	// In m.
@@ -191,7 +191,7 @@ int main(int argc, char *argv[])
 	if (sp.simulation_option == 1) {
 		printf("full simulation\n");
 		printf("Is the intensity being plotted in a logarthmic scale? ");
-		if (sp.logchoice == 1)
+		if (sp.logarithm_scale == 1)
 			printf("yes\n");
 		else
 			printf("no\n");
@@ -309,7 +309,7 @@ int main(int argc, char *argv[])
 			 * 	choice of scale for the plot.
 			 * The function only modifies the array fed to it; it doesn't return any value. 
 			 */  
-		    	ixgenerator(intensity_array, current_z_position, sp.logchoice); 
+		    	ixgenerator(intensity_array, current_z_position, sp.logarithm_scale); 
 		}
 		else if (current_z_position > sp.z_position_1st_grating) {
 			// If interacting with the first grating, calculates intensity profile.
@@ -318,7 +318,7 @@ int main(int argc, char *argv[])
 			// Max value of intensity calculated here.
 			max = maximumvalue(intensity_array, sp.resolution); 
 			// As before.		
-			ixgenerator(intensity_array, current_z_position, sp.logchoice); 
+			ixgenerator(intensity_array, current_z_position, sp.logarithm_scale); 
 		}
 		else {
 			// Simple GSM propagation until it hits the first grating.
@@ -328,7 +328,7 @@ int main(int argc, char *argv[])
 			// If at the origin?
 			max = maximumvalue(intensity_array, sp.resolution); 
 			// As before.
-			ixgenerator(intensity_array, current_z_position, sp.logchoice); 
+			ixgenerator(intensity_array, current_z_position, sp.logarithm_scale); 
 		}   
 
 		for (int j=0; j<sp.resolution; j++ ) {

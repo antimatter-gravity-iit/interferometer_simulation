@@ -44,7 +44,7 @@ int account_gravity;				// account for gravitational forces [1] yes, [0] no.
 int account_van_der_waals;	
 double particle_velocity;			// Velocity of beam particles.
 int simulation_option;				// choose whether or not to have a full simulation, or a final simulation interference pattern  
-int logchoice;					// whether or not to scale interference pattern with a log base in order to see smaller intensities
+int logarithm_scale;					// whether or not to scale interference pattern with a log base in order to see smaller intensities
 double grating1_open_fraction;                  // G1 open fraction; how open the first grating is. With .4 open, a little over than half the muonium should pass through it.
 double grating2_open_fraction;	                // G2 open fraction; how open the second grating is.
 double grating_period;                  	// 'Grating period' means the distance between two consecutive slit openings.
@@ -79,7 +79,7 @@ double maximumvalue(double arr[], int array_size);
 double sinc(double x); 
 // returns sin(x)/x
 
-double ( *ixgenerator(double a[], double current_z_position, int logchoice)); 
+double ( *ixgenerator(double a[], double current_z_position)); 
 // accounts for decay (if applicable) and normalizing the intensity scale
 
 int find_element_position_in_array(int value, int *arr); 

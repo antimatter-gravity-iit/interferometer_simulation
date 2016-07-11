@@ -69,7 +69,7 @@ double sinc(double x){
  * 	choice of scale for the plot.
  * The function only modifies the array fed to it; it doesn't return any value. 
  */
-double *ixgenerator(double a[], double current_z_position, int logchoice) 
+double *ixgenerator(double a[], double current_z_position) 
 {
     double mu_lifetime = 0.0000022; 
     // half life average decay time of a muon, in seconds
@@ -97,7 +97,7 @@ double *ixgenerator(double a[], double current_z_position, int logchoice)
         }
 
         // a[i][1] = a[i][1]/max;//divides each element of the array by max, normalize it
-        if (logchoice == 1 && a[i] > 0)
+        if (sp.logarithm_scale == 1 && a[i] > 0)
         {
             a[i] = log(a[i]/min); // it tries to make sure all elements are above 1, then takes the logarithm to scale the stuff better
         }
