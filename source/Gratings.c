@@ -162,10 +162,10 @@ void ( * intensity_after_2nd_grating(double current_z_position, double el1x, dou
     	 * IT MUST BE CHANGED IF YOU WANT TO USE OLDER MODEL FROM BREZGER 2003
 	 */
 
-    	double delta_n = 0;
-    	double delta_m = 0;
-    	double average_m  = 0;
-    	double average_n  = 0;
+    	double delta_n         = 0;
+    	double delta_m         = 0;
+    	double average_m       = 0;
+    	double average_n       = 0;
     	int    central_index_1 = 0;
     	int    central_index_2 = 0;
     	int    central_index_3 = 0;
@@ -192,8 +192,8 @@ void ( * intensity_after_2nd_grating(double current_z_position, double el1x, dou
     
     	int pos[41]={0}; // array of 41 elements
 
-    	for (int i=0; i<sp.number_of_rows_fourier_coefficient_array; i++){     // sp.number_of_rows_fourier_coefficient_array = rows of real_part_fourier_coefficient_array and imaginary_part_fourier_coefficient_array arrays = 41 for now
-    		pos[i]=i-((sp.number_of_rows_fourier_coefficient_array-1)/2);  // so this goes from -20 to 20
+    	for (int i = 0; i<sp.number_of_rows_fourier_coefficient_array; i++){     // sp.number_of_rows_fourier_coefficient_array = rows of real_part_fourier_coefficient_array and imaginary_part_fourier_coefficient_array arrays = 41 for now
+    		pos[i] = i-((sp.number_of_rows_fourier_coefficient_array-1)/2);  // so this goes from -20 to 20
     	}
     
 	double real_part_fourier_coefficient_array[41]={0};
@@ -203,15 +203,15 @@ void ( * intensity_after_2nd_grating(double current_z_position, double el1x, dou
 	real_and_imaginary_arrays_generator(imaginary_part_fourier_coefficient_array, 2, current_z_position); // calculates phase shift where 2 is to consider real components 
 	
 
-	for (int i=0; i<sp.resolution; i++) {
+	for (int i = 0; i<sp.resolution; i++) {
 		for (int m1 = -diffraction_orders; m1 <= diffraction_orders; m1++) {
 			for (int m2 = -diffraction_orders; m2 <= diffraction_orders; m2++) {
 				for (int n1 = -diffraction_orders; n1 <= diffraction_orders; n1++) {
 					for (int n2 = -diffraction_orders; n2 <= diffraction_orders; n2++) {
 						
-						delta_n = n1-n2;
+						delta_n    = n1-n2;
 						average_n  = ((double)(n1 + n2))/2;
-						delta_m = m1-m2;
+						delta_m    = m1-m2;
 						average_m  = ((double)(m1 + m2))/2;
 
 						central_index_1 = ( find_element_position_in_array( m1, (int *)pos ) );
@@ -222,7 +222,7 @@ void ( * intensity_after_2nd_grating(double current_z_position, double el1x, dou
 						// 0 means ignore image charge effects, 1 means include image charge effects
 
 						if (sp.account_gravity == 0 && sp.account_van_der_waals == 0) {
-							coefficient = 	       sinc(sp.grating1_open_fraction * M_PI * m1) +  0 * _Complex_I;
+							coefficient = 	             sinc(sp.grating1_open_fraction * M_PI * m1) +  0 * _Complex_I;
 							coefficient = coefficient * (sinc(sp.grating1_open_fraction * M_PI * m2)) +  0 * _Complex_I;
 
 						}
