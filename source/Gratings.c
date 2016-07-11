@@ -206,10 +206,10 @@ void ( * intensity_after_2nd_grating(double current_z_position, double el1x, dou
 	
 
 	for (int i=0; i<sp.resolution; i++) {
-		for (int m1=-diffraction_orders; m1<=diffraction_orders; m1++) {
-			for (int m2=-diffraction_orders; m2<=diffraction_orders; m2++) {
-				for (int n1=-diffraction_orders; n1<=diffraction_orders; n1++) {
-					for (int n2=-diffraction_orders; n2<=diffraction_orders; n2++) {
+		for (int m1 = -diffraction_orders; m1 <= diffraction_orders; m1++) {
+			for (int m2 = -diffraction_orders; m2 <= diffraction_orders; m2++) {
+				for (int n1 = -diffraction_orders; n1 <= diffraction_orders; n1++) {
+					for (int n2 = -diffraction_orders; n2 <= diffraction_orders; n2++) {
 						
 						dn = n1-n2;
 						average_n  = ((double)(n1 + n2))/2;
