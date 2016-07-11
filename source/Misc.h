@@ -73,7 +73,7 @@ int number_of_rows_fourier_coefficient_array; 	// Rows of real_part_fourier_coef
 
 extern simparam sp;
 
-double maximumvalue(double arr[], int array_size); 
+double maximum_value(double arr[], int array_size); 
 // obtains the max value in an array
 
 double sinc(double x); 

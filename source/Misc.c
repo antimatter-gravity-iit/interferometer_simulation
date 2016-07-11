@@ -39,7 +39,7 @@
 
 #include "Misc.h"
 
-double maximumvalue(double arr[], int array_size){    
+double maximum_value(double arr[], int array_size){    
     // finds the max value of the array
     double m =0;
     for (int i = 0; i < array_size; i++ ){
@@ -73,7 +73,7 @@ double *ixgenerator(double a[], double current_z_position)
 {
     double mu_lifetime = 0.0000022; 
     // half life average decay time of a muon, in seconds
-    double max = maximumvalue(a, sp.resolution); 
+    double max = maximum_value(a, sp.resolution); 
     // maximum intensity value for a slice in z
     double min = sp.intensity_cutoff;
     // the minimum value the intensity can be at before being set to 0; cutoff is a global variable

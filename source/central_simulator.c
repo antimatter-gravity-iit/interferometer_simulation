@@ -296,11 +296,11 @@ int main(int argc, char *argv[])
 			// If the location is above z_position_2nd_grating [which is currently 1]:
 			intensity_after_2nd_grating(current_z_position, el1, w1, r1, x_positions_array, intensity_array); 
 			/* 
-			 * The function 'maximumvalue' outputs the maximum value in a given array.
+			 * The function 'maximum_value' outputs the maximum value in a given array.
 			 * Its arguments are an array and the length of that array [integer].
 			 * Here it gives the largest intensity value.
 		     	 */
-			max = maximumvalue(intensity_array, sp.resolution);
+			max = maximum_value(intensity_array, sp.resolution);
 			/* 
 			 * The function 'ixgenerator' is the x direction intensity calculator. It normalizes and compares intensities
 			 * to cutoff value, then determines which value to input to the array of x intensitites. Its arguments are:
@@ -316,7 +316,7 @@ int main(int argc, char *argv[])
 			printf("Entering intensity_after_1st_grating for row z = %d\n",i); //checking if the looping is working
 			intensity_after_1st_grating(current_z_position, el1, w1, r1, x_positions_array, intensity_array); 
 			// Max value of intensity calculated here.
-			max = maximumvalue(intensity_array, sp.resolution); 
+			max = maximum_value(intensity_array, sp.resolution); 
 			// As before.		
 			ixgenerator(intensity_array, current_z_position, sp.logarithm_scale); 
 		}
@@ -326,7 +326,7 @@ int main(int argc, char *argv[])
 			get_initial_intensity(current_z_position,x_positions_array, intensity_array);
 		
 			// If at the origin?
-			max = maximumvalue(intensity_array, sp.resolution); 
+			max = maximum_value(intensity_array, sp.resolution); 
 			// As before.
 			ixgenerator(intensity_array, current_z_position, sp.logarithm_scale); 
 		}   
