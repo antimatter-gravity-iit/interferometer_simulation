@@ -116,7 +116,7 @@ void ( * intensity_after_1st_grating(double current_z_position,double el1, doubl
 
 				else
 				{ // if usechargeimage = 1, don't ignore image charge effects at G1.
-					coefficient = real_part_fourier_coefficient_array[x2pnts(n1, (int * )pos)] * real_part_fourier_coefficient_array[x2pnts(n2,(int * )pos)] + imaginary_part_fourier_coefficient_array[x2pnts(n1,(int * )pos)] * imaginary_part_fourier_coefficient_array[x2pnts(n2,(int * )pos)];
+					coefficient = real_part_fourier_coefficient_array[find_element_position_in_array(n1, (int * )pos)] * real_part_fourier_coefficient_array[find_element_position_in_array(n2,(int * )pos)] + imaginary_part_fourier_coefficient_array[find_element_position_in_array(n1,(int * )pos)] * imaginary_part_fourier_coefficient_array[find_element_position_in_array(n2,(int * )pos)];
 				}
 				
 				coefficient = coefficient * exp(-M_PI * pow((dn * sp.wavelength * z12)/(sp.grating_period * el2),2));
@@ -216,10 +216,10 @@ void ( * intensity_after_2nd_grating(double current_z_position, double el1x, dou
 						average_n  = ((double)(n1 + n2))/2;
 						dm = m1-m2;
 						average_m  = ((double)(m1 + m2))/2;
-						a5 = ( x2pnts( m1, (int *)pos ) );
-						b5 = ( x2pnts( m2, (int *)pos ) );
-						c5 = ( x2pnts( n1, (int *)pos ) );
-						d5 = ( x2pnts( n2, (int *)pos ) );
+						a5 = ( find_element_position_in_array( m1, (int *)pos ) );
+						b5 = ( find_element_position_in_array( m2, (int *)pos ) );
+						c5 = ( find_element_position_in_array( n1, (int *)pos ) );
+						d5 = ( find_element_position_in_array( n2, (int *)pos ) );
 
 						// 0 means ignore image charge effects, 1 means include image charge effects
 

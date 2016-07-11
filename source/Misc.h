@@ -82,7 +82,7 @@ double sinc(double x);
 double ( *ixgenerator(double a[], double current_z_position, int logchoice)); 
 // accounts for decay (if applicable) and normalizing the intensity scale
 
-int x2pnts(int value, int *arr); 
+int find_element_position_in_array(int value, int *arr); 
 // checks for a certain x-position in the array
 
 #endif
