@@ -151,11 +151,10 @@ void ( * intensity_after_2nd_grating(double current_z_position, double el1x, dou
 	double r1y     = r1x;
 	double w1y     = w1x;
 	double el1y    = el1x;
-	double z12     = sp.z_position_2nd_grating - sp.z_position_1st_grating;
 	double z23     = current_z_position - sp.z_position_2nd_grating;
     	double d1     = sp.grating_period;			// period = period of gratings
     	double d2     = sp.grating_period;
-    	double z13    = z12  +  z23; 				// z distance between grating 1 and 3
+    	double current_z_distance_to_1st_grating    = current_z_position - sp.z_position_1st_grating; // z distance between grating 1 and 3
     	double diffraction_orders    = 5;
     	double _Complex coefficient;
 
@@ -184,12 +183,12 @@ void ( * intensity_after_2nd_grating(double current_z_position, double el1x, dou
 	 * r3 = radius of GSM wavefront curvature after the second grating
 	 * el3 = GSM beam coherence width after the second grating.
     	 */
-    	double el3x = calculate_width(z13, r1x, el1x, w1x, el1x);	// z13 == G2z - G1z + z_start + 0 * zres; GSM coherence width in x-axis
-    	double w3x  = calculate_width(z13, r1x, el1x, w1x, w1x); 	// Beam width in x-axis
-    	double v3x  = calculate_wavefront_radius(z13,r1x,el1x,w1x);	// Gaussian-Schell Model (GSM) radius of wavefront curvature in x-axis
-    	double el3y = calculate_width(z13, r1y, el1y, w1y, el1y); 	// Coherence width in y-axis
-    	double w3y  = calculate_width(z13, r1y, el1y, w1y, w1y); 	// Beam width in y-axis
-    	double v3y  = calculate_wavefront_radius(z13,r1y,el1y,w1y);	// radius of wavefront curvature in y-axis
+    	double el3x = calculate_width(current_z_distance_to_1st_grating, r1x, el1x, w1x, el1x);	// current_z_distance_to_1st_grating == G2z - G1z + z_start + 0 * zres; GSM coherence width in x-axis
+    	double w3x  = calculate_width(current_z_distance_to_1st_grating, r1x, el1x, w1x, w1x); 	// Beam width in x-axis
+    	double v3x  = calculate_wavefront_radius(current_z_distance_to_1st_grating,r1x,el1x,w1x);	// Gaussian-Schell Model (GSM) radius of wavefront curvature in x-axis
+    	double el3y = calculate_width(current_z_distance_to_1st_grating, r1y, el1y, w1y, el1y); 	// Coherence width in y-axis
+    	double w3y  = calculate_width(current_z_distance_to_1st_grating, r1y, el1y, w1y, w1y); 	// Beam width in y-axis
+    	double v3y  = calculate_wavefront_radius(current_z_distance_to_1st_grating,r1y,el1y,w1y);	// radius of wavefront curvature in y-axis
     
     	int pos[41]={0}; // array of 41 elements
 
@@ -236,13 +235,13 @@ void ( * intensity_after_2nd_grating(double current_z_position, double el1x, dou
 							coefficient = coefficient * (real_part_fourier_coefficient_array[central_index_4] - imaginary_part_fourier_coefficient_array[central_index_4] * _Complex_I);
 
 						//argument_d corresponds to the argument of equation 18b from McMorran & Cronin 2008. Note that y=0
-                        			argument_d = -M_PI*(pow( x_positions_array[i]-sp.wavelength*z23*(average_n*cos(sp.twist_angle)/d2 + average_m*z13/(d1*z23) ),2 )/pow(w3x,2) + pow((average_n*sin(sp.twist_angle)*sp.wavelength)/(d2*w3y),2));
+                        			argument_d = -M_PI*(pow( x_positions_array[i]-sp.wavelength*z23*(average_n*cos(sp.twist_angle)/d2 + average_m*current_z_distance_to_1st_grating/(d1*z23) ),2 )/pow(w3x,2) + pow((average_n*sin(sp.twist_angle)*sp.wavelength)/(d2*w3y),2));
                         			//argument_f corresponds to the argument of equation 18c from McMorran & Cronin 2008. Note that y=0
-                        			argument_f = -2*M_PI * x_positions_array[i] * ((delta_n*cos(sp.twist_angle)/d2)*(1-z23/v3x) + (delta_m/d1)*(1-z13/v3x));
+                        			argument_f = -2*M_PI * x_positions_array[i] * ((delta_n*cos(sp.twist_angle)/d2)*(1-z23/v3x) + (delta_m/d1)*(1-current_z_distance_to_1st_grating/v3x));
                         			//argument_p corresponds to the argument of equation 18d from McMorran & Cronin 2008
-                        			argument_p = (2*M_PI*sp.wavelength*z13*delta_m/d1)*(average_n*cos(sp.twist_angle)/d2 + average_m/d1)*(1-z13/v3x) +     (2*M_PI*sp.wavelength*z23*delta_n/d2)*( (average_m*cos(sp.twist_angle)/d1) * (1-z13/v3x) - (average_n*z23/d2)*(pow(cos(sp.twist_angle),2)/v3x)+pow(sin(sp.twist_angle),2)/v3y ) ;
+                        			argument_p = (2*M_PI*sp.wavelength*current_z_distance_to_1st_grating*delta_m/d1)*(average_n*cos(sp.twist_angle)/d2 + average_m/d1)*(1-current_z_distance_to_1st_grating/v3x) +     (2*M_PI*sp.wavelength*z23*delta_n/d2)*( (average_m*cos(sp.twist_angle)/d1) * (1-current_z_distance_to_1st_grating/v3x) - (average_n*z23/d2)*(pow(cos(sp.twist_angle),2)/v3x)+pow(sin(sp.twist_angle),2)/v3y ) ;
                         			//argument_v corresponds to the argument of equation 18e from McMorran & Cronin 2008
-                        			argument_v = -M_PI* pow(sp.wavelength*z23* (delta_n*cos(sp.twist_angle)/d2 + delta_m*z13/(d1*z23)),2)/pow(el3x,2) -M_PI*pow(delta_n*sin(sp.twist_angle)*sp.wavelength*z23/(d2*el3y),2);
+                        			argument_v = -M_PI* pow(sp.wavelength*z23* (delta_n*cos(sp.twist_angle)/d2 + delta_m*current_z_distance_to_1st_grating/(d1*z23)),2)/pow(el3x,2) -M_PI*pow(delta_n*sin(sp.twist_angle)*sp.wavelength*z23/(d2*el3y),2);
 
 						
 						if (((__real__ coefficient) >= sp.intensity_cutoff) || ((__imag__ coefficient) >= sp.intensity_cutoff)) {
