@@ -76,7 +76,7 @@ void ( * intensity_after_1st_grating(double current_z_position,double el1, doubl
 	start = clock();
 	double diff=0;
 
-	double current_z_distance_to_1st_grating    = current_z_position - sp.z_position_1st_grating;	//z location between 1st and 2nd gratings
+	double current_z_distance_to_1st_grating = current_z_position - sp.z_position_1st_grating;  //z location between 1st and 2nd gratings
 	double coefficient; 
     	double diffraction_orders  = 5;	
 	/*
