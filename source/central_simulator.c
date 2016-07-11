@@ -75,7 +75,7 @@ simparam sp;
  * and outputs a ROOT graph display.
  *
  * The main simulation parameters are initialized by argument values. This means that the user has to input
- * these arguments on the command line when executing the program. An example would be "./program 1 300 6400 100 1 1".
+ * these arguments on the command line when executing the program. An example would be "./program 1 1 300 6300 100 1 1".
  *
  * These are the simulation parameters that the user has to provide, in the format "<position>. <explanation>":
  * 1. Account for gravity? 1 = True, 0 = False.
