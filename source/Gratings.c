@@ -76,7 +76,7 @@ void ( * intensity_after_1st_grating(double current_z_position,double el1, doubl
 	start = clock();
 	double diff=0;
 
-	double current_z_distance_to_1st_grating    = current_z_position - sp.z_position_1st_grating;	//z location between 1st and 2nd gratings
+	double current_z_distance_to_1st_grating = current_z_position - sp.z_position_1st_grating;  //z location between 1st and 2nd gratings
 	double coefficient; 
     	double diffraction_orders  = 5;	
 	/*
@@ -147,25 +147,25 @@ void ( * intensity_after_2nd_grating(double current_z_position, double el1x, dou
 	double diff=0;
 
 	// get intensity profile after two grating
-	double G2_x    = sp.G2_x; //x position after second grating
-	double r1y     = r1x;
-	double w1y     = w1x;
-	double el1y    = el1x;
-	double current_z_distance_to_2nd_grating     = current_z_position - sp.z_position_2nd_grating;
-    	double d1     = sp.grating_period;			// period = period of gratings
-    	double d2     = sp.grating_period;
-    	double current_z_distance_to_1st_grating    = current_z_position - sp.z_position_1st_grating; // z distance between grating 1 and 3
-    	double diffraction_orders    = 5;
+    	double diffraction_orders  = 5;
+	double G2_x  		   = sp.G2_x; //x position after second grating
+	double r1y    		   = r1x;
+	double w1y    		   = w1x;
+	double el1y 		   = el1x;
+    	double d1     		   = sp.grating_period;  // period = period of gratings
+    	double d2    		   = sp.grating_period;
+	double current_z_distance_to_2nd_grating = current_z_position - sp.z_position_2nd_grating;
+    	double current_z_distance_to_1st_grating = current_z_position - sp.z_position_1st_grating; // z distance between grating 1 and 3
     	double _Complex coefficient;
 
     	/* THIS FUNCTION IS USING GSM MODEL FROM MCMORRAN, CRONIN 2008
     	 * IT MUST BE CHANGED IF YOU WANT TO USE OLDER MODEL FROM BREZGER 2003
 	 */
 
-    	double delta_n = 0;
-    	double delta_m = 0;
-    	double average_m  = 0;
-    	double average_n  = 0;
+    	double delta_n         = 0;
+    	double delta_m         = 0;
+    	double average_m       = 0;
+    	double average_n       = 0;
     	int    central_index_1 = 0;
     	int    central_index_2 = 0;
     	int    central_index_3 = 0;
@@ -183,17 +183,17 @@ void ( * intensity_after_2nd_grating(double current_z_position, double el1x, dou
 	 * r3 = radius of GSM wavefront curvature after the second grating
 	 * el3 = GSM beam coherence width after the second grating.
     	 */
-    	double el3x = calculate_width(current_z_distance_to_1st_grating, r1x, el1x, w1x, el1x);	// current_z_distance_to_1st_grating == G2z - G1z + z_start + 0 * zres; GSM coherence width in x-axis
-    	double w3x  = calculate_width(current_z_distance_to_1st_grating, r1x, el1x, w1x, w1x); 	// Beam width in x-axis
-    	double v3x  = calculate_wavefront_radius(current_z_distance_to_1st_grating,r1x,el1x,w1x);	// Gaussian-Schell Model (GSM) radius of wavefront curvature in x-axis
-    	double el3y = calculate_width(current_z_distance_to_1st_grating, r1y, el1y, w1y, el1y); 	// Coherence width in y-axis
-    	double w3y  = calculate_width(current_z_distance_to_1st_grating, r1y, el1y, w1y, w1y); 	// Beam width in y-axis
-    	double v3y  = calculate_wavefront_radius(current_z_distance_to_1st_grating,r1y,el1y,w1y);	// radius of wavefront curvature in y-axis
+    	double el3x = calculate_width(current_z_distance_to_1st_grating, r1x, el1x, w1x, el1x);	  // current_z_distance_to_1st_grating == G2z - G1z + z_start + 0 * zres; GSM coherence width in x-axis
+    	double w3x  = calculate_width(current_z_distance_to_1st_grating, r1x, el1x, w1x, w1x); 	  // Beam width in x-axis
+    	double v3x  = calculate_wavefront_radius(current_z_distance_to_1st_grating,r1x,el1x,w1x); // Gaussian-Schell Model (GSM) radius of wavefront curvature in x-axis
+    	double el3y = calculate_width(current_z_distance_to_1st_grating, r1y, el1y, w1y, el1y);   // Coherence width in y-axis
+    	double w3y  = calculate_width(current_z_distance_to_1st_grating, r1y, el1y, w1y, w1y); 	  // Beam width in y-axis
+    	double v3y  = calculate_wavefront_radius(current_z_distance_to_1st_grating,r1y,el1y,w1y); // radius of wavefront curvature in y-axis
     
     	int pos[41]={0}; // array of 41 elements
 
-    	for (int i=0; i<sp.number_of_rows_fourier_coefficient_array; i++){     // sp.number_of_rows_fourier_coefficient_array = rows of real_part_fourier_coefficient_array and imaginary_part_fourier_coefficient_array arrays = 41 for now
-    		pos[i]=i-((sp.number_of_rows_fourier_coefficient_array-1)/2);  // so this goes from -20 to 20
+    	for (int i = 0; i<sp.number_of_rows_fourier_coefficient_array; i++){     // sp.number_of_rows_fourier_coefficient_array = rows of real_part_fourier_coefficient_array and imaginary_part_fourier_coefficient_array arrays = 41 for now
+    		pos[i] = i-((sp.number_of_rows_fourier_coefficient_array-1)/2);  // so this goes from -20 to 20
     	}
     
 	double real_part_fourier_coefficient_array[41]={0};
@@ -203,15 +203,15 @@ void ( * intensity_after_2nd_grating(double current_z_position, double el1x, dou
 	real_and_imaginary_arrays_generator(imaginary_part_fourier_coefficient_array, 2, current_z_position); // calculates phase shift where 2 is to consider real components 
 	
 
-	for (int i=0; i<sp.resolution; i++) {
+	for (int i = 0; i<sp.resolution; i++) {
 		for (int m1 = -diffraction_orders; m1 <= diffraction_orders; m1++) {
 			for (int m2 = -diffraction_orders; m2 <= diffraction_orders; m2++) {
 				for (int n1 = -diffraction_orders; n1 <= diffraction_orders; n1++) {
 					for (int n2 = -diffraction_orders; n2 <= diffraction_orders; n2++) {
 						
-						delta_n = n1-n2;
+						delta_n    = n1-n2;
 						average_n  = ((double)(n1 + n2))/2;
-						delta_m = m1-m2;
+						delta_m    = m1-m2;
 						average_m  = ((double)(m1 + m2))/2;
 
 						central_index_1 = ( find_element_position_in_array( m1, (int *)pos ) );
@@ -222,7 +222,7 @@ void ( * intensity_after_2nd_grating(double current_z_position, double el1x, dou
 						// 0 means ignore image charge effects, 1 means include image charge effects
 
 						if (sp.account_gravity == 0 && sp.account_van_der_waals == 0) {
-							coefficient = 	       sinc(sp.grating1_open_fraction * M_PI * m1) +  0 * _Complex_I;
+							coefficient = 	             sinc(sp.grating1_open_fraction * M_PI * m1) +  0 * _Complex_I;
 							coefficient = coefficient * (sinc(sp.grating1_open_fraction * M_PI * m2)) +  0 * _Complex_I;
 
 						}

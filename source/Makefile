@@ -21,11 +21,11 @@ SRC = *.c
 # ROOT = $(HOME)/Downloads/build
 
 # Yuri Tonin's computer
-ROOT = $(HOME)/InstalledRoot
+# ROOT = $(HOME)/InstalledRoot
 
 # Lucas Abrantes's computer
 # ROOT = /opt/root/build
-# ROOT = /usr/local
+ROOT = /usr/local
 
 CFLAGS = $(shell $(ROOT)/bin/root-config --cflags)
 LIBS =   $(shell $(ROOT)/bin/root-config --libs)
