@@ -55,7 +55,6 @@ double ( * real_and_imaginary_arrays_generator(double real_or_imaginary_array[],
     	double fc;
     	double phase_van_der_waals;		// phase shift if dealing with neutral atoms/molecules
     	double phase_gravity;			// phase shift due to gravity.
-    	double ex;
     	double time_free_fall;
     	int j;
 
@@ -96,7 +95,7 @@ double ( * real_and_imaginary_arrays_generator(double real_or_imaginary_array[],
 		 * Original comment stated the code below was somewhat copied from McMorran's 'NOT IMPLEMENTED YET' section.
 		 * "resolution = step resolution in x-axis. ex += height of window / steps = (40 nm / 1000)"
 		 */
-		for (ex=x_min; ex<x_max; ex +=sp.slit_height/sp.resolution) {
+		for (double ex=x_min; ex<x_max; ex +=sp.slit_height/sp.resolution) {
 			// ex is how far you are from the grating 'wall'
 			// exnm is how far from the wall in nanometers.
 			distance_to_lower_side = fabs(ex) * 1.0e9;
