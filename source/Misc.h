@@ -54,7 +54,7 @@ double initial_beamwidth;                      	// Corresponds to w0 in older ve
 double z_position_1st_grating;                  // In m. Distance of 1st grating to z axis origin (z=0).
 double z_position_2nd_grating;                  // In m. Distance of 2nd grating to z axis origin (z=0).
 double G2_x;		                   	// Initial lateral offset of G2.
-double theta;		                   	// could be 0.05 or more. This is the twist between 1st and second gratings, in degrees. 2nd and 3rd grating are fixed to same rotational twist.
+double twist_angle;		                   	// could be 0.05 or more. This is the twist between 1st and second gratings, in degrees. 2nd and 3rd grating are fixed to same rotational twist.
 double grating_thickness;		        // In m. Used for Van der Waals interactions: see PhaseShifts.c.
 double wedge_angle;	                     	// Grating wedge angle. The variable alpha below depends on this. This is a free parameter. Appears to be related to beam splitting.
 double tilt_angle;                            	// A free parameter. Beta variable below depends on this. If beam is perp. to grating, then tilt (and thus Beta) are 0. This is the twist about the x-axis.

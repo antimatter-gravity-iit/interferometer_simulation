@@ -134,7 +134,7 @@ int main(int argc, char *argv[])
 	sp.grating1_open_fraction	= 0.4;			// TODO LAcomment: explain.
 	sp.grating2_open_fraction	= 0.4;			// TODO LAcomment: explain.
 	sp.G2_x				= 5e-8;			// In m. TODO LAcomment: explain based on Dr McMorran's info.
-	sp.theta			= M_PI *1e-6/180;			// In degrees. This is the relative rotation angle between the two gratings.
+	sp.twist_angle			= M_PI *1e-6/180;			// Twist angle. This is the relative rotation angle between the two gratings.
 	sp.grating_thickness		= 1.0e-6;		// In m. Used for the VdW effect for atoms: see PhaseShifts.c.
 	sp.wedge_angle			= 0* M_PI/180;		  	// In degrees. Grating wedge angle.
 	sp.tilt_angle			= 0* M_PI/180; 	      		// Tilt.
