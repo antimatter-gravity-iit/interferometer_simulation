@@ -6,7 +6,7 @@ Summary of changes made since Summer 2016.
 
 - Changes are summarized across sequences of commits, with the final commit from each sequence being identified by hash number.
 
-## [2016-06-21] (https://github.com/lnevesabrantes/interferometer_simulation/commit/663a437f54a43c88441e7b6c4a204903ba36610d) (current)
+## v0.7 - [2016-06-21](https://github.com/lnevesabrantes/interferometer_simulation/releases/tag/v0.7) (current)
 Commit **663a437f54a43c88441e7b6c4a204903ba36610d**
 
 **One-line summary:** partial rewrite of function *gp2*, merge and correction of *w* and *el* functions and addition of timers.
@@ -59,7 +59,7 @@ Files: various
 - Standardized indentation and block comments;
 - Added variable explanations.
  
-## [2016-06-16](https://github.com/lnevesabrantes/interferometer_simulation/commit/9fede859df7ec4bcda48c86f521227b0ff8394de)
+## v0.6 - [2016-06-16](https://github.com/lnevesabrantes/interferometer_simulation/releases/tag/v0.6)
 Commit **9fede859df7ec4bcda48c86f521227b0ff8394de**
 
 **One-line summary:** added info files, corrected math error in GSM simulation, and allowed choice of scale.
@@ -82,7 +82,7 @@ File: **Makefile**
 File: **PhaseShifts.c**
 - Clarified indentation.
 
-## [2016-06-14](https://github.com/lnevesabrantes/interferometer_simulation/commit/e518c780e3f1bf5c5165599272aecc56e7440afe)
+## v0.5 - [2016-06-14](https://github.com/lnevesabrantes/interferometer_simulation/releases/tag/v0.5)
 Commit **e518c780e3f1bf5c5165599272aecc56e7440afe**
 
 **One-line summary:** Makefile update; minor commentary and indentation edits.
@@ -106,7 +106,7 @@ File: **Misc.c**
 File: **PhaseShifts.c**
 - Corrected mistake with commented variable initialization.
 
-## [2016-06-07](https://github.com/lnevesabrantes/interferometer_simulation/commit/15041ff13e1f9e6d274aa64181e563c07ac30a0e) 
+## v0.4 - [2016-06-07](https://github.com/lnevesabrantes/interferometer_simulation/releases/tag/v0.4)
 Commit **15041ff13e1f9e6d274aa64181e563c07ac30a0e**
 
 **One-line summary:** extensive comment cleanup (with some additions); minor changes in control-flow structures.
@@ -128,7 +128,7 @@ File: **Misc.c**
 File: **Misc.h**
 - Removed commented variable initializations from parameter structure (actual initializations are on central_simulator.c).
 
-## [2016-06-02](https://github.com/lnevesabrantes/interferometer_simulation/commit/2f25cd198c6595d801ff2745bce7926e9ff5da17) 
+## v0.3 - [2016-06-02](https://github.com/lnevesabrantes/interferometer_simulation/releases/tag/v0.3)
 Commit **2f25cd198c6595d801ff2745bce7926e9ff5da17**
 
 **One-line summary:** This is the code as it was before any modifications by the Summer 2016 team.
