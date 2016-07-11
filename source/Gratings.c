@@ -156,7 +156,6 @@ void ( * intensity_after_2nd_grating(double current_z_position, double el1x, dou
     	double d1     = sp.grating_period;			// period = period of gratings
     	double d2     = sp.grating_period;
     	double z13    = z12  +  z23; 				// z distance between grating 1 and 3
-    	double phi    = 0;
     	double diffraction_orders    = 5;
     	double _Complex coefficient;
 
