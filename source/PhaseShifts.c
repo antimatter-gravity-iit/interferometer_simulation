@@ -68,12 +68,12 @@ double ( * real_and_imaginary_arrays_generator(double ReTorImTar[], int ReTorImT
 		 */
 		xmin= sp.slit_height * (1/sp.resolution - cos(sp.tilt_angle)/2); 
 		// if the beam is very orthogonal to gratings (almost 90 degrees), or wedge angle is significant
-		if (sp.tilt_angle<=sp.wedgeangle) {
+		if (sp.tilt_angle<=sp.wedge_angle) {
 			xmax=(sp.slit_height * cos(sp.tilt_angle))/2-sp.slit_height/sp.resolution;
 		}
 		// if beam is not very perpendicular to gratings, then it travels through the slit diagonally, covering more distance, more image charge interaction, etc.	
 		else {
-		xmax= sp.slit_height  *  cos(sp.tilt_angle)/2 - sp.slit_height/sp.resolution  +  sp.grating_thickness  *  (tan(sp.wedgeangle)-tan(sp.tilt_angle));
+		xmax= sp.slit_height  *  cos(sp.tilt_angle)/2 - sp.slit_height/sp.resolution  +  sp.grating_thickness  *  (tan(sp.wedge_angle)-tan(sp.tilt_angle));
 		}
     	}
 	// if tilt < 0; this time xmin changes, xmax is the same
@@ -83,11 +83,11 @@ double ( * real_and_imaginary_arrays_generator(double ReTorImTar[], int ReTorImT
 		 * fabs is for doubles and returns a double absolute value; once again,
 		 * if the tilt isn't that bad, one bound (this time xmin) is just sp.slit_height * cos(sp.tilt_angle)/2  +  sp.slit_height/res.
 		 */
-		if (fabs(sp.tilt_angle)<=sp.wedgeangle) {
+		if (fabs(sp.tilt_angle)<=sp.wedge_angle) {
 		  xmin = -((sp.slit_height * cos(sp.tilt_angle))/2) + sp.slit_height/sp.resolution; 
 		}
 		else { // if the beam is far from perpendicular to grating slits
-		    xmin = -((sp.slit_height * cos(sp.tilt_angle))/2) + sp.slit_height/sp.resolution - sp.grating_thickness * (tan(sp.wedgeangle)-tan(sp.tilt_angle));
+		    xmin = -((sp.slit_height * cos(sp.tilt_angle))/2) + sp.slit_height/sp.resolution - sp.grating_thickness * (tan(sp.wedge_angle)-tan(sp.tilt_angle));
 		}
 	}
     	for (int n=-((sp.number_of_rows_fourier_coefficient_array-1)/2);n<=((sp.number_of_rows_fourier_coefficient_array-1)/2);n++) {
