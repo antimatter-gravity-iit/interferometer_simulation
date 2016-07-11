@@ -172,7 +172,7 @@ void ( * intensity_after_2nd_grating(double current_z_position, double el1x, dou
     	int    central_index_1 = 0;
     	int    central_index_2 = 0;
     	int    central_index_3 = 0;
-    	int    d5 = 0;
+    	int    central_index_4 = 0;
         double argument_d;
         double argument_f;
         double argument_p;
@@ -220,7 +220,7 @@ void ( * intensity_after_2nd_grating(double current_z_position, double el1x, dou
 						central_index_1 = ( find_element_position_in_array( m1, (int *)pos ) );
 						central_index_2 = ( find_element_position_in_array( m2, (int *)pos ) );
 						central_index_3 = ( find_element_position_in_array( n1, (int *)pos ) );
-						d5 = ( find_element_position_in_array( n2, (int *)pos ) );
+						central_index_4 = ( find_element_position_in_array( n2, (int *)pos ) );
 
 						// 0 means ignore image charge effects, 1 means include image charge effects
 
@@ -235,7 +235,7 @@ void ( * intensity_after_2nd_grating(double current_z_position, double el1x, dou
 						}
 					
 							coefficient = coefficient * (real_part_fourier_coefficient_array[central_index_3] + imaginary_part_fourier_coefficient_array[central_index_3] * _Complex_I);
-							coefficient = coefficient * (real_part_fourier_coefficient_array[d5] - imaginary_part_fourier_coefficient_array[d5] * _Complex_I);
+							coefficient = coefficient * (real_part_fourier_coefficient_array[central_index_4] - imaginary_part_fourier_coefficient_array[central_index_4] * _Complex_I);
 
 						//argument_d corresponds to the argument of equation 18b from McMorran & Cronin 2008. Note that y=0
                         			argument_d = -M_PI*(pow( x_positions_array[i]-sp.wavelength*z23*(average_n*cos(theta)/d2 + average_m*z13/(d1*z23) ),2 )/pow(w3x,2) + pow((average_n*sin(theta)*sp.wavelength)/(d2*w3y),2));
