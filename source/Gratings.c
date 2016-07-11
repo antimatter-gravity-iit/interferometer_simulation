@@ -76,7 +76,7 @@ void ( * intensity_after_1st_grating(double current_z_position,double el1, doubl
 	start = clock();
 	double diff=0;
 
-	double z12    = current_z_position - sp.z_position_1st_grating;	//z location between 1st and 2nd gratings
+	double current_z_distance_to_1st_grating    = current_z_position - sp.z_position_1st_grating;	//z location between 1st and 2nd gratings
 	double coefficient; 
     	double diffraction_orders  = 5;	
 	/*
@@ -85,9 +85,9 @@ void ( * intensity_after_1st_grating(double current_z_position,double el1, doubl
 	 * r2 = radius of GSM wavefront curvature after the first grating
 	 * el2 = GSM beam coherence width after the first grating.
     	 */
-	double w2  = calculate_width(z12, r1, el1, w1, w1);		// width of beam between z1 and z2 (after grating 1)
-	double r2  = calculate_wavefront_radius(z12, r1, el1, w1);	// radius of wavefront curvature between grating 1 and 2
-	double el2 = calculate_width(z12, r1, el1, w1, el1);		// beam coherence width
+	double w2  = calculate_width(current_z_distance_to_1st_grating, r1, el1, w1, w1);		// width of beam between z1 and z2 (after grating 1)
+	double r2  = calculate_wavefront_radius(current_z_distance_to_1st_grating, r1, el1, w1);	// radius of wavefront curvature between grating 1 and 2
+	double el2 = calculate_width(current_z_distance_to_1st_grating, r1, el1, w1, el1);		// beam coherence width
     	
 	int pos[41]={0};
 
@@ -119,14 +119,14 @@ void ( * intensity_after_1st_grating(double current_z_position,double el1, doubl
 					coefficient = real_part_fourier_coefficient_array[find_element_position_in_array(n1, (int * )pos)] * real_part_fourier_coefficient_array[find_element_position_in_array(n2,(int * )pos)] + imaginary_part_fourier_coefficient_array[find_element_position_in_array(n1,(int * )pos)] * imaginary_part_fourier_coefficient_array[find_element_position_in_array(n2,(int * )pos)];
 				}
 				
-				coefficient = coefficient * exp(-M_PI * pow((delta_n * sp.wavelength * z12)/(sp.grating_period * el2),2));
+				coefficient = coefficient * exp(-M_PI * pow((delta_n * sp.wavelength * current_z_distance_to_1st_grating)/(sp.grating_period * el2),2));
 				// added isfinite macro in order to avoid inf values
 
 				if (std::isfinite(coefficient)==0 || coefficient < sp.intensity_cutoff) { // if coefficient is infinite, then:
 					coefficient=0;
 				}
 			      	else { // if coefficient ends up larger than cutoff value, add the values to the current a[i][1]'s intensities.
-					intensity_array[i] +=   coefficient * exp(-M_PI * pow(((x_positions_array[i]-average_n * sp.wavelength * z12/sp.grating_period)/w2),2)) * cos(2 * M_PI * (delta_n/sp.grating_period) * (x_positions_array[i]-average_n * sp.wavelength * z12/sp.grating_period) * (1-z12/r2));
+					intensity_array[i] +=   coefficient * exp(-M_PI * pow(((x_positions_array[i]-average_n * sp.wavelength * current_z_distance_to_1st_grating/sp.grating_period)/w2),2)) * cos(2 * M_PI * (delta_n/sp.grating_period) * (x_positions_array[i]-average_n * sp.wavelength * current_z_distance_to_1st_grating/sp.grating_period) * (1-current_z_distance_to_1st_grating/r2));
 				    // Since a[i][1] etc. is actually the ix array, and arrays essentially get passed by reference, this is modifying the ix array.
 				    continue;
 				}
