@@ -105,8 +105,8 @@ void ( * intensity_after_1st_grating(double current_z_position,double el1, doubl
 	for (int i=0; i<sp.resolution; i++) { 
 		for (int n1=-diffraction_orders; n1<=diffraction_orders; n1++) {
 			for (int n2=-diffraction_orders; n2<=diffraction_orders; n2++) {
-				double dn =n1-n2; 
-				// TODO: explain what n, m, dm, dn are. LR, Y 
+				double delta_n =n1-n2; 
+				// TODO: explain what average_n, average_m, delta_m, delta_n are. LR, Y 
 				double average_n = (n1 + n2)/2;
 
 				if (sp.account_gravity == 0 && sp.account_van_der_waals == 0)
@@ -119,14 +119,14 @@ void ( * intensity_after_1st_grating(double current_z_position,double el1, doubl
 					coefficient = real_part_fourier_coefficient_array[find_element_position_in_array(n1, (int * )pos)] * real_part_fourier_coefficient_array[find_element_position_in_array(n2,(int * )pos)] + imaginary_part_fourier_coefficient_array[find_element_position_in_array(n1,(int * )pos)] * imaginary_part_fourier_coefficient_array[find_element_position_in_array(n2,(int * )pos)];
 				}
 				
-				coefficient = coefficient * exp(-M_PI * pow((dn * sp.wavelength * z12)/(sp.grating_period * el2),2));
+				coefficient = coefficient * exp(-M_PI * pow((delta_n * sp.wavelength * z12)/(sp.grating_period * el2),2));
 				// added isfinite macro in order to avoid inf values
 
 				if (std::isfinite(coefficient)==0 || coefficient < sp.intensity_cutoff) { // if coefficient is infinite, then:
 					coefficient=0;
 				}
 			      	else { // if coefficient ends up larger than cutoff value, add the values to the current a[i][1]'s intensities.
-					intensity_array[i] +=   coefficient * exp(-M_PI * pow(((x_positions_array[i]-average_n * sp.wavelength * z12/sp.grating_period)/w2),2)) * cos(2 * M_PI * (dn/sp.grating_period) * (x_positions_array[i]-average_n * sp.wavelength * z12/sp.grating_period) * (1-z12/r2));
+					intensity_array[i] +=   coefficient * exp(-M_PI * pow(((x_positions_array[i]-average_n * sp.wavelength * z12/sp.grating_period)/w2),2)) * cos(2 * M_PI * (delta_n/sp.grating_period) * (x_positions_array[i]-average_n * sp.wavelength * z12/sp.grating_period) * (1-z12/r2));
 				    // Since a[i][1] etc. is actually the ix array, and arrays essentially get passed by reference, this is modifying the ix array.
 				    continue;
 				}
@@ -163,8 +163,8 @@ void ( * intensity_after_2nd_grating(double current_z_position, double el1x, dou
     	 * IT MUST BE CHANGED IF YOU WANT TO USE OLDER MODEL FROM BREZGER 2003
 	 */
 
-    	double dn = 0;
-    	double dm = 0;
+    	double delta_n = 0;
+    	double delta_m = 0;
     	double average_m  = 0;
     	double average_n  = 0;
     	int    central_index_1 = 0;
@@ -210,9 +210,9 @@ void ( * intensity_after_2nd_grating(double current_z_position, double el1x, dou
 				for (int n1 = -diffraction_orders; n1 <= diffraction_orders; n1++) {
 					for (int n2 = -diffraction_orders; n2 <= diffraction_orders; n2++) {
 						
-						dn = n1-n2;
+						delta_n = n1-n2;
 						average_n  = ((double)(n1 + n2))/2;
-						dm = m1-m2;
+						delta_m = m1-m2;
 						average_m  = ((double)(m1 + m2))/2;
 
 						central_index_1 = ( find_element_position_in_array( m1, (int *)pos ) );
@@ -238,11 +238,11 @@ void ( * intensity_after_2nd_grating(double current_z_position, double el1x, dou
 						//argument_d corresponds to the argument of equation 18b from McMorran & Cronin 2008. Note that y=0
                         			argument_d = -M_PI*(pow( x_positions_array[i]-sp.wavelength*z23*(average_n*cos(sp.twist_angle)/d2 + average_m*z13/(d1*z23) ),2 )/pow(w3x,2) + pow((average_n*sin(sp.twist_angle)*sp.wavelength)/(d2*w3y),2));
                         			//argument_f corresponds to the argument of equation 18c from McMorran & Cronin 2008. Note that y=0
-                        			argument_f = -2*M_PI * x_positions_array[i] * ((dn*cos(sp.twist_angle)/d2)*(1-z23/v3x) + (dm/d1)*(1-z13/v3x));
+                        			argument_f = -2*M_PI * x_positions_array[i] * ((delta_n*cos(sp.twist_angle)/d2)*(1-z23/v3x) + (delta_m/d1)*(1-z13/v3x));
                         			//argument_p corresponds to the argument of equation 18d from McMorran & Cronin 2008
-                        			argument_p = (2*M_PI*sp.wavelength*z13*dm/d1)*(average_n*cos(sp.twist_angle)/d2 + average_m/d1)*(1-z13/v3x) +     (2*M_PI*sp.wavelength*z23*dn/d2)*( (average_m*cos(sp.twist_angle)/d1) * (1-z13/v3x) - (average_n*z23/d2)*(pow(cos(sp.twist_angle),2)/v3x)+pow(sin(sp.twist_angle),2)/v3y ) ;
+                        			argument_p = (2*M_PI*sp.wavelength*z13*delta_m/d1)*(average_n*cos(sp.twist_angle)/d2 + average_m/d1)*(1-z13/v3x) +     (2*M_PI*sp.wavelength*z23*delta_n/d2)*( (average_m*cos(sp.twist_angle)/d1) * (1-z13/v3x) - (average_n*z23/d2)*(pow(cos(sp.twist_angle),2)/v3x)+pow(sin(sp.twist_angle),2)/v3y ) ;
                         			//argument_v corresponds to the argument of equation 18e from McMorran & Cronin 2008
-                        			argument_v = -M_PI* pow(sp.wavelength*z23* (dn*cos(sp.twist_angle)/d2 + dm*z13/(d1*z23)),2)/pow(el3x,2) -M_PI*pow(dn*sin(sp.twist_angle)*sp.wavelength*z23/(d2*el3y),2);
+                        			argument_v = -M_PI* pow(sp.wavelength*z23* (delta_n*cos(sp.twist_angle)/d2 + delta_m*z13/(d1*z23)),2)/pow(el3x,2) -M_PI*pow(delta_n*sin(sp.twist_angle)*sp.wavelength*z23/(d2*el3y),2);
 
 						
 						if (((__real__ coefficient) >= sp.intensity_cutoff) || ((__imag__ coefficient) >= sp.intensity_cutoff)) {
