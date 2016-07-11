@@ -171,7 +171,7 @@ void ( * intensity_after_2nd_grating(double current_z_position, double el1x, dou
     	double average_n  = 0;
     	int    a5 = 0;
     	int    b5 = 0;
-    	int    c5 = 0;
+    	int    central_index_3 = 0;
     	int    d5 = 0;
         double argument_d;
         double argument_f;
@@ -218,7 +218,7 @@ void ( * intensity_after_2nd_grating(double current_z_position, double el1x, dou
 						average_m  = ((double)(m1 + m2))/2;
 						a5 = ( find_element_position_in_array( m1, (int *)pos ) );
 						b5 = ( find_element_position_in_array( m2, (int *)pos ) );
-						c5 = ( find_element_position_in_array( n1, (int *)pos ) );
+						central_index_3 = ( find_element_position_in_array( n1, (int *)pos ) );
 						d5 = ( find_element_position_in_array( n2, (int *)pos ) );
 
 						// 0 means ignore image charge effects, 1 means include image charge effects
@@ -233,7 +233,7 @@ void ( * intensity_after_2nd_grating(double current_z_position, double el1x, dou
 							coefficient = coefficient * (real_part_fourier_coefficient_array[b5] - imaginary_part_fourier_coefficient_array[b5] * _Complex_I);
 						}
 					
-							coefficient = coefficient * (real_part_fourier_coefficient_array[c5] + imaginary_part_fourier_coefficient_array[c5] * _Complex_I);
+							coefficient = coefficient * (real_part_fourier_coefficient_array[central_index_3] + imaginary_part_fourier_coefficient_array[central_index_3] * _Complex_I);
 							coefficient = coefficient * (real_part_fourier_coefficient_array[d5] - imaginary_part_fourier_coefficient_array[d5] * _Complex_I);
 
 						//argument_d corresponds to the argument of equation 18b from McMorran & Cronin 2008. Note that y=0
