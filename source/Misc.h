@@ -57,7 +57,7 @@ double G2_x;		                   	// Initial lateral offset of G2.
 double theta;		                   	// could be 0.05 or more. This is the twist between 1st and second gratings, in degrees. 2nd and 3rd grating are fixed to same rotational twist.
 double grating_thickness;		        // In m. Used for Van der Waals interactions: see PhaseShifts.c.
 double wedgeangle;	                     	// Grating wedge angle. The variable alpha below depends on this. This is a free parameter. Appears to be related to beam splitting.
-double tilt;                            	// A free parameter. Beta variable below depends on this. If beam is perp. to grating, then tilt (and thus Beta) are 0. This is the twist about the x-axis.
+double tilt_angle;                            	// A free parameter. Beta variable below depends on this. If beam is perp. to grating, then tilt (and thus Beta) are 0. This is the twist about the x-axis.
 double resolution;	                        // Plot resolution in pixels.
 double z_start;		                      	// defining bounds of the grating structure? This definitely corresponds to a location, probably the bottom of the grating.
 double z_end;	                          	// probably the end of the grating.
