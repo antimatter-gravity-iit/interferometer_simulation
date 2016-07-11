@@ -89,6 +89,20 @@ double ( * real_and_imaginary_arrays_generator(double real_or_imaginary_array[],
 		    x_min = -((sp.slit_height * cos(sp.tilt_angle))/2) + sp.slit_height/sp.resolution - sp.grating_thickness * (tan(sp.wedge_angle)-tan(sp.tilt_angle));
 		}
 	}
+
+	// TODO LAcomment: rewrite. "How much time has passed for a point in this system?" 
+	time_free_fall = current_z_position / sp.particle_velocity;
+
+	/* Atoms will fall due to gravity.
+	 * According to Dr. Daniel Kaplan's paper at arxiv.org/ftp/arxiv/papers/1308/1308.0878.pdf,
+	 * the phase shift caused is 2 * pi * g * t^2 / d, where t is the time in free fall and d is the period of the gratings.
+	 */
+	if (sp.account_gravity == 1)
+		// phase shift due to gravity on particles
+		phase_gravity = (2 * M_PI * gravity_acceleration * pow(time_free_fall, 2)) / sp.grating_period;
+	else
+		phase_gravity = 0;
+
     	for (int n=-((sp.number_of_rows_fourier_coefficient_array-1)/2);n<=((sp.number_of_rows_fourier_coefficient_array-1)/2);n++) {
        		/*
 		 * TODO: LAcomment: make sense of this and explain. 
@@ -106,20 +120,7 @@ double ( * real_and_imaginary_arrays_generator(double real_or_imaginary_array[],
 			 * so the first fc = 2  *  pi  *  -20  *  x_min / period, last fc = 2  *  pi  *  20  *  x_max / period.
 			 * Looks like fc is a quantity proportional to distance from bottom/top of each 'window'/slit"
 			 */
-			fc = 2 * M_PI * n * ex/sp.grating_period; 
-			
-			// TODO LAcomment: rewrite. "How much time has passed for a point in this system?" 
-			time_free_fall = current_z_position / sp.particle_velocity;
-
-			/* Atoms will fall due to gravity.
-			 * According to Dr. Daniel Kaplan's paper at arxiv.org/ftp/arxiv/papers/1308/1308.0878.pdf,
-			 * the phase shift caused is 2 * pi * g * t^2 / d, where t is the time in free fall and d is the period of the gratings.
-			 */
-			if (sp.account_gravity == 1)
-				// phase shift due to gravity on particles
-				phase_gravity = (2 * M_PI * gravity_acceleration * pow(time_free_fall, 2)) / sp.grating_period;
-			else
-				phase_gravity = 0;
+			fc = 2 * M_PI * n * ex/sp.grating_period;
 			  
 			if (sp.account_van_der_waals == 1) {
 				// phase_van_der_waals is phase shift on Muonium/other neutral molecules due to Van der Waals effects through the gratings.
