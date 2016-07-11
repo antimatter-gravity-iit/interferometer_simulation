@@ -235,13 +235,13 @@ void ( * intensity_after_2nd_grating(double current_z_position, double el1x, dou
 							coefficient = coefficient * (real_part_fourier_coefficient_array[central_index_4] - imaginary_part_fourier_coefficient_array[central_index_4] * _Complex_I);
 
 						//argument_d corresponds to the argument of equation 18b from McMorran & Cronin 2008. Note that y=0
-                        			argument_d = -M_PI*(pow( x_positions_array[i]-sp.wavelength*z23*(average_n*cos(sp.twist_angle)/d2 + average_m*current_z_distance_to_1st_grating/(d1*z23) ),2 )/pow(w3x,2) + pow((average_n*sin(sp.twist_angle)*sp.wavelength)/(d2*w3y),2));
+                        			argument_d = -M_PI*(pow( x_positions_array[i]-sp.wavelength*current_z_distance_to_2nd_grating*(average_n*cos(sp.twist_angle)/d2 + average_m*current_z_distance_to_1st_grating/(d1*current_z_distance_to_2nd_grating) ),2 )/pow(w3x,2) + pow((average_n*sin(sp.twist_angle)*sp.wavelength)/(d2*w3y),2));
                         			//argument_f corresponds to the argument of equation 18c from McMorran & Cronin 2008. Note that y=0
-                        			argument_f = -2*M_PI * x_positions_array[i] * ((delta_n*cos(sp.twist_angle)/d2)*(1-z23/v3x) + (delta_m/d1)*(1-current_z_distance_to_1st_grating/v3x));
+                        			argument_f = -2*M_PI * x_positions_array[i] * ((delta_n*cos(sp.twist_angle)/d2)*(1-current_z_distance_to_2nd_grating/v3x) + (delta_m/d1)*(1-current_z_distance_to_1st_grating/v3x));
                         			//argument_p corresponds to the argument of equation 18d from McMorran & Cronin 2008
-                        			argument_p = (2*M_PI*sp.wavelength*current_z_distance_to_1st_grating*delta_m/d1)*(average_n*cos(sp.twist_angle)/d2 + average_m/d1)*(1-current_z_distance_to_1st_grating/v3x) +     (2*M_PI*sp.wavelength*z23*delta_n/d2)*( (average_m*cos(sp.twist_angle)/d1) * (1-current_z_distance_to_1st_grating/v3x) - (average_n*z23/d2)*(pow(cos(sp.twist_angle),2)/v3x)+pow(sin(sp.twist_angle),2)/v3y ) ;
+                        			argument_p = (2*M_PI*sp.wavelength*current_z_distance_to_1st_grating*delta_m/d1)*(average_n*cos(sp.twist_angle)/d2 + average_m/d1)*(1-current_z_distance_to_1st_grating/v3x) +     (2*M_PI*sp.wavelength*current_z_distance_to_2nd_grating*delta_n/d2)*( (average_m*cos(sp.twist_angle)/d1) * (1-current_z_distance_to_1st_grating/v3x) - (average_n*current_z_distance_to_2nd_grating/d2)*(pow(cos(sp.twist_angle),2)/v3x)+pow(sin(sp.twist_angle),2)/v3y ) ;
                         			//argument_v corresponds to the argument of equation 18e from McMorran & Cronin 2008
-                        			argument_v = -M_PI* pow(sp.wavelength*z23* (delta_n*cos(sp.twist_angle)/d2 + delta_m*current_z_distance_to_1st_grating/(d1*z23)),2)/pow(el3x,2) -M_PI*pow(delta_n*sin(sp.twist_angle)*sp.wavelength*z23/(d2*el3y),2);
+                        			argument_v = -M_PI* pow(sp.wavelength*current_z_distance_to_2nd_grating* (delta_n*cos(sp.twist_angle)/d2 + delta_m*current_z_distance_to_1st_grating/(d1*current_z_distance_to_2nd_grating)),2)/pow(el3x,2) -M_PI*pow(delta_n*sin(sp.twist_angle)*sp.wavelength*current_z_distance_to_2nd_grating/(d2*el3y),2);
 
 						
 						if (((__real__ coefficient) >= sp.intensity_cutoff) || ((__imag__ coefficient) >= sp.intensity_cutoff)) {
