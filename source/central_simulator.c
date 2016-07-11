@@ -309,7 +309,7 @@ int main(int argc, char *argv[])
 			 * 	choice of scale for the plot.
 			 * The function only modifies the array fed to it; it doesn't return any value. 
 			 */  
-		    	ixgenerator(intensity_array, current_z_position, sp.logarithm_scale); 
+		    	ixgenerator(intensity_array, current_z_position); 
 		}
 		else if (current_z_position > sp.z_position_1st_grating) {
 			// If interacting with the first grating, calculates intensity profile.
@@ -318,7 +318,7 @@ int main(int argc, char *argv[])
 			// Max value of intensity calculated here.
 			max = maximum_value(intensity_array, sp.resolution); 
 			// As before.		
-			ixgenerator(intensity_array, current_z_position, sp.logarithm_scale); 
+			ixgenerator(intensity_array, current_z_position); 
 		}
 		else {
 			// Simple GSM propagation until it hits the first grating.
@@ -328,7 +328,7 @@ int main(int argc, char *argv[])
 			// If at the origin?
 			max = maximum_value(intensity_array, sp.resolution); 
 			// As before.
-			ixgenerator(intensity_array, current_z_position, sp.logarithm_scale); 
+			ixgenerator(intensity_array, current_z_position); 
 		}   
 
 		for (int j=0; j<sp.resolution; j++ ) {
