@@ -8,7 +8,26 @@ Summary of changes to the source code.
 
 - Last commit is identified by hash number.
 
-## v0.7 - [2016-06-21](https://github.com/lnevesabrantes/interferometer_simulation/releases/tag/v0.7) (current)
+## Unreleased
+Commit **TBA**
+
+**One-line summary:** TBA.
+
+Files: **all source code files**
+- Added a standardized header to every file, based on central_simulator.c (see below). Includes copyright notice
+and a reference to Dr. McMorran's thesis, as well as a (very) brief description of the file's purpose.
+
+Files: **central_simulator.c**, **README.md**, **INSTALL**
+- Edited central_simulator.c header: detailed collaborator list moved to new file CREDITS,
+and ASCII diagram moved to INSTALL.
+- Minor INSTALL updates, including command-line arguments.
+
+File: **CREDITS**
+- Created to host detailed collaborator list previously on central_simulator.c.
+
+To be completed
+
+## v0.7 - [2016-06-21](https://github.com/lnevesabrantes/interferometer_simulation/releases/tag/v0.7)
 Commit **663a437f54a43c88441e7b6c4a204903ba36610d**
 
 **One-line summary:** partial rewrite of function *gp2*, merge and correction of *w* and *el* functions and addition of timers.
