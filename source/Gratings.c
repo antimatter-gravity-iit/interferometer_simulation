@@ -169,8 +169,8 @@ void ( * intensity_after_2nd_grating(double current_z_position, double el1x, dou
     	double dm = 0;
     	double average_m  = 0;
     	double average_n  = 0;
-    	int    a5 = 0;
-    	int    b5 = 0;
+    	int    central_index_1 = 0;
+    	int    central_index_2 = 0;
     	int    central_index_3 = 0;
     	int    d5 = 0;
         double argument_d;
@@ -216,8 +216,9 @@ void ( * intensity_after_2nd_grating(double current_z_position, double el1x, dou
 						average_n  = ((double)(n1 + n2))/2;
 						dm = m1-m2;
 						average_m  = ((double)(m1 + m2))/2;
-						a5 = ( find_element_position_in_array( m1, (int *)pos ) );
-						b5 = ( find_element_position_in_array( m2, (int *)pos ) );
+
+						central_index_1 = ( find_element_position_in_array( m1, (int *)pos ) );
+						central_index_2 = ( find_element_position_in_array( m2, (int *)pos ) );
 						central_index_3 = ( find_element_position_in_array( n1, (int *)pos ) );
 						d5 = ( find_element_position_in_array( n2, (int *)pos ) );
 
@@ -229,8 +230,8 @@ void ( * intensity_after_2nd_grating(double current_z_position, double el1x, dou
 
 						}
 						else { // assumes G1 is identical to G2
-							coefficient = 	      (real_part_fourier_coefficient_array[a5] + imaginary_part_fourier_coefficient_array[a5] * _Complex_I); // 
-							coefficient = coefficient * (real_part_fourier_coefficient_array[b5] - imaginary_part_fourier_coefficient_array[b5] * _Complex_I);
+							coefficient = 	      (real_part_fourier_coefficient_array[central_index_1] + imaginary_part_fourier_coefficient_array[central_index_1] * _Complex_I); // 
+							coefficient = coefficient * (real_part_fourier_coefficient_array[central_index_2] - imaginary_part_fourier_coefficient_array[central_index_2] * _Complex_I);
 						}
 					
 							coefficient = coefficient * (real_part_fourier_coefficient_array[central_index_3] + imaginary_part_fourier_coefficient_array[central_index_3] * _Complex_I);
