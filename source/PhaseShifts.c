@@ -49,7 +49,7 @@ double ( * real_and_imaginary_arrays_generator(double ReTorImTar[], int ReTorImT
   	double C3 = 2.0453e-2;			// the VdW coefficient for hydrogen (assumed to be the same for muonium). In meV * nm^3.
     	double hbar = 6.58212e-13;		// Planck's reduced constant in meV * s.
     	double exnmleft;			// how many nm from the left side of each slit are we?
-    	double exnmright;			// how many nm from the right side of each slit are we?
+    	double distance_to_upper_side;			// how many nm from the right side of each slit are we?
     	double xmin;				// beginning of path of wave through the slit
     	double xmax;				// end of path of wave/beam through the slit
     	double fc;
@@ -100,7 +100,7 @@ double ( * real_and_imaginary_arrays_generator(double ReTorImTar[], int ReTorImT
 			// ex is how far you are from the grating 'wall'
 			// exnm is how far from the wall in nanometers.
 			exnmleft = fabs(ex) * 1.0e9;
-			exnmright = fabs(xmax - ex) * 1.0e9; 
+			distance_to_upper_side = fabs(xmax - ex) * 1.0e9; 
 			
 			/* TODO LAcomment : rewrite. 
 			 * "fc is another electron thing; or the diffraction pattern? 2pi*n*x/period?
@@ -124,10 +124,10 @@ double ( * real_and_imaginary_arrays_generator(double ReTorImTar[], int ReTorImT
 			  
 			if (sp.account_van_der_waals == 1) {
 				// phase_van_der_waals is phase shift on Muonium/other neutral molecules due to Van der Waals effects through the gratings.
-				if (exnmleft == 0 || exnmright == 0)
+				if (exnmleft == 0 || distance_to_upper_side == 0)
 					phase_van_der_waals = 0;
 				else
-					phase_van_der_waals = -C3 * sp.grating_thickness / (hbar * sp.particle_velocity * pow(exnmleft, 3)) -C3 * sp.grating_thickness / (hbar * sp.particle_velocity * pow(exnmright, 3));
+					phase_van_der_waals = -C3 * sp.grating_thickness / (hbar * sp.particle_velocity * pow(exnmleft, 3)) -C3 * sp.grating_thickness / (hbar * sp.particle_velocity * pow(distance_to_upper_side, 3));
 			}
 			else {
 				phase_van_der_waals = 0;
