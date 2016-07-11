@@ -43,7 +43,7 @@
 
 #include <complex.h>
 
-double ( * real_and_imaginary_arrays_generator(double real_or_imaginary_array[], int ReTorImT, double current_z_position))
+double ( * real_and_imaginary_arrays_generator(double real_or_imaginary_array[], int real_or_imaginary, double current_z_position))
 {
 	double gravity_acceleration = -9.8;	// acceleration due to gravity. 
   	double C3 = 2.0453e-2;			// the VdW coefficient for hydrogen (assumed to be the same for muonium). In meV * nm^3.
@@ -137,11 +137,11 @@ double ( * real_and_imaginary_arrays_generator(double real_or_imaginary_array[],
 			j = n + ((sp.number_of_rows_fourier_coefficient_array-1)/2);
 				
 			// if it's the real_part_fourier_coefficient_array
-			if (ReTorImT == 1)										
+			if (real_or_imaginary == 1)										
 				// so fc and phase_van_der_waals are both phase shifts; angles.
 				real_or_imaginary_array[j]  += cos(phase_van_der_waals + fc + phase_gravity);
 			// if it's the imaginary_part_fourier_coefficient_array array
-			else if (ReTorImT == 2)
+			else if (real_or_imaginary == 2)
 				// so fc and phase_van_der_waals are both phase shifts; angles.
 				real_or_imaginary_array[j]  += sin(phase_van_der_waals + fc + phase_gravity); 
 		}
