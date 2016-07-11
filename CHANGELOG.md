@@ -1,10 +1,12 @@
 # Change Log
 
-Summary of changes made since Summer 2016. 
+Summary of changes to the source code.
 
-- Version indication is by date of last commit.
+- Changes up to v0.3 are unrecorded.
 
-- Changes are summarized across sequences of commits, with the final commit from each sequence being identified by hash number.
+- Version date is date of last commit before version tag (excluding change log edits).
+
+- Last commit is identified by hash number.
 
 ## v0.7 - [2016-06-21](https://github.com/lnevesabrantes/interferometer_simulation/releases/tag/v0.7) (current)
 Commit **663a437f54a43c88441e7b6c4a204903ba36610d**
@@ -123,7 +125,7 @@ File: **central_simulator.c**
 
 File: **Misc.c**
 - Rewrote the function *sinc* with a different *if-else* structure;
-- Rewrote nested *if* sequence as a single 'if' block.   
+- Rewrote nested *if* sequence as a single 'if' block. 
 
 File: **Misc.h**
 - Removed commented variable initializations from parameter structure (actual initializations are on central_simulator.c).
@@ -132,3 +134,13 @@ File: **Misc.h**
 Commit **2f25cd198c6595d801ff2745bce7926e9ff5da17**
 
 **One-line summary:** This is the code as it was before any modifications by the Summer 2016 team.
+
+## v0.2 - [2016-01-22](https://github.com/lnevesabrantes/interferometer_simulation/releases/tag/v0.2)
+Commit **acccdbe65a8d22abd2529660537077c17eae9463**
+
+**One-line summary:** This is the code as it was before any modifications by the Spring 2016 team.
+
+## v0.1 - [2015-11-19](https://github.com/lnevesabrantes/interferometer_simulation/releases/tag/v0.1)
+Commit **b6be3bb7186af70d75b90328c1654c0156946ffe**
+
+**One-line summary:** Original source before cleanup by Melanie Cornelius.
