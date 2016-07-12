@@ -44,7 +44,7 @@ double maximum_value(double arr[], int array_size){
     double m =0;
     for (int i = 0; i < array_size; i++ ){
         if (m<arr[i]){
-            m = arr[i];// finds the maximum value of the array
+            m = arr[i];
         }
     }
     return m;
@@ -52,7 +52,7 @@ double maximum_value(double arr[], int array_size){
 
 
 double sinc(double x){
-    // this function avoids a division by x=0, sinc is defined to be sin(x)/x which will definied as 1 in such case
+// this function avoids a division by x=0, sinc is defined to be sin(x)/x which will definied as 1 in such case
     double sinc_value=1;
     if (x!=0){
         sinc_value = (sin(x))/x;
@@ -96,11 +96,12 @@ double *ixgenerator(double a[], double current_z_position)
             a[i]=0;
         }
 
-        // a[i][1] = a[i][1]/max;//divides each element of the array by max, normalize it
+
         if (sp.logarithm_scale == 1 && a[i] > 0)
         {
             a[i] = log(a[i]/min); // it tries to make sure all elements are above 1, then takes the logarithm to scale the stuff better
-        }
+        			  // TODO: Ycomment: not sure why it is being divide by min; shouldn't it be divided by the maximum when normalizing? 
+	}
     }
 }
 
