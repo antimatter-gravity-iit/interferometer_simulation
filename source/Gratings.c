@@ -105,17 +105,17 @@ void ( * intensity_after_1st_grating(double current_z_position,double el1, doubl
 	for (int i=0; i<sp.resolution; i++) { 
 		for (int n1=-diffraction_orders; n1<=diffraction_orders; n1++) {
 			for (int n2=-diffraction_orders; n2<=diffraction_orders; n2++) {
-				double delta_n =n1-n2; 
-				// TODO: explain what average_n, average_m, delta_m, delta_n are. LR, Y 
+				//To understand delta_n and average_n check McMorran 2008 eq. 15
+				double delta_n =n1-n2;
 				double average_n = (n1 + n2)/2;
 
 				if (sp.account_gravity == 0 && sp.account_van_der_waals == 0)
-				{ // if useimagecharge = 0, ignore image charge effects at G1. 
+				{
 					coefficient = sinc(sp.grating1_open_fraction * M_PI * n1)  *  (sinc(sp.grating1_open_fraction * M_PI * n2) * pow((sp.grating1_open_fraction), 2));
 				}
 
 				else
-				{ // if usechargeimage = 1, don't ignore image charge effects at G1.
+				{
 					coefficient = real_part_fourier_coefficient_array[find_element_position_in_array(n1, (int * )pos)] * real_part_fourier_coefficient_array[find_element_position_in_array(n2,(int * )pos)] + imaginary_part_fourier_coefficient_array[find_element_position_in_array(n1,(int * )pos)] * imaginary_part_fourier_coefficient_array[find_element_position_in_array(n2,(int * )pos)];
 				}
 				
@@ -208,7 +208,7 @@ void ( * intensity_after_2nd_grating(double current_z_position, double el1x, dou
 			for (int m2 = -diffraction_orders; m2 <= diffraction_orders; m2++) {
 				for (int n1 = -diffraction_orders; n1 <= diffraction_orders; n1++) {
 					for (int n2 = -diffraction_orders; n2 <= diffraction_orders; n2++) {
-						
+						// To understand the following terms check McMorran 2008 eq. 15a
 						delta_n    = n1-n2;
 						average_n  = ((double)(n1 + n2))/2;
 						delta_m    = m1-m2;
@@ -218,8 +218,6 @@ void ( * intensity_after_2nd_grating(double current_z_position, double el1x, dou
 						central_index_2 = ( find_element_position_in_array( m2, (int *)pos ) );
 						central_index_3 = ( find_element_position_in_array( n1, (int *)pos ) );
 						central_index_4 = ( find_element_position_in_array( n2, (int *)pos ) );
-
-						// 0 means ignore image charge effects, 1 means include image charge effects
 
 						if (sp.account_gravity == 0 && sp.account_van_der_waals == 0) {
 							coefficient = 	             sinc(sp.grating1_open_fraction * M_PI * m1) +  0 * _Complex_I;

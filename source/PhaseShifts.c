@@ -61,9 +61,8 @@ double ( * real_and_imaginary_arrays_generator(double real_or_imaginary_array[],
 	// if the beam is not normal/perpendicular to the gratings it encounters
 	if (sp.tilt_angle>=0) {
 		/*
-		 * TODO: LAcomment and LRcomment: make sense of this and explain.
- 		 * Previous comment: "minimum distance beam travels through slit; or maybe it's when the 1st order
-		 * diffracted beams are going in diagonally, what is the min x?
+		 * x_min and x_max are the limits in the x direction that the beam can travel through that may vary due to the tilt.
+ 		 * For a more detailed explanation, read the Latex file PhaseShifts_explained.
 		 */
 		x_min= sp.slit_height * (1/sp.resolution - cos(sp.tilt_angle)/2); 
 		// if the beam is very orthogonal to gratings (almost 90 degrees), or wedge angle is significant
@@ -90,7 +89,7 @@ double ( * real_and_imaginary_arrays_generator(double real_or_imaginary_array[],
 		}
 	}
 
-	// TODO LAcomment: rewrite. "How much time has passed for a point in this system?" 
+	// Time passed until current z position 
 	time_free_fall = current_z_position / sp.particle_velocity;
 
 	/* Atoms will fall due to gravity.
@@ -104,22 +103,11 @@ double ( * real_and_imaginary_arrays_generator(double real_or_imaginary_array[],
 		phase_gravity = 0;
 
     	for (int n=-((sp.number_of_rows_fourier_coefficient_array-1)/2);n<=((sp.number_of_rows_fourier_coefficient_array-1)/2);n++) {
-       		/*
-		 * TODO: LAcomment: make sense of this and explain. 
-		 * Original comment stated the code below was somewhat copied from McMorran's 'NOT IMPLEMENTED YET' section.
-		 * "resolution = step resolution in x-axis. ex += height of window / steps = (40 nm / 1000)"
-		 */
 		for (double ex=x_min; ex<x_max; ex +=sp.slit_height/sp.resolution) {
 			// ex is how far you are from the grating 'wall'
-			// exnm is how far from the wall in nanometers.
 			distance_to_lower_side = fabs(ex) * 1.0e9;
 			distance_to_upper_side = fabs(x_max - ex) * 1.0e9; 
 			
-			/* TODO LAcomment : rewrite. 
-			 * "fc is another electron thing; or the diffraction pattern? 2pi*n*x/period?
-			 * so the first fc = 2  *  pi  *  -20  *  x_min / period, last fc = 2  *  pi  *  20  *  x_max / period.
-			 * Looks like fc is a quantity proportional to distance from bottom/top of each 'window'/slit"
-			 */
 			fc = 2 * M_PI * n * ex/sp.grating_period;
 			  
 			if (sp.account_van_der_waals == 1) {
@@ -148,7 +136,6 @@ double ( * real_and_imaginary_arrays_generator(double real_or_imaginary_array[],
 	}
 	
 	for (int i=0; i<sp.number_of_rows_fourier_coefficient_array; i++) {	
-		// TODO LAcomment: explain. "So is this some sort of normalization?"	
 		real_or_imaginary_array[i] = real_or_imaginary_array[i]/sp.resolution;
 	}
 	printf("Gravitational phase shift: %.10f rad\n", phase_gravity);
