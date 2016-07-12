@@ -127,17 +127,16 @@ int main(int argc, char *argv[])
 	sp.wavelength 			= 6.626068e-34 / (1.8926409e-28 * sp.particle_velocity);
 
 	// Grating geometry parameters.
-	sp.z_position_1st_grating	= 1.0e-6;		// In m.
-	sp.z_position_2nd_grating	= 4.5e-2;		// In m.
-	// Height of each slit is calculated as half the grating period (distance between gratings).
-	sp.slit_height 			= sp.grating_period / 2;
-	sp.grating1_open_fraction	= 0.4;			// TODO LAcomment: explain.
-	sp.grating2_open_fraction	= 0.4;			// TODO LAcomment: explain.
-	sp.G2_x				= 5e-8;			// In m. TODO LAcomment: explain based on Dr McMorran's info.
-	sp.twist_angle			= M_PI *1e-6/180;			// Twist angle. This is the relative rotation angle between the two gratings.
-	sp.grating_thickness		= 1.0e-6;		// In m. Used for the VdW effect for atoms: see PhaseShifts.c.
-	sp.wedge_angle			= 0* M_PI/180;		  	// In degrees. Grating wedge angle.
-	sp.tilt_angle			= 0* M_PI/180; 	      		// Tilt.
+	sp.z_position_1st_grating	= 1.0e-6;		 // In meters.
+	sp.z_position_2nd_grating	= 4.5e-2;		 // In meters.
+	sp.slit_height 			= sp.grating_period / 2; // Height of each slit is calculated as half the grating period (distance between gratings).
+	sp.grating1_open_fraction	= 0.4;			 // TODO LYcomment: we are not sure what this exactly means. Dr. McMorran's answers will probably help.
+	sp.grating2_open_fraction	= 0.4;			 // TODO LYcomment: same as above.
+	sp.G2_x				= 5e-8;			 // In meters. TODO LAcomment: explain based on Dr McMorran's answers.
+	sp.twist_angle			= M_PI *1e-6/180;	 // Twist angle. This is the relative rotation angle between the two gratings.
+	sp.grating_thickness		= 1.0e-6;		 // In meters. Used for the VdW effect for atoms: see PhaseShifts.c.
+	sp.wedge_angle			= 0* M_PI/180;		 // In degrees. Grating wedge angle.
+	sp.tilt_angle			= 0* M_PI/180; 	      	 // Tilt.
 
 	/* 
 	 * Spatial parameters.
@@ -150,10 +149,12 @@ int main(int argc, char *argv[])
 	 * z_position_1st_grating and z_position_2nd_grating variables above,
 	 * and z_start and z_end below.
 	 */	
-	sp.z_start    			= -1.0e-2;	      	// In m. z start position
-	sp.z_end      			= 1.0e-1;	      	// In m. z end position
- 	sp.x_start    			= -5.0e-3;     		// In m. x start position
-	sp.x_end      			= 5.0e-3;      		// In m. x end position
+
+	sp.z_start    			= -1.0e-2;	      	// In meters. z start position
+	sp.z_end      			= 1.0e-1;	      	// In meters. z end position
+ 	sp.x_start    			= -5.0e-3;     		// In meters. x start position
+	sp.x_end      			= 5.0e-3;      		// In meters. x end position
+	
 	/* 
 	 * TODO Ycomment: y_start and y_end are not being used in the code. 
 	 * We didn't delete it for now in case the value they assume help us understand something later
@@ -161,8 +162,8 @@ int main(int argc, char *argv[])
 	//sp.y_start  = -5.0e-3;      				// y start position
 	//sp.y_end    = 5.0e-3;       				// y end position
 
-	sp.intensity_cutoff				= 1e-10;	// Point at which the intensity cuts off and is treated as 0.
-	sp.number_of_rows_fourier_coefficient_array	= 41;  		// Rows of real_part_fourier_coefficient_array and imaginary_part_fourier_coefficient_array arrays; used to calculate phase shift.
+	sp.intensity_cutoff			    = 1e-10;	// Point at which the intensity cuts off and is treated as 0.
+	sp.number_of_rows_fourier_coefficient_array = 41;  	// Rows of real_part_fourier_coefficient_array and imaginary_part_fourier_coefficient_array arrays; used to calculate phase shift.
 
 	/* 
 	 * The program prints a standard message before proceeding to the simulation. It includes a copyright notice
@@ -208,15 +209,16 @@ int main(int argc, char *argv[])
 	 * given that the beam propagates in the z direction. That is, with each step in z the intensity_array holds the intensity
 	 * values associated with each position in x.
 	 */
-	double *intensity_array;						// Intensity array.
-    	double *x_positions_array;						// Array of x position of intensity.
-	intensity_array = (double*) calloc(sp.resolution, sizeof(double)); 	// Allocate dynamic memory for intensity array.
-	x_positions_array = (double*) calloc(sp.resolution, sizeof(double)); 	// Allocate dynamic memory for horizontal position array.
-	int initial_z_position;							// Where z position begins.
-	double max;								// Stores computed max value of intensity at a specific x location.
-   	int total_number_of_pixels = sp.resolution * sp.resolution;  		// Pixels on full simulation graph.
+	
+	double *intensity_array;								// Intensity array.
+    	double *x_positions_array;								// Array of x position of intensity.
+	intensity_array = (double*) calloc(sp.resolution, sizeof(double)); 			// Allocate dynamic memory for intensity array.
+	x_positions_array = (double*) calloc(sp.resolution, sizeof(double)); 			// Allocate dynamic memory for horizontal position array.
+	int initial_z_position;									// Where z position begins.
+	double max;										// Stores computed max value of intensity at a specific x location.
+   	int total_number_of_pixels = sp.resolution * sp.resolution;  				// Pixels on full simulation graph.
     	double *pixel_array_memory = (double*) calloc(total_number_of_pixels, sizeof(double)); 	// Allocating dynamic memory for pixel array.
-	double z_resolution = (sp.z_end-sp.z_start)/sp.resolution; 		// Step resolution used in computation.
+	double z_resolution = (sp.z_end-sp.z_start)/sp.resolution; 				// Step resolution used in computation.
 
      
 	/*
@@ -240,6 +242,7 @@ int main(int argc, char *argv[])
 	 *
 	 * The functions 'calculate_width' and 'v' output a double.
 	 */
+	
 	double w1  = calculate_width(sp.z_position_1st_grating, sp.initial_radius_of_wavefront_curvature, sp.initial_coherence_width, sp.initial_beamwidth, sp.initial_beamwidth);
 	double el1 = calculate_width(sp.z_position_1st_grating, sp.initial_radius_of_wavefront_curvature, sp.initial_coherence_width, sp.initial_beamwidth, sp.initial_coherence_width);
 	double r1  = calculate_wavefront_radius(sp.z_position_1st_grating, sp.initial_radius_of_wavefront_curvature, sp.initial_coherence_width, sp.initial_beamwidth);
@@ -256,6 +259,7 @@ int main(int argc, char *argv[])
 		x_positions_array[i] = sp.x_start + (i) * ((sp.x_end-sp.x_start)/(sp.resolution-1));
 	
 	for (int i=(initial_z_position); i<sp.resolution; i++) {
+		
 		// Each time the loop repeats, you reset the array's positions and intensities to zero. 
 		memset(intensity_array, 0, sp.resolution * sizeof(double));
 		
@@ -291,16 +295,20 @@ int main(int argc, char *argv[])
 		 *		 X positions,
 		 *		 x intensity profile.
 		 */
+		
 		if (current_z_position > sp.z_position_2nd_grating) { 
+			
 			printf("Entering intensity_after_2nd_grating for row z = %d\n",i); //checking if the looping is working
 			// If the location is above z_position_2nd_grating [which is currently 1]:
 			intensity_after_2nd_grating(current_z_position, el1, w1, r1, x_positions_array, intensity_array); 
+			
 			/* 
 			 * The function 'maximum_value' outputs the maximum value in a given array.
 			 * Its arguments are an array and the length of that array [integer].
 			 * Here it gives the largest intensity value.
 		     	 */
 			max = maximum_value(intensity_array, sp.resolution);
+			
 			/* 
 			 * The function 'ixgenerator' is the x direction intensity calculator. It normalizes and compares intensities
 			 * to cutoff value, then determines which value to input to the array of x intensitites. Its arguments are:
@@ -312,12 +320,15 @@ int main(int argc, char *argv[])
 		    	ixgenerator(intensity_array, current_z_position); 
 		}
 		else if (current_z_position > sp.z_position_1st_grating) {
+			
 			// If interacting with the first grating, calculates intensity profile.
 			printf("Entering intensity_after_1st_grating for row z = %d\n",i); //checking if the looping is working
 			intensity_after_1st_grating(current_z_position, el1, w1, r1, x_positions_array, intensity_array); 
+			
 			// Max value of intensity calculated here.
 			max = maximum_value(intensity_array, sp.resolution); 
-			// As before.		
+			
+			// See previous "if".		
 			ixgenerator(intensity_array, current_z_position); 
 		}
 		else {
@@ -327,12 +338,16 @@ int main(int argc, char *argv[])
 		
 			// If at the origin?
 			max = maximum_value(intensity_array, sp.resolution); 
-			// As before.
+			
+			// See previous "if".
 			ixgenerator(intensity_array, current_z_position); 
 		}   
 
+		/* 
+		 * The for loop below creates a big array (pixel_array_memory[f])
+		 * that takes each intensity_array and puts one after the other.
+		 */
 		for (int j=0; j<sp.resolution; j++ ) {
-			// TODO LAcomment: update? "Resolution * i + j; still keeping track of location."
 			int f = sp.resolution * i + j; 
 		    	// The f-th element of pixel_array_memory is set to be the intensity of the beam at the j-th point.	
 		    	pixel_array_memory[f] = intensity_array[j]; 
