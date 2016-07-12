@@ -110,15 +110,12 @@ double ( * real_and_imaginary_arrays_generator(double real_or_imaginary_array[],
 			
 			fc = 2 * M_PI * n * ex/sp.grating_period;
 			  
-			if (sp.account_van_der_waals == 1) {
+			if (sp.account_van_der_waals == 0 || distance_to_lower_side == 0 || distance_to_upper_side == 0) {
 				// phase_van_der_waals is phase shift on Muonium/other neutral molecules due to Van der Waals effects through the gratings.
-				if (distance_to_lower_side == 0 || distance_to_upper_side == 0)
-					phase_van_der_waals = 0;
-				else
-					phase_van_der_waals = -C3 * sp.grating_thickness / (hbar * sp.particle_velocity * pow(distance_to_lower_side, 3)) -C3 * sp.grating_thickness / (hbar * sp.particle_velocity * pow(distance_to_upper_side, 3));
+				phase_van_der_waals = 0;
 			}
 			else {
-				phase_van_der_waals = 0;
+				phase_van_der_waals = -C3 * sp.grating_thickness / (hbar * sp.particle_velocity * pow(distance_to_lower_side, 3)) -C3 * sp.grating_thickness / (hbar * sp.particle_velocity * pow(distance_to_upper_side, 3));
 			}	
 
 			// j goes from 0 to 40 (right now sp.number_of_rows_fourier_coefficient_array = 41)
