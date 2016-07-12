@@ -4,28 +4,52 @@ Summary of changes to the source code.
 
 - Changes up to v0.3 are unrecorded.
 
-- Version date is date of last commit before version tag (excluding change log edits).
+- Versions are dated as if released on the day of the last commit before the version tag (excluding change log edits).
 
-- Last commit is identified by hash number.
+## v1.0 - [2016-07-12](https://github.com/lnevesabrantes/interferometer_simulation/releases/tag/v1.0)
+Commit **06ed5305ba53235bf6079fa6b814d36367795cfd**
 
-## Unreleased
-Commit **TBA**
+This version includes all the changes and documentation made by the Summer 2016 team
+before reaching out to Dr. McMorran for the first time. The quantity and extent of the changes
+prompted us to skip v0.8 and v0.9 as intermediate stages: the program has been fast-forwarded to
+v1.0. Many minor differences are not listed below, hopefully being self-explanatory.
+Extra documentation is now available in a dedicated folder.
 
-**One-line summary:** TBA.
+**Main changes (various files):**
+- Added a standardized header to every source file, based on central_simulator.c (see below).
+Includes copyright notice and a reference to Dr. McMorran's thesis, as well as a (very) brief
+description of the file's purpose.
+- **Created "documentation" folder with info on the Gaussian-Schell model (GSM) implementation,
+along with a chart depicting the structure of the code.** The documents should be revised and expanded
+with information from Dr. McMorran in the near future.
+- Renamed most variables (including structure members) and functions. The new names are verbose
+and should be more helpful when trying to figure out what each bit of code does. Unused and duplicate
+variables have been deleted altogether. A fairly complete list of these modifications can be found in
+the documentation folder.
+- Clarified which units are in use (see central_simulator.c). Most of the code now works in SI units.
+The existing exceptions are pointed out in comments, like in PhaseShifts.c. An important one:
+**the user inputs the period of the gratings in nanometers, but the code converts it to meters**.
+- Removed any and all code that referred to electrons, since it hadn't been mantained adequately
+and the muonium simulation included lots of dangerous leftovers from it. In the future, the electron
+simulation could be implemented again, based on older versions and especially Dr. McMorran's original code.
+This should be done as carefully as possible, such that the simulations for different beam types remain
+independent, especially regarding GSM and phase shifts modeling.
+- Added (again) an input parameter turning Van der Waals interactions on and off.
+- Rotated the main plot 90 degrees clockwise by editing SimplePlot.cpp (commit bacbd7f).
+Now the horizontal axis refers to the z direction (beam propagation direction),
+while the vertical axis refers to the x direction (vertical direction). The beam propagates
+from left to right.
 
-Files: **all source code files**
-- Added a standardized header to every file, based on central_simulator.c (see below). Includes copyright notice
-and a reference to Dr. McMorran's thesis, as well as a (very) brief description of the file's purpose.
-
-Files: **central_simulator.c**, **README.md**, **INSTALL**
+Other changes:
 - Edited central_simulator.c header: detailed collaborator list moved to new file CREDITS,
 and ASCII diagram moved to INSTALL.
-- Minor INSTALL updates, including command-line arguments.
-
-File: **CREDITS**
-- Created to host detailed collaborator list previously on central_simulator.c.
-
-To be completed
+- Created file CREDITS to host detailed collaborator list previously on central_simulator.c.
+- Removed double initialization of *x_positions_array*, formerly *Grat3X* (commit 98b7b25).
+Also, the functions in Gratings.c sometimes redefined arrays without need: this was fixed.
+- Updated INSTALL, including command-line arguments.
+- Rectified indent structures and *if-else* statements.
+- Removed unused parameters from function definitions.
+- Edited various comments.
 
 ## v0.7 - [2016-06-21](https://github.com/lnevesabrantes/interferometer_simulation/releases/tag/v0.7)
 Commit **663a437f54a43c88441e7b6c4a204903ba36610d**
