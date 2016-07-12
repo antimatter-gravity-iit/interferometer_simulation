@@ -307,7 +307,6 @@ int main(int argc, char *argv[])
 			 * to cutoff value, then determines which value to input to the array of x intensitites. Its arguments are:
 			 * 	intensity at the time of calculation (an initially empty array);
 			 * 	zlocation;
-			 * 	choice of scale for the plot.
 			 * The function only modifies the array fed to it; it doesn't return any value. 
 			 */  
 		    	ixgenerator(intensity_array, current_z_position); 
