@@ -79,7 +79,7 @@ double maximum_value(double arr[], int array_size);
 double sinc(double x); 
 // returns sin(x)/x
 
-double ( *ixgenerator(double a[], double current_z_position)); 
+double ( *normalize(double a[], double current_z_position)); 
 // accounts for decay (if applicable) and normalizing the intensity scale
 
 int find_element_position_in_array(int value, int *arr); 

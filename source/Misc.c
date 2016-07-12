@@ -62,14 +62,14 @@ double sinc(double x){
 
 
 /* 
- * The function 'ixgenerator' is the x direction intensity calculator. It normalizes and compares intensities
+ * The function 'normalize' is the x direction intensity calculator. It normalizes and compares intensities
  * to cutoff value, then determines which value to input to the array of x intensitites. Its arguments are:
  * 	intensity at the time of calculation (an initially empty array);
  * 	zlocation;
  * 	choice of scale for the plot.
  * The function only modifies the array fed to it; it doesn't return any value. 
  */
-double *ixgenerator(double a[], double current_z_position) 
+double *normalize(double a[], double current_z_position) 
 {
     double mu_lifetime = 0.0000022; 
     // half life average decay time of a muon, in seconds

@@ -303,13 +303,13 @@ int main(int argc, char *argv[])
 			intensity_after_2nd_grating(current_z_position, el1, w1, r1, x_positions_array, intensity_array); 
 			
 			/* 
-			 * The function 'ixgenerator' is the x direction intensity calculator. It normalizes and compares intensities
+			 * The function 'normalize' is the x direction intensity calculator. It normalizes and compares intensities
 			 * to cutoff value, then determines which value to input to the array of x intensitites. Its arguments are:
 			 * 	intensity at the time of calculation (an initially empty array);
 			 * 	zlocation;
 			 * The function only modifies the array fed to it; it doesn't return any value. 
 			 */  
-		    	ixgenerator(intensity_array, current_z_position); 
+		    	normalize(intensity_array, current_z_position); 
 		}
 		else if (current_z_position > sp.z_position_1st_grating) {
 			
@@ -318,7 +318,7 @@ int main(int argc, char *argv[])
 			intensity_after_1st_grating(current_z_position, el1, w1, r1, x_positions_array, intensity_array); 
 			
 			// See previous "if".		
-			ixgenerator(intensity_array, current_z_position); 
+			normalize(intensity_array, current_z_position); 
 		}
 		else {
 			// Simple GSM propagation until it hits the first grating.
@@ -326,7 +326,7 @@ int main(int argc, char *argv[])
 			get_initial_intensity(current_z_position,x_positions_array, intensity_array);
 			
 			// See previous "if".
-			ixgenerator(intensity_array, current_z_position); 
+			normalize(intensity_array, current_z_position); 
 		}   
 
 		/* 
