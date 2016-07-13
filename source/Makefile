@@ -1,15 +1,18 @@
-#	Makefile
+# Makefile
+# Copyright (C) 2016 Antimatter Gravity Interferometer Group, Illinois Institute of Technology (IIT). 
 #
-#	IMPORTANT: The ROOT symbolic constant has to be set to the path where ROOT is installed.
+#				*
 #
-#	TARGETS:
-#		all		builds the usual program plus the test program (default)
-#		program 	builds the usual program only
-#		sptest		builds a test program for SimplePlot Misc.c BeamParams.c Gratings.c PhaseShifts.c
-#		debug_program	builds usual program with added debugging information (necessary for gdb) and extra warnings
-#		debug_sptest	builds test program with added debugging information and extra warnings
-#		debug		builds all with debugging information
-#		clean		removes output files (executables)
+# IMPORTANT: The ROOT symbolic constant has to be set to the path where ROOT is installed.
+#
+# TARGETS:
+#	all		builds the usual program plus the test program (default)
+#	program 	builds the usual program only
+#	sptest		builds a test program for SimplePlot Misc.c BeamParams.c Gratings.c PhaseShifts.c
+#	debug_program	builds usual program with added debugging information (necessary for gdb) and extra warnings
+#	debug_sptest	builds test program with added debugging information and extra warnings
+#	debug		builds all with debugging information
+#	clean		removes output files (executables)
 #
 CC = gcc-5
 CXX = g++-5

@@ -22,42 +22,19 @@
  * Electron Diffraction and Interferometry Using Nanostructures
  * http://gradworks.umi.com/33/52/3352633.html
  *
- *  Collaborators:
- *     Arthur Romero, 16 July to 24 August 2015
- *         -- Original author
- *     Adam Denchfield, 20 October 2015 to December 2015
- *         -- Additional parameters and functionality
- *     Melanie Cornelius (Dooley), 1 Nov 2015 to present
- *         -- Optimizations, standards, and readability edits
- *         -- Comments tagged with Mcomment
- *     Isaac Gewarges, January 2016 to April 28 2016
- *         -- Optimizations, standards, readability edits, and variable organization.
- *     Lucas Maia Rios, 23 May 2016 to present
- *         -- Comments tagged with LRcomment
- *     Lucas Neves Abrantes, 23 May 2016 to present
- *         -- Comments tagged with LAcomment
- *     Yuri Rossi Tonin, 6 May 2016 to present
- *         -- Comments tagged with Ycomment
+ * For a list of collaborators see README.md and CREDITS.
  *
  * 				*
  *
  * This central program takes user input for:
- *     electronic or atomic beam type,
  *     inclusion or exclusion of gravitational acceleration,
  *     resolution of output graph,
  *     velocity of particles,
  *     pitch of gratings,
- *     and choice of intensity profile or final simulation paths,
- * and calculates simulation parameters in order to perform the simulation with the user's desired arguments.
+ *     choice of intensity profile or final simulation paths,
+ *     and choice of logarithmic or linear intensity scale for the plot (only if the full simulation is requested),
+ * and calculates the necessary parameters in order to perform the simulation with the user's desired arguments.
  *
- * Top-down view of gratings:
- *
- *
- *                                    ---------------------   -> at G2_z = 1,         z2
- *
- *                                    ---------------------   -> at G1_z = 0.000001,  z1
- *
- *                                       (beam going up)
  */ 
 
 #include <stdio.h>
@@ -92,229 +69,295 @@
 // sp is the simulation parameters structure that contains all of the simulation dependent variables. The struct is located in Misc.h.
 simparam sp;
 
-// Rows of ReT and ImT arrays; used to calculate phase shift.
-int rowsT = 41;                              
-
 /*
  * The function 'main' is the main program that contains all of the global data and function calls to other functions
  * in order to simulate wave particles through a diffraction grating. It takes an integer and an array as arguments
  * and outputs a ROOT graph display.
  *
- * TODO LAcomment: Understand why this is a char array when all the elements are integers.
- * argv[x] is the argument array [vector] used for changing the inputs to the program.
+ * The main simulation parameters are initialized by argument values. This means that the user has to input
+ * these arguments on the command line when executing the program. An example would be "./program 1 1 300 6300 100 1 1".
  *
- * List of elements of argv[x], in the format "<position>. <explanation>": 
+ * These are the simulation parameters that the user has to provide, in the format "<position>. <explanation>":
  * 1. Account for gravity? 1 = True, 0 = False.
- * 2. Electron beam or atom beam? Electron beam = 1, Atom beam = 2. ELECTRON BEAM NOT MODELED!!!
- * 3. Resolution [300-400 recommended]. 
+ * 2. Account for Van der Waals effects? 1 = True, 0 = False.
+ * 3. Resolution in pixels [300-400 recommended]. 
  * 4. Velocity of particles in m/s.
- * 5. Pitch of gratings [in nm] 
+ * 5. Pitch of gratings in nm.
  * 6. Output the total simulation [1]? or the final interference pattern [2]?
- * 7. (if argv[6] == 1), logscale [1] or normal scale [0]?
+ * 7. If previous argument is 1, use a logarithmic scale for plotting intensities [1] or a normal scale [0]?
+ *
+ * Remember that argv[] is the standard argument vector used in C for inputting command-line arguments to the program.
+ * The "simparam" structure is defined in Misc.h.
  */
- 
-int main(int argc, char *argv[]){ 
-
-	// TODO LAcomment: rename variables and if necessary add brief comments. Verify if existing comments are needed.
-	// Initializing all simulator parameters by either default values or argument values. Variable definitions and comments are in misc.h.
-	sp.accountGrav = atoi(argv[1]);
-	sp.elecOrAtom = atoi(argv[2]);
-	// Velocity of particle.
-	sp.vel = atoi(argv[4]);
-	// Why was it defined like this? This equation seems to come from DeBroglie's model.
-	sp.energy = 1.5e-18 / pow(1e-11,2) * (1);
-	// sp.energy = 1.5e4
-	sp.simchoice = atoi(argv[6]);
-	// TODO LAcomment: add comment explaining why this 'if' exists.
-	if(sp.simchoice == 1)
-	sp.logchoice = atoi(argv[7]);
-	sp.useimagecharge = 0;
-	sp.eta1 = 0.4;
-	sp.eta2 = 0.4;
-	sp.g_period = atoi(argv[5]);
-	sp.initial_radius_of_wavefront_curvature = -4.04;
-	sp.initial_coherence_width = 1.0e-6;
-        sp.initial_beamwidth = 3.0e-5;
-	sp.G1_z = 1.0e-6;
-	sp.G2_z = 1.0;
-	sp.G2_x = 5e-8;
-	sp.theta = 1e-6;
-	sp.thick = 1.4e-8;
-	sp.Gthick = 1.0e3;
-	// Wedge angle.
-	sp.wedgeangle =	0;
-	// Tilt.
-	sp.tilt = 0; 
+int main(int argc, char *argv[])
+{
+	// Account for gravity?	1 = True, 0 = False.
+	sp.account_gravity		= atoi(argv[1]);
+	// Account for Van der Waals? 1 = True, 0 = False.
+	sp.account_van_der_waals	= atoi(argv[2]);
 	// Resolution.
-	sp.res = atoi(argv[3]);
-	sp.zstart = -0.1;
-	sp.zend = 2.1;
-	sp.xstart = -2.0e-4;
-	// xend.
-	sp.xend = 2.0e-4;
-	// ystart.
-	sp.ystart = -1.1e-4;
-	// yend.
-	sp.yend = 1.1e-4;
-	sp.height = (sp.g_period / 2) / 1.0e9;
-	// Point at which the intensity cuts off and is treated as 0. Can also be 5e-5 like in McMorran thesis, or 0.001.
-	sp.cutoff = 1e-6;
-	// Scaled logarithmically so they can see where more of the particles go [0] = no, [1] = yes.
-	//sp.logchoice = 0;
+	sp.resolution			= atoi(argv[3]);
+	// Velocity of beam particles.
+	sp.particle_velocity		= atof(argv[4]);
+	// The period is inputted in nanometers, but the program converts it to meters for internal usage.
+	sp.grating_period		= atof(argv[5]) / 1.0e9;
+	// Output the total simulation [1]? or the final interference pattern [2]?
+	sp.simulation_option		= atoi(argv[6]);
+	/*
+	 * If the user asks for the total simulation (sp.simulation_option is 1), the program needs to know
+	 * if the intensity scale of the plot is going to be linear or logarithmic (the latter helps
+	 * to see where more of the particles go). sp.logarithm_scale == 0 means linear scale, == 1 means
+	 * logarithmic scale.
+	 */
+	if(sp.simulation_option == 1)
+		sp.logarithm_scale = atoi(argv[7]);
+	else
+		sp.logarithm_scale = 0;
+	
+	// Gaussian Schell-model beam parameters.
+	sp.initial_beamwidth				= 3.0e-5;	// In m.
+	sp.initial_coherence_width			= 1.0e-6;	// In m.
+	sp.initial_radius_of_wavefront_curvature	= -4.04;	// In m.
 	
 	/*
-	 * TODO LAcomment: make sense of this. Remember Mcomment: "I tried to fix this, but what is it actually saying?
-	 * It's the intensities of the x-positions and the intensities?  That doesn't make sense to me."
-	 * Original description: "Initializing two arrays to contain the intensities and xpositions of each intensity."	
+	 * de Broglie wavelength for the matter waves.
+	 * de Broglie equation: wavelength = Planck constant / mass * velocity,
+	 * where we approximate the mass as the sum of the muon and electron masses.
+	 */
+	sp.wavelength 			= 6.626068e-34 / (1.8926409e-28 * sp.particle_velocity);
+
+	// Grating geometry parameters.
+	sp.z_position_1st_grating	= 1.0e-6;		 // In meters.
+	sp.z_position_2nd_grating	= 4.5e-2;		 // In meters.
+	sp.slit_height 			= sp.grating_period / 2; // Height of each slit is calculated as half the grating period (distance between gratings).
+	sp.grating1_open_fraction	= 0.4;			 // TODO LYcomment: we are not sure what this exactly means. Dr. McMorran's answers will probably help.
+	sp.grating2_open_fraction	= 0.4;			 // TODO LYcomment: same as above.
+	sp.G2_x				= 5e-8;			 // In meters. TODO LAcomment: explain based on Dr McMorran's answers.
+	sp.twist_angle			= M_PI *1e-6/180;	 // Twist angle. This is the relative rotation angle between the two gratings.
+	sp.grating_thickness		= 1.0e-6;		 // In meters. Used for the VdW effect for atoms: see PhaseShifts.c.
+	sp.wedge_angle			= 0* M_PI/180;		 // In degrees. Grating wedge angle.
+	sp.tilt_angle			= 0* M_PI/180; 	      	 // Tilt.
+
+	/* 
+	 * Spatial parameters.
+	 *
+	 * These parameters control 'the size of the grating' in the x direction:
+	 * delta x = (x_end - x_start) should equal the height of one grating.
+	 *
+	 * The total distance the beam travels is delta z = (z_end - z_start),
+	 * such that the distance between gratings is controlled by both the
+	 * z_position_1st_grating and z_position_2nd_grating variables above,
+	 * and z_start and z_end below.
+	 */	
+
+	sp.z_start    			= -1.0e-2;	      	// In meters. z start position
+	sp.z_end      			= 1.0e-1;	      	// In meters. z end position
+ 	sp.x_start    			= -5.0e-3;     		// In meters. x start position
+	sp.x_end      			= 5.0e-3;      		// In meters. x end position
+	
+	/* 
+	 * TODO Ycomment: y_start and y_end are not being used in the code. 
+	 * We didn't delete it for now in case the value they assume help us understand something later
+	 */
+	//sp.y_start  = -5.0e-3;      				// y start position
+	//sp.y_end    = 5.0e-3;       				// y end position
+
+	sp.intensity_cutoff			    = 1e-10;	// Point at which the intensity cuts off and is treated as 0.
+	sp.number_of_rows_fourier_coefficient_array = 41;  	// Rows of real_part_fourier_coefficient_array and imaginary_part_fourier_coefficient_array arrays; used to calculate phase shift.
+
+	/* 
+	 * The program prints a standard message before proceeding to the simulation. It includes a copyright notice
+	 * and displays the values the user has given as input for the simulation.
+	 */
+	printf("Interferometer Simulation 1.0\n");
+	printf("Copyright (C) 2016 Antimatter Gravity Interferometer Group, Illinois Institute of Technology (IIT).\n");
+	printf("License: GNU GPL version 2\n----------\n");
+	//printf("Interferometer Simulation comes with ABSOLUTELY NO WARRANTY; for details type 'show warranty'.\n");
+	//printf("This is free software, and you are welcome to redistribute it under certain conditions; type 'show copying' for details.\n\n");
+	printf("The simulation will run as follows.\n");
+	printf("Is gravity being considered? ");
+	if (sp.account_gravity == 1)
+		printf("yes\n");
+	else
+		printf("no\n");
+	printf("Is Van der Waals interaction being considered? ");
+	if (sp.account_van_der_waals == 1)
+		printf("yes\n");
+	else
+		printf("no\n");
+	printf("Resolution of simulation plot: %3.0f pixels\n", sp.resolution);
+	printf("Velocity of particles: %4.1f m/s\n", sp.particle_velocity);
+	printf("'Period' of gratings (distance between two successive slits): %3.1f nm\n", sp.grating_period * 1.0e9);
+	printf("Computing the full simulation or just the final interference pattern (using relative intensities)? ");
+	if (sp.simulation_option == 1) {
+		printf("full simulation\n");
+		printf("Is the intensity being plotted in a logarthmic scale? ");
+		if (sp.logarithm_scale == 1)
+			printf("yes\n");
+		else
+			printf("no\n");
+	}
+	else
+		printf("final interference pattern\n");
+	printf("Press 'Enter' to continue.");
+	while (getchar() != '\n')
+		;
+
+	/*
+	 * The intensity_array will be used in the calculation of the intensity of each row of pixels along the z direction.
+	 * The x_positions_array contains the positions (in meters) of the pixels along the x direction and does not change as the code runs,
+	 * given that the beam propagates in the z direction. That is, with each step in z the intensity_array holds the intensity
+	 * values associated with each position in x.
 	 */
 	
-	double *Grat3I;							// Intensity array.
-    	double *Grat3x;							// Array of x position of intensity.
-	Grat3I = (double*) calloc(sp.res, sizeof(double)); 		// Allocate dynamic memory for intensity array.
-	Grat3x = (double*) calloc(sp.res, sizeof(double)); 		// Allocate dynamic memory for horizontal position array.
-	int zlocstart;							// Where z position begins.
-	int rows = sp.res;						// Numbers of horizontal component arrays of full simulation graph.
-	double max;							// Stores computed max value of intensity at a specific x location.
-		
-    	// TODO LAcomment: make sense of these and rename variables accordingly.
+	double *intensity_array;								// Intensity array.
+    	double *x_positions_array;								// Array of x position of intensity.
+	intensity_array = (double*) calloc(sp.resolution, sizeof(double)); 			// Allocate dynamic memory for intensity array.
+	x_positions_array = (double*) calloc(sp.resolution, sizeof(double)); 			// Allocate dynamic memory for horizontal position array.
+	int initial_z_position;									// Where z position begins.
+	double max;										// Stores computed max value of intensity at a specific x location.
+   	int total_number_of_pixels = sp.resolution * sp.resolution;  				// Pixels on full simulation graph.
+    	double *pixel_array_memory = (double*) calloc(total_number_of_pixels, sizeof(double)); 	// Allocating dynamic memory for pixel array.
+	double z_resolution = (sp.z_end-sp.z_start)/sp.resolution; 				// Step resolution used in computation.
 
-   	int izxnumels = rows * rows;  					// Pixels on full simulation graph.
-    	double izxsize = izxnumels * sizeof(double); 			// Size of pixels array.
-    	double *izx = (double*) calloc(izxnumels, sizeof(double)); 	// Allocating dynamic memory for pixel array.
-    	double zres = (sp.zend-sp.zstart)/sp.res; 			// Step resolution used in computation.
      
 	/*
 	 * The following functions are used to calculate Gaussian Schell-model (GSM) values at the first grating:
- 	 * 	'w' computes and outputs the Gaussian Schell-model (GSM) beam width in meters [m];
-         * 	'v' computes and outputs the GSM radius of wavefront curvature; and
-	 * 	'el' computes and outputs the GSM beam coherence width.	
+	 * 	1. 'calculate_width' computes and outputs either the Gaussian Schell-model (GSM) beam width (in meters),
+	 *   	or the GSM beam coherence width. Both quantities evolve according to the same formula, so the last parameter
+	 * 	with which this function is called decides which quantity is being calculated. See the function's definition
+	 *	in BeamParams.c and the program documentation for more information.
 	 *
-	 * All of them take the same arguments:
-	 * 	height of first grating [set to 1 micron],
+	 * 	2. 'v' computes and outputs the GSM radius of wavefront curvature.
+	 *
+	 * The function 'v' has the following parameters :
+	 * 	location of first grating [set to 1 micron],
 	 *	initial radius of wavefront curvature,
 	 *	initial coherence width,
 	 *	initial beam width.
 	 *
-	 *  Note that they all output a double.
+	 * The function 'calculate_width' is similar, but it has to be called with one extra parameter at the end of the parameter list
+	 * in order to calculate the correct width. If the last parameter is the initial beamwidth, then the function will calculate that
+	 * beam parameter's evolution; if it's the initial coherence width, that is the beam parameter being calculated.
+	 *
+	 * The functions 'calculate_width' and 'v' output a double.
 	 */
+	
+	double w1  = calculate_width(sp.z_position_1st_grating, sp.initial_radius_of_wavefront_curvature, sp.initial_coherence_width, sp.initial_beamwidth, sp.initial_beamwidth);
+	double el1 = calculate_width(sp.z_position_1st_grating, sp.initial_radius_of_wavefront_curvature, sp.initial_coherence_width, sp.initial_beamwidth, sp.initial_coherence_width);
+	double r1  = calculate_wavefront_radius(sp.z_position_1st_grating, sp.initial_radius_of_wavefront_curvature, sp.initial_coherence_width, sp.initial_beamwidth);
+
+	// Developer: follow this indent structure.
+	if (sp.simulation_option == 1) {
+		initial_z_position = 0;
+	}
+	else if (sp.simulation_option == 2) {
+		initial_z_position = sp.resolution - 1;
+	}
+
+	for (int i=0; i<sp.resolution; i++)
+		x_positions_array[i] = sp.x_start + (i) * ((sp.x_end-sp.x_start)/(sp.resolution-1));
+	
+	for (int i=(initial_z_position); i<sp.resolution; i++) {
 		
-	double w1 = calculate_width(sp.G1_z, sp.initial_radius_of_wavefront_curvature, sp.initial_coherence_width, sp.initial_beamwidth, sp.initial_beamwidth);
-	double el1 = calculate_width(sp.G1_z, sp.initial_radius_of_wavefront_curvature, sp.initial_coherence_width, sp.initial_beamwidth, sp.initial_coherence_width);
-	double r1 = v(sp.G1_z, sp.initial_radius_of_wavefront_curvature, sp.initial_coherence_width, sp.initial_beamwidth);
-
-	// Follow this indent structure in the future.
-	if (sp.simchoice == 1) {
-		sp.logchoice = atoi(argv[7]);
-		zlocstart = 0;
-	}
-	else if (sp.simchoice == 2) {
-		zlocstart = sp.res - 1;
-	}
-
-	for (int i=(zlocstart); i<rows; i++) {
-		// TODO: LAcomment: said "i=299 is just to get last row of z." What?
-		memset(Grat3x, 0, rows * sizeof(double)); 
 		// Each time the loop repeats, you reset the array's positions and intensities to zero. 
-		memset(Grat3I, 0, rows * sizeof(double));
-
-	     	// Where you are with respect to z.
-		double zloc = sp.zstart  +  i * zres;		 
+		memset(intensity_array, 0, sp.resolution * sizeof(double));
+		
+		// Where you are with respect to z.
+		double current_z_position = sp.z_start  +  i * z_resolution;		 
 
 		/*
 		 * These control structures determine where you are on zloc: depending on that, you interact with different gratings.
 		 * The functions 'gpM' compute the intensity profile after the M-th grating. Thus:
-		 * 	'gp2' computes the intensity profile after the beam hits the second grating; 
-		 * 	'gp1' computes the intensity profile after the beam hits the first grating;
-		 * 	'gp0' computes the intensity profile before the beam hits any grating.
+		 * 	'intensity_after_2nd_grating' computes the intensity profile after the beam hits the second grating; 
+		 * 	'intensity_after_1st_grating' computes the intensity profile after the beam hits the first grating;
+		 * 	'get_initial_intensity' computes the intensity profile before the beam hits any grating.
 		 * Note that the intensity profile is an array of positions and their respective intensities. 
-		 * Also, keep in mind these functions modify the Grat3I and Grat3x arrays, but don't return any values.
+		 * Also, keep in mind these functions modify the intensity and x positions arrays, but don't return any values.
 		 * 
 		 * Their arguments are:
-		 * 	For 'gp2':
+		 * 	For 'intensity_after_2nd_grating':
 		 *		 z position after gratings,
 		 *		 beam coherence width,
 		 *		 beam width,
 		 *		 radius of curvature,
 		 *		 X positions,
 		 *		 x intensity profile.
-		 * 	For 'gp1':
+		 * 	For 'intensity_after_1st_grating':
 		 * 		 z position after gratings,
-		 *		 radius of curvature,
 		 * 		 beam coherence width,
 		 *		 beam width,
+		 *		 radius of curvature,
 		 *		 X positions,
 		 *		 x intensity profile.
-		 * 	For 'gp0':
+		 * 	For 'get_initial_intensity':
 		 * 		 z position,
 		 *		 X positions,
 		 *		 x intensity profile.
 		 */
-		if (zloc > sp.G2_z) { 
-			//printf("Entering gp2 for row equal to %d\n",i); //checking if the looping is working
-			// If the location is above G2_z [which is currently 1]:
-			gp2(zloc, el1, w1, r1, Grat3x, Grat3I); 
+		
+		if (current_z_position > sp.z_position_2nd_grating) { 
+			
+			printf("Entering intensity_after_2nd_grating for row z = %d\n",i); //checking if the looping is working
+			// If the location is above z_position_2nd_grating [which is currently 1]:
+			intensity_after_2nd_grating(current_z_position, el1, w1, r1, x_positions_array, intensity_array); 
+			
 			/* 
-			 * The function 'maximumvalue' outputs the maximum value in a given array.
-			 * Its arguments are an array and the length of that array [integer].
-			 * Here it gives the largest intensity value.
-		     	 */
-			max = maximumvalue(Grat3I, rows);
-			/* 
-			 * The function 'ixgenerator' is the x direction intensity calculator. It normalizes and compares intensities
+			 * The function 'normalize' is the x direction intensity calculator. It normalizes and compares intensities
 			 * to cutoff value, then determines which value to input to the array of x intensitites. Its arguments are:
 			 * 	intensity at the time of calculation (an initially empty array);
 			 * 	zlocation;
-			 * 	choice of scale for the plot; and
-			 * 	number of rows.
-			 * The function only modifies the array fed to it; it doesn't return any value. 
+			 * The muonium decay is modeled within the function.
 			 */  
-		    	ixgenerator(Grat3I, zloc, sp.logchoice, rows); 
+		    	normalize(intensity_array, current_z_position); 
 		}
-		else if (zloc > sp.G1_z) {
+		else if (current_z_position > sp.z_position_1st_grating) {
+			
 			// If interacting with the first grating, calculates intensity profile.
-			//printf("Entering gp1 for row equal to %d\n",i); //checking if the looping is working
-			gp1(zloc, r1, el1, w1, Grat3x, Grat3I); 
-			// Max value of intensity calculated here.
-			max = maximumvalue(Grat3I, rows); 
-			// As before.		
-			ixgenerator(Grat3I, zloc, sp.logchoice, rows); 
+			printf("Entering intensity_after_1st_grating for row z = %d\n",i); //checking if the looping is working
+			intensity_after_1st_grating(current_z_position, el1, w1, r1, x_positions_array, intensity_array); 
+			
+			// See previous "if".		
+			normalize(intensity_array, current_z_position); 
 		}
 		else {
 			// Simple GSM propagation until it hits the first grating.
-			//printf("Entering gp0 for row equal to %d\n",i); //checking if the looping is working
-			gp0(zloc,Grat3x, Grat3I);
-		
-			// If at the origin?
-			max = maximumvalue(Grat3I, rows); 
-			// As before.
-			ixgenerator(Grat3I, zloc, sp.logchoice, rows); 
+			printf("Entering get_initial_intensity for row z = %d\n",i); //checking if the looping is working
+			get_initial_intensity(current_z_position,x_positions_array, intensity_array);
+			
+			// See previous "if".
+			normalize(intensity_array, current_z_position); 
 		}   
 
-		for (int j=0; j<rows; j++ ) {
-			// TODO LAcomment: update? "Resolution * i + j; still keeping track of location."
-			int f = rows * i + j; 
-		    	// The f-th element of izx is set to be the intensity of the beam at the j-th point.	
-		    	izx[f] = Grat3I[j]; 
+		/* 
+		 * The for loop below creates a big array (pixel_array_memory[f])
+		 * that takes each intensity_array and puts one after the other.
+		 */
+		for (int j=0; j<sp.resolution; j++ ) {
+			int f = sp.resolution * i + j; 
+		    	// The f-th element of pixel_array_memory is set to be the intensity of the beam at the j-th point.	
+		    	pixel_array_memory[f] = intensity_array[j]; 
 		}
-		}
-	
-	if (sp.simchoice == 1) {
-		// Free the memory used by this array; since the simulation is over, izx has all the data.
-		free(Grat3x); 
-		// Same as above.
-		free(Grat3I); 
-		// Using ROOT to plot izx.
-		SimplePlot::twoD("Intensity graph as particles diffract through gratings",izx,-200,200,0.0,220,rows,rows); 
 	}
-	else if (sp.simchoice == 2) {
-		// Using ROOT to plot intensity vs. position at end of interferometer.
-		SimplePlot::graph("Relative Intensity Along Final Grating", Grat3x, Grat3I, rows);  
-		// Free the memory used by this array, since the simulation is over.
-		free(Grat3x); 
+	
+	if (sp.simulation_option == 1) {
+		// Free the memory used by this array; since the simulation is over, pixel_array_memory has all the data.
+		free(x_positions_array); 
 		// Same as above.
-		free(Grat3I); 
+		free(intensity_array); 
+		// Using ROOT to plot pixel_array_memory.
+		SimplePlot::twoD("Intensity graph as particles diffract through gratings",pixel_array_memory,sp.z_start,sp.z_end,sp.x_start,sp.x_end,sp.resolution,sp.resolution); 
+	}
+	else if (sp.simulation_option == 2) {
+		// Using ROOT to plot intensity vs. position at end of interferometer.
+		SimplePlot::graph("Relative Intensity Along Final Grating", x_positions_array, intensity_array, sp.resolution);		
+		// Free the memory used by this array, since the simulation is over.
+		free(x_positions_array); 
+		// Same as above.
+		free(intensity_array); 
+		  
 	}
 
-	// Free up the space used by the izx array.
-	free(izx);
+	// Free up the space used by the pixel_array_memory array.
+	free(pixel_array_memory);
 }
