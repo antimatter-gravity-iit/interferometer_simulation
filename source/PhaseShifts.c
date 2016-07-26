@@ -135,6 +135,10 @@ double ( * real_and_imaginary_arrays_generator(double real_or_imaginary_array[],
 	for (int i=0; i<sp.number_of_rows_fourier_coefficient_array; i++) {	
 		real_or_imaginary_array[i] = real_or_imaginary_array[i]/sp.resolution;
 	}
+	
+	if (real_or_imaginary == 1) //Values are the same for real and imaginary. Hence, print it only once.
+	{										
 	printf("Gravitational phase shift: %.10f rad\n", phase_gravity);
 	printf("Van der Waals phase shift: %.10f rad\n", phase_van_der_waals);
+	}
 }
