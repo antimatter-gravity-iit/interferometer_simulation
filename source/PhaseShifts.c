@@ -138,7 +138,7 @@ double ( * real_and_imaginary_arrays_generator(double real_or_imaginary_array[],
 	
 	if (real_or_imaginary == 1) //Values are the same for real and imaginary. Hence, print it only once.
 	{										
-	printf("Gravitational phase shift: %.10f rad\n", phase_gravity);
-	printf("Van der Waals phase shift: %.10f rad\n", phase_van_der_waals);
+	printf("Gravitational phase shift: %.3e rad\n", phase_gravity);
+	printf("Van der Waals phase shift: %.3e rad\n", phase_van_der_waals);
 	}
 }
