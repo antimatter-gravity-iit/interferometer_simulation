@@ -80,9 +80,9 @@ simparam sp;
  * These are the simulation parameters that the user has to provide, in the format "<position>. <explanation>":
  * 1. Account for gravity? 1 = True, 0 = False.
  * 2. Account for Van der Waals effects? 1 = True, 0 = False.
- * 3. Resolution in pixels [300-400 recommended]. 
- * 4. Velocity of particles in m/s.
- * 5. Pitch of gratings in nm.
+ * 3. Resolution in pixels.   
+ * 4. Velocity of particles in m/s. Standard: 6300 m/s
+ * 5. Pitch of gratings in nm. Standard: 100 nm
  * 6. Output the total simulation [1]? or the final interference pattern [2]?
  * 7. If previous argument is 1, use a logarithmic scale for plotting intensities [1] or a normal scale [0]?
  *
@@ -115,9 +115,9 @@ int main(int argc, char *argv[])
 		sp.logarithm_scale = 0;
 	
 	// Gaussian Schell-model beam parameters.
-	sp.initial_beamwidth				= 3.0e-5;	// In m.
-	sp.initial_coherence_width			= 1.0e-6;	// In m.
-	sp.initial_radius_of_wavefront_curvature	= -4.04;	// In m.
+	sp.initial_beamwidth				= 500.0e-6;		// In m.
+	sp.initial_coherence_width			= 500.0e-6;		// In m.
+	sp.initial_radius_of_wavefront_curvature	= -4.04;		// In m.
 	
 	/*
 	 * de Broglie wavelength for the matter waves.
@@ -130,8 +130,8 @@ int main(int argc, char *argv[])
 	sp.z_position_1st_grating	= 1.0e-6;		 // In meters.
 	sp.z_position_2nd_grating	= 4.5e-2;		 // In meters.
 	sp.slit_height 			= sp.grating_period / 2; // Height of each slit is calculated as half the grating period (distance between gratings).
-	sp.grating1_open_fraction	= 0.4;			 // TODO LYcomment: we are not sure what this exactly means. Dr. McMorran's answers will probably help.
-	sp.grating2_open_fraction	= 0.4;			 // TODO LYcomment: same as above.
+	sp.grating1_open_fraction	= 0.4;			 // TODO Ycomment: we are not sure what this exactly means. Dr. McMorran's answers will probably help.
+	sp.grating2_open_fraction	= 0.4;			 // TODO Ycomment: same as above.
 	sp.G2_x				= 5e-8;			 // In meters. TODO LAcomment: explain based on Dr McMorran's answers.
 	sp.twist_angle			= M_PI *1e-6/180;	 // Twist angle. This is the relative rotation angle between the two gratings.
 	sp.grating_thickness		= 1.0e-6;		 // In meters. Used for the VdW effect for atoms: see PhaseShifts.c.
@@ -150,10 +150,10 @@ int main(int argc, char *argv[])
 	 * and z_start and z_end below.
 	 */	
 
-	sp.z_start    			= -1.0e-2;	      	// In meters. z start position
-	sp.z_end      			= 1.0e-1;	      	// In meters. z end position
- 	sp.x_start    			= -5.0e-3;     		// In meters. x start position
-	sp.x_end      			= 5.0e-3;      		// In meters. x end position
+	sp.z_start    			= -1.0e-2;	// In meters. z start position
+	sp.z_end      			=  1.0e-1;	// In meters. z end position
+ 	sp.x_start    			= -5.0e-6;     	// In meters. x start position
+	sp.x_end      			=  5.0e-6;     	// In meters. x end position
 	
 	/* 
 	 * TODO Ycomment: y_start and y_end are not being used in the code. 
@@ -162,8 +162,9 @@ int main(int argc, char *argv[])
 	//sp.y_start  = -5.0e-3;      				// y start position
 	//sp.y_end    = 5.0e-3;       				// y end position
 
-	sp.intensity_cutoff			    = 1e-10;	// Point at which the intensity cuts off and is treated as 0.
+	sp.intensity_cutoff			    = 1e-7;	// Point at which the intensity cuts off and is treated as 0.
 	sp.number_of_rows_fourier_coefficient_array = 41;  	// Rows of real_part_fourier_coefficient_array and imaginary_part_fourier_coefficient_array arrays; used to calculate phase shift.
+	
 
 	/* 
 	 * The program prints a standard message before proceeding to the simulation. It includes a copyright notice
@@ -186,7 +187,8 @@ int main(int argc, char *argv[])
 	else
 		printf("no\n");
 	printf("Resolution of simulation plot: %3.0f pixels\n", sp.resolution);
-	printf("Velocity of particles: %4.1f m/s\n", sp.particle_velocity);
+	printf("Velocity of particles: %4.1f m/s \n", sp.particle_velocity);
+ 	printf("This velocity corresponds to wavelength: %85.5f nm \n", sp.wavelength*10e9);
 	printf("'Period' of gratings (distance between two successive slits): %3.1f nm\n", sp.grating_period * 1.0e9);
 	printf("Computing the full simulation or just the final interference pattern (using relative intensities)? ");
 	if (sp.simulation_option == 1) {
@@ -202,6 +204,14 @@ int main(int argc, char *argv[])
 	printf("Press 'Enter' to continue.");
 	while (getchar() != '\n')
 		;
+
+	/* Declaring a few variables for timing the code */
+	double diff0 = 0;
+	double diff1 = 0;
+	double diff2 = 0;
+ 	sp.boolean0 = false;
+ 	sp.boolean1 = false;
+ 	sp.boolean2 = false;
 
 	/*
 	 * The intensity_array will be used in the calculation of the intensity of each row of pixels along the z direction.
@@ -297,8 +307,13 @@ int main(int argc, char *argv[])
 		 */
 		
 		if (current_z_position > sp.z_position_2nd_grating) { 
+	
+	if(sp.boolean2 == false){
+	sp.clock1_end = clock();
+	diff1 =((double) (sp.clock1_end - sp.clock1_start))/ CLOCKS_PER_SEC;
+	}
 			
-			printf("Entering intensity_after_2nd_grating for row z = %d\n",i); //checking if the looping is working
+			printf("\nEntering intensity_after_2nd_grating for row z = %d\n",i); //checking if the looping is working
 			// If the location is above z_position_2nd_grating [which is currently 1]:
 			intensity_after_2nd_grating(current_z_position, el1, w1, r1, x_positions_array, intensity_array); 
 			
@@ -312,9 +327,14 @@ int main(int argc, char *argv[])
 		    	normalize(intensity_array, current_z_position); 
 		}
 		else if (current_z_position > sp.z_position_1st_grating) {
+	
+	if(sp.boolean1 == false){
+	sp.clock0_end = clock();
+	diff0 =((double) (sp.clock0_end - sp.clock0_start))/ CLOCKS_PER_SEC;
+	}
 			
 			// If interacting with the first grating, calculates intensity profile.
-			printf("Entering intensity_after_1st_grating for row z = %d\n",i); //checking if the looping is working
+			printf("\nEntering intensity_after_1st_grating for row z = %d\n",i); //checking if the looping is working
 			intensity_after_1st_grating(current_z_position, el1, w1, r1, x_positions_array, intensity_array); 
 			
 			// See previous "if".		
@@ -322,12 +342,13 @@ int main(int argc, char *argv[])
 		}
 		else {
 			// Simple GSM propagation until it hits the first grating.
-			printf("Entering get_initial_intensity for row z = %d\n",i); //checking if the looping is working
+			printf("\nEntering get_initial_intensity for row z = %d\n",i); //checking if the looping is working
 			get_initial_intensity(current_z_position,x_positions_array, intensity_array);
 			
 			// See previous "if".
 			normalize(intensity_array, current_z_position); 
 		}   
+
 
 		/* 
 		 * The for loop below creates a big array (pixel_array_memory[f])
@@ -340,7 +361,15 @@ int main(int argc, char *argv[])
 		}
 	}
 	
+	sp.clock2_end = clock();
+	diff2 =((double) (sp.clock2_end - sp.clock2_start))/ CLOCKS_PER_SEC;
+
 	if (sp.simulation_option == 1) {
+
+	printf("\nTime spent inside get_initial_intensity: %f seconds\n",diff0);       //printing the time spent in get_initial_intensity.	
+	printf("Time spent inside intensity_after_1st_grating.: %f seconds\n",diff1);  //printing the time spent in intensity_after_1st_grating.
+	printf("Time spent inside intensity_after_2nd_grating : %f seconds\n",diff2);  //printing the time spent in intensity_after_2nd_grating.
+
 		// Free the memory used by this array; since the simulation is over, pixel_array_memory has all the data.
 		free(x_positions_array); 
 		// Same as above.
@@ -349,6 +378,9 @@ int main(int argc, char *argv[])
 		SimplePlot::twoD("Intensity graph as particles diffract through gratings",pixel_array_memory,sp.z_start,sp.z_end,sp.x_start,sp.x_end,sp.resolution,sp.resolution); 
 	}
 	else if (sp.simulation_option == 2) {
+
+	printf("\nTime spent inside intensity_after_2nd_grating : %f seconds\n",diff2);  //printing the time spent in intensity_after_2nd_grating.
+
 		// Using ROOT to plot intensity vs. position at end of interferometer.
 		SimplePlot::graph("Relative Intensity Along Final Grating", x_positions_array, intensity_array, sp.resolution);		
 		// Free the memory used by this array, since the simulation is over.

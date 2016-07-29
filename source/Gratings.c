@@ -49,10 +49,10 @@
 void ( * get_initial_intensity(double z, double x_positions_array[], double intensity_array[]))
 // get intensity profile 
 {
-	clock_t start, end; //starting a timer to get the time spent in function get_initial_intensity
-	start = clock();
-	double diff=0;
-
+	if(sp.boolean0 == false){ //Statement to time this function
+	sp.clock0_start = clock();//Starting clock
+	sp.boolean0 = true;	
+	}
 
 	double w1;
 
@@ -63,22 +63,21 @@ void ( * get_initial_intensity(double z, double x_positions_array[], double inte
 		intensity_array[i]=exp(-(M_PI * pow((x_positions_array[i]/w1),2))); 		// a[i][1] is the intensity of the beam at the xposition at step i.
 	}
 
-	end = clock();
-	diff =((double) (end - start))/ CLOCKS_PER_SEC;
-	printf("Time elapsed: %f seconds\n",diff); 		//printing the time spent in get_initial_intensity.
+
 }
 
 
 void ( * intensity_after_1st_grating(double current_z_position,double el1, double w1, double r1, double x_positions_array[], double intensity_array[]))
 // get intensity profile after one grating
 {
-	clock_t start, end; //starting a timer to get the time spent in function intensity_after_1st_grating
-	start = clock();
-	double diff=0;
+	if(sp.boolean1 == false){ //Statement to time this function
+	sp.clock1_start = clock();//Starting clock
+	sp.boolean1 = true;
+	}
 
 	double current_z_distance_to_1st_grating = current_z_position - sp.z_position_1st_grating;  //z location between 1st and 2nd gratings
 	double coefficient; 
-    	double diffraction_orders  = 5;	
+    	double diffraction_orders  = 2;	
 	/*
 	 * Explanation of variables:
 	 * w2 = GSM width of beam after the first grating.
@@ -134,20 +133,20 @@ void ( * intensity_after_1st_grating(double current_z_position,double el1, doubl
 		}
 	}
 
-	end = clock();
-	diff =((double) (end - start))/ CLOCKS_PER_SEC;
-	printf("Time elapsed: %f seconds\n",diff); //printing the time spent in intensity_after_1st_grating.
+
 
 }
 
 void ( * intensity_after_2nd_grating(double current_z_position, double el1x, double w1x, double r1x, double x_positions_array[], double intensity_array[]))
 {	
-	clock_t start, end; //starting a timer to get the time spent in function intensity_after_2nd_grating
-	start = clock();
-	double diff=0;
+
+	if(sp.boolean2 == false){  //Statement to time this function
+	sp.clock2_start = clock(); //Starting clock
+	sp.boolean2 = true;
+	}
 
 	// get intensity profile after two grating
-    	double diffraction_orders  = 5;
+    	double diffraction_orders  = 2;
 	double G2_x  		   = sp.G2_x; //x position after second grating
 	double r1y    		   = r1x;
 	double w1y    		   = w1x;
@@ -247,8 +246,12 @@ void ( * intensity_after_2nd_grating(double current_z_position, double el1x, dou
                         				function_d   = exp(argument_d);                      
                         				function_v   = exp(argument_v);
                         				argument_f_p = argument_f + argument_p;
-                        
+						//printf("function d =       %8.3e \n",(__imag__ coefficient) * sin(argument_f_p));
+						//printf("function v =       %8.3e \n", function_v);                        
+//						printf("cos(arg f+arg p) = %8.3e \n", cos(argument_f +argument_p));
+
                         				intensity_array[i] +=  ((__real__ coefficient) * cos(argument_f_p) - (__imag__ coefficient) * sin(argument_f_p))*function_d*function_v ;
+
 						}
 					}
 				}
@@ -260,7 +263,5 @@ void ( * intensity_after_2nd_grating(double current_z_position, double el1x, dou
     	}
 
 
-	end = clock();
-	diff =((double) (end - start))/ CLOCKS_PER_SEC;
-	printf("Time elapsed: %f seconds\n",diff); //printing the time spent in intensity_after_2nd_grating.
+
 }
